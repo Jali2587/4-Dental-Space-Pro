@@ -12,7 +12,7 @@
     <meta property="og:title" content="DentalSpace Pro - AI-Enhanced Praktijkinrichting">
     <meta property="og:description" content="Slimme adviezen voor tandartspraktijk inrichting met AI-ondersteuning">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://dentalspacepro.nl">
+    <meta property="og:url" content="https://dentalspace.pro">
     
     <style>
         * {
@@ -666,6 +666,83 @@
             }
         }
 
+        .intake-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .intake-panel.show {
+            display: block;
+        }
+
+        .intake-question {
+            margin-bottom: 15px;
+        }
+
+        .intake-question h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .intake-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .intake-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .intake-option:hover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .intake-option.selected {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .intake-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .intake-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .intake-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
         /* Cookie Notice */
         .cookie-notice {
             position: fixed;
@@ -727,7 +804,7 @@
                 
                 <div class="cta-buttons">
                     <a href="#chat" class="btn-primary" onclick="scrollToChat(); return false;">🧠 Probeer AI Chat</a>
-                    <a href="mailto:expert@dentalspacepro.nl?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
+                    <a href="mailto:expert@dentalspace.pro?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
                 </div>
 
                 <div class="hero-stats">
@@ -756,36 +833,163 @@
 
                     <!-- API Setup Panel -->
                     <div class="setup-panel" id="setupPanel">
-                        <input type="password" id="apiKeyInput" class="api-input" placeholder="Plak je OpenAI API key hier (sk-...)">
-                        <button onclick="setupAI()" class="setup-btn">Activeer AI 🧠</button>
-                        <div style="margin-top: 8px; font-size: 0.8rem; color: #666;">
-                            <span onclick="skipAI()" style="cursor: pointer; color: #e74c3c;">⏭️ Skip AI (gebruik basis versie)</span>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 Activeer AI voor Slimme Adviezen</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Krijg gepersonaliseerde praktijkinrichting tips</p>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                            <input type="password" id="apiKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
+                            <button onclick="setupAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
+                        </div>
+                        <div style="text-align: center;">
+                            <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start met Expert Mode (zonder AI)</span>
                         </div>
                     </div>
 
+                    <!-- User Intake Panel -->
+                    <div class="intake-panel" id="intakePanel">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <h4 style="color: #007bff; margin: 0;">🎯 Vertel me over jouw situatie</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">Voor gepersonaliseerde adviezen</p>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>📋 Wat is jouw situatie?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'nieuw')">🏗️ Nieuwe praktijk</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'verbouw')">🔨 Verbouwing</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'uitbreiding')">📈 Uitbreiding</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'overgang')">🔄 Praktijkovergang</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>💰 Wat is je budget indicatie?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'onder50k')">< €50k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', '50k-100k')">€50k - €100k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', '100k-200k')">€100k - €200k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'boven200k')">€200k+</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'onbekend')">🤷 Nog onbekend</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🏥 Hoeveel behandelkamers?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '1-2')">1-2 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '3-4')">3-4 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '5-6')">5-6 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '7plus')">7+ kamers</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>⏰ Wanneer wil je starten?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'direct')">🚀 Direct</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', '3maanden')">📅 Binnen 3 maanden</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', '6maanden')">📅 Binnen 6 maanden</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'volgend_jaar')">📅 Volgend jaar</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'orienterend')">🔍 Nog oriënterend</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🦷 Wat is jouw ervaring als tandarts?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'student')">🎓 Nog student</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'beginnend')">🌱 Beginnend (0-2 jaar)</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'ervaren')">💼 Ervaren (2-10 jaar)</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'senior')">👨‍⚕️ Senior (10+ jaar)</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🌍 In welke regio ga je praktiseren?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'randstad')">🏙️ Randstad</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'brabant')">🌾 Noord-Brabant</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'gelderland')">🌲 Gelderland</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'noord')">⭐ Noord-Nederland</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'zeeland')">🌊 Zeeland/Zuid-Holland</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'overig')">📍 Andere provincie</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🔬 Welke specialisaties overweeg je? (meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="toggleSpecialization('algemeen')">🦷 Algemene tandheelkunde</div>
+                                <div class="intake-option" onclick="toggleSpecialization('kinderen')">👶 Kindertandheelkunde</div>
+                                <div class="intake-option" onclick="toggleSpecialization('orthodontie')">📐 Orthodontie</div>
+                                <div class="intake-option" onclick="toggleSpecialization('implantaten')">🔩 Implantologie</div>
+                                <div class="intake-option" onclick="toggleSpecialization('cosmetisch')">✨ Cosmetische tandheelkunde</div>
+                                <div class="intake-option" onclick="toggleSpecialization('kaakchirurgie')">🏥 Kaakchirurgie</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>😰 Wat zijn je grootste zorgen/overwegingen? (meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="toggleConcern('financiering')">💳 Financiering regelen</div>
+                                <div class="intake-option" onclick="toggleConcern('locatie')">📍 Juiste locatie vinden</div>
+                                <div class="intake-option" onclick="toggleConcern('concurrentie')">🏢 Concurrentie in de buurt</div>
+                                <div class="intake-option" onclick="toggleConcern('patienten')">👥 Patiënten aantrekken</div>
+                                <div class="intake-option" onclick="toggleConcern('technologie')">💻 Juiste technologie kiezen</div>
+                                <div class="intake-option" onclick="toggleConcern('personeel')">👨‍⚕️ Personeel vinden</div>
+                                <div class="intake-option" onclick="toggleConcern('administratie')">📋 Administratie & regelgeving</div>
+                                <div class="intake-option" onclick="toggleConcern('werk_prive')">⚖️ Werk-privé balans</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>⭐ Wat zijn jouw prioriteiten bij de inrichting? (meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="togglePriority('kosten')">💰 Kostenbeheersing</div>
+                                <div class="intake-option" onclick="togglePriority('kwaliteit')">💎 Hoge kwaliteit</div>
+                                <div class="intake-option" onclick="togglePriority('snelheid')">⚡ Snelle realisatie</div>
+                                <div class="intake-option" onclick="togglePriority('duurzaam')">🌱 Duurzaamheid</div>
+                                <div class="intake-option" onclick="togglePriority('modern')">🎨 Modern design</div>
+                                <div class="intake-option" onclick="togglePriority('efficiency')">🏗️ Workflow efficiency</div>
+                            </div>
+                        </div>
+
+                        <button onclick="completeIntake()" class="intake-btn">
+                            ✅ Klaar - Start Gepersonaliseerde Adviezen
+                        </button>
+                    </div>
+
                     <div class="chat-messages" id="chatMessages">
-                        <div class="message bot">
+                        <div class="message bot" id="welcomeMessage">
                             <div class="message-avatar">🤖</div>
                             <div class="message-content">
-                                Hallo! Ik ben je DentalSpace Pro adviseur met AI-ondersteuning! 🧠
+                                Hallo! Welkom bij DentalSpace Pro! 🦷
                                 <br><br>
-                                <strong>🎯 Nieuw:</strong> Ik kan nu complexe vragen beantwoorden, leren van gesprekken en slimme adviezen geven over praktijkinrichting.
+                                <strong>🎯 Ik help je met:</strong><br>
+                                • Expert praktijkinrichting advies<br>
+                                • Kosten & budgetberekeningen<br>
+                                • Materiaal- en designkeuzes<br>
+                                • Workflow optimalisatie tips<br>
+                                • Direct contact met specialisten
                                 <br><br>
-                                <strong>🔗 Alle contact werkt perfect:</strong> Klik op contact links om direct te bellen of emailen!
+                                <strong>🚀 Voor AI features:</strong> Activeer AI bovenaan voor geavanceerde, gepersonaliseerde adviezen!
                                 <br><br>
-                                <strong>⚙️ Setup:</strong> Activeer AI voor de beste ervaring, of gebruik de basis versie met expert kennis.
-                                <div class="message-source">💡 DentalSpace Pro Knowledge Base</div>
+                                <strong>💡 Start direct:</strong> Klik op een van de knoppen hieronder of stel je vraag!
+                                <div class="message-source">💡 DentalSpace Pro Welcome</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="quick-suggestions">
+                    <div class="quick-suggestions" id="suggestions">
                         <div class="suggestion-btn" onclick="sendSuggestion('Wat kost een moderne praktijk met 3 behandelkamers?')">💰 Kosten Informatie</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Geef me 5 tips voor een efficiënte praktijkindeling')">🧠 AI Tips</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Geef me 5 concrete tips voor een efficiënte praktijkindeling met behandelkamers, wachtruimte en sterilisatie')">🧠 AI Tips</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('persoonlijk contact')">🤝 Expert Contact</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Wat zijn de nieuwste trends in tandartspraktijk inrichting?')">🚀 AI Trends</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Wat zijn de nieuwste trends in tandartspraktijk inrichting voor 2025? Denk aan duurzaamheid, technologie en patiëntcomfort')">🚀 AI Trends</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('Hoe plan ik mijn praktijkinrichting?')">📋 Planning Advies</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Welke materialen zijn het beste voor behandelkamers?')">💎 Materiaal Advies</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Welke materialen zijn het beste voor behandelkamers? Vergelijk Solid Surface, laminaat en andere opties qua hygiëne, kosten en duurzaamheid')">💎 Materiaal Advies</div>
+                        <div class="suggestion-btn" id="profileButton" onclick="showProfileSetup()" style="background: linear-gradient(45deg, #6f42c1, #5a369d); color: white; border: none; display: none;">👤 Maak Profiel</div>
+                        <div class="suggestion-btn" id="expertButton" onclick="sendToExpert()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; display: none;">📧 Send All to Expert</div>
                     </div>
 
                     <div class="chat-input-container">
@@ -871,7 +1075,7 @@
                         <li>Compliance en vergunningen</li>
                         <li>Complete ontzorging van A tot Z</li>
                     </ul>
-                    <a href="mailto:expert@dentalspacepro.nl?subject=DentalMa%20Contact&body=Hallo,%0D%0A%0D%0AIk%20ben%20geïnteresseerd%20in%20DentalMa%20praktijkrealisatie.%0D%0A%0D%0AMijn%20situatie:%0D%0A-%20Type%20project:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Locatie:%0D%0A-%20Budget:%0D%0A%0D%0AGroeten," class="btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">📧 Contact via Expert</a>
+                    <a href="mailto:expert@dentalspace.pro?subject=DentalMa%20Contact&body=Hallo,%0D%0A%0D%0AIk%20ben%20geïnteresseerd%20in%20DentalMa%20praktijkrealisatie.%0D%0A%0D%0AMijn%20situatie:%0D%0A-%20Type%20project:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Locatie:%0D%0A-%20Budget:%0D%0A%0D%0AGroeten," class="btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">📧 Contact via Expert</a>
                 </div>
 
                 <div class="partner-card">
@@ -889,7 +1093,7 @@
                         <li>Hygiënische Solid Surface materialen</li>
                         <li>5 dagen levering mogelijk</li>
                     </ul>
-                    <a href="mailto:expert@dentalspacepro.nl?subject=IsSolid%20Contact&body=Hallo,%0D%0A%0D%0AIk%20ben%20geïnteresseerd%20in%20IsSolid%20meubilair.%0D%0A%0D%0AMijn%20project:%0D%0A-%20Type%20meubilair:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Stijl:%0D%0A-%20Budget:%0D%0A%0D%0AGroeten," class="btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">📧 Contact via Expert</a>
+                    <a href="mailto:expert@dentalspace.pro?subject=IsSolid%20Contact&body=Hallo,%0D%0A%0D%0AIk%20ben%20geïnteresseerd%20in%20IsSolid%20meubilair.%0D%0A%0D%0AMijn%20project:%0D%0A-%20Type%20meubilair:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Stijl:%0D%0A-%20Budget:%0D%0A%0D%0AGroeten," class="btn-primary" style="width: 100%; text-align: center; margin-top: 20px;">📧 Contact via Expert</a>
                 </div>
             </div>
         </div>
@@ -903,7 +1107,7 @@
                 <p>Start vandaag nog met onze slimme AI-chatbot en krijg direct expert advies over praktijkinrichting.</p>
                 <div class="cta-buttons">
                     <a href="#chat" class="btn-primary" onclick="scrollToChat(); return false;">🧠 Start AI Chat</a>
-                    <a href="mailto:expert@dentalspacepro.nl?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
+                    <a href="mailto:expert@dentalspace.pro?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
                 </div>
             </div>
         </div>
@@ -914,7 +1118,7 @@
         <div class="container">
             <p>&copy; 2025 DentalSpace Pro. Alle rechten voorbehouden.</p>
             <p>
-                <a href="mailto:expert@dentalspacepro.nl">expert@dentalspacepro.nl</a> | 
+                <a href="mailto:expert@dentalspace.pro">expert@dentalspace.pro</a> | 
                 <a href="tel:+31201234567">+31 (0)20 123 4567</a>
             </p>
             <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">
@@ -936,15 +1140,29 @@
         let openaiApiKey = '';
         let conversationHistory = [];
         let chatHistory = [];
+        let aiInitialized = false;
+        let userProfile = {
+            situation: null,
+            budget: null,
+            rooms: null,
+            timeline: null,
+            priorities: [],
+            experience: null,
+            concerns: [],
+            specializations: [],
+            location: null,
+            setup_completed: false
+        };
+        let recentQuestions = [];
 
         // Expert Knowledge Base
         const expertResponses = {
             kosten: [
-                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br>Voor de beste kostenbegroting en persoonlijk advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='mailto:expert@dentalspacepro.nl?subject=Kostenbegroting%20Praktijkinrichting&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting%20kosten.%0D%0A%0D%0AMijn%20situatie:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Type%20praktijk:%0D%0A-%20Budget%20indicatie:%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspacepro.nl</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>",
+                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br>Voor de beste kostenbegroting en persoonlijk advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>",
             ],
             
             contact: [
-                "Fijn dat je persoonlijk contact wilt! 🙂<br><br>Onze expert helpt je graag met praktijkinrichting advies:<br><br><strong>📞 Direct Contact:</strong><br>📧 <a href='mailto:expert@dentalspacepro.nl?subject=Persoonlijk%20Contact&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20persoonlijk%20contact%20voor%20praktijkadvies.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspacepro.nl</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br>Onze expert belt meestal binnen een dag terug voor een vrijblijvend adviesgesprek!<div class='message-source'>📞 DentalSpace Pro Expert</div>"
+                "Fijn dat je persoonlijk contact wilt! 🙂<br><br>Onze expert helpt je graag met praktijkinrichting advies:<br><br><strong>📞 Direct Contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br>Onze expert belt meestal binnen een dag terug voor een vrijblijvend adviesgesprek!<div class='message-source'>📞 DentalSpace Pro Expert</div>"
             ]
         };
 
@@ -955,28 +1173,57 @@
 
 BELANGRIJKE CONTEXT:
 - DentalSpace Pro is een adviesbureau dat tandartsen helpt bij praktijkinrichting
-- Wij bieden persoonlijke begeleiding en expert advies
-- ALLE CONTACT LOOPT VIA ONZE EXPERT: expert@dentalspacepro.nl
+- Wij hebben partnerships met DentalMa (complete praktijkrealisatie) en IsSolid (Solid Surface meubilair)
+- ALLE CONTACT LOOPT VIA: expert@dentalspace.pro
 
-CONTACT STRATEGIE:
-- Alle vragen worden doorverwezen naar expert@dentalspacepro.nl
-- Dit zorgt voor persoonlijke service en maatwerk advies
-- Expert beoordeelt elke situatie individueel
-- Klanten krijgen persoonlijke begeleiding
+EXPERTISE GEBIEDEN:
+- Praktijkontwerp en ruimte-indeling optimalisatie
+- Solid Surface materialen (hygiëne, duurzaamheid, kosten)
+- Workflow optimalisatie voor tandartspraktijken
+- Kostenberekening en budgettering
+- Compliance en vergunningen (WTZi, ARBO, brandveiligheid)
+- Nieuwste trends: duurzaamheid, digitalisering, patiëntcomfort
+- Hygiene protocollen en materiaalspecificaties
 
-LINK FORMATTING REGELS:
-- Algemeen contact: <a href='mailto:expert@dentalspacepro.nl?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspacepro.nl</a>
-- Telefoon: <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a>
+ANTWOORD STRATEGIE VOOR AI SUGGESTIONS:
+Geef ALTIJD uitgebreide, gedetailleerde antwoorden met:
+1. Concrete, praktische tips met specifieke afmetingen/materialen
+2. Voor- en nadelen van verschillende opties
+3. Kostenvergelijkingen waar mogelijk
+4. Implementatie timeline en stappen
+5. Compliance overwegingen
+6. Verwijs dan naar expert@dentalspace.pro voor implementatie
 
-INSTRUCTIES:
-- Verwijs ALTIJD naar onze expert voor specifieke vragen
-- Benadruk dat we persoonlijke begeleiding bieden
-- Gebruik Nederlandse taal
-- Wees professioneel maar toegankelijk
-- Gebruik emojis voor betere leesbaarheid
-- ALLE contact URLs naar expert@dentalspacepro.nl
+MATERIAAL EXPERTISE:
+- Solid Surface: €800-1200/m², hygiënisch, 12-uur garantie behandelmeubels
+- Laminaat: €200-400/m², budget-vriendelijk maar minder duurzaam
+- Fenolhars: €400-600/m², goed voor natte ruimtes
+- RVS: €600-900/m², professioneel maar koud
+- Corian: €900-1300/m², premium maar duur
 
-Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor belangrijke tekst.`;
+TRENDS 2025:
+- Duurzame materialen (gerecycled Solid Surface)
+- Smart technology integratie (IoT sensoren)
+- Modulaire inrichting voor flexibiliteit
+- Biophilic design (natuurlijke elementen)
+- Contactloze oplossingen (automatische kranen, deuren)
+- Energy efficiency (LED+, warmtepompen)
+
+WORKFLOW OPTIMALISATIE:
+- One-way patient flow (vermijd kruising)
+- Centrale sterilisatie locatie
+- 12-14m² per behandelkamer optimaal
+- Wachtruimte: 1.5m² per stoel
+- Aparte toegang voor leveranciers
+
+Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, cijfers en voorbeelden.
+
+LINK FORMAT:
+<a href='mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a>
+
+Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, cijfers en voorbeelden.
+
+Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             }
 
             async getAIResponse(userMessage) {
@@ -985,6 +1232,10 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
                 }
 
                 try {
+                    // Get personalized context
+                    const personalizedContext = getPersonalizedContext();
+                    const systemPromptWithContext = this.systemPrompt + personalizedContext;
+                    
                     const response = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
                         headers: {
@@ -994,7 +1245,7 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
                         body: JSON.stringify({
                             model: "gpt-3.5-turbo",
                             messages: [
-                                { role: "system", content: this.systemPrompt },
+                                { role: "system", content: systemPromptWithContext },
                                 ...conversationHistory.slice(-6),
                                 { role: "user", content: userMessage }
                             ],
@@ -1019,14 +1270,31 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
             getExpertResponse(userMessage) {
                 const message = userMessage.toLowerCase();
                 
+                // Determine expert link based on profile status
+                let expertLink;
+                if (userProfile.setup_completed) {
+                    if (message.includes('kost') || message.includes('prijs') || message.includes('budget')) {
+                        expertLink = createContextualMailtoLink('Kostenbegroting Praktijkinrichting');
+                    } else {
+                        expertLink = createContextualMailtoLink('Persoonlijk Contact');
+                    }
+                } else {
+                    // Basic links for users without profile
+                    if (message.includes('kost') || message.includes('prijs') || message.includes('budget')) {
+                        expertLink = 'mailto:expert@dentalspace.pro?subject=Kostenbegroting%20Praktijkinrichting&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting%20kosten.%0D%0A%0D%0AMijn%20situatie:%0D%0A-%20Aantal%20kamers:%0D%0A-%20Type%20praktijk:%0D%0A-%20Budget%20indicatie:%0D%0A%0D%0AGroeten,';
+                    } else {
+                        expertLink = 'mailto:expert@dentalspace.pro?subject=Persoonlijk%20Contact&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20persoonlijk%20contact%20voor%20praktijkadvies.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,';
+                    }
+                }
+                
                 // Kosten vragen
                 if (message.includes('kost') || message.includes('prijs') || message.includes('budget')) {
-                    return expertResponses.kosten[0];
+                    return expertResponses.kosten[0].replace('{{EXPERT_LINK}}', expertLink);
                 }
                 
                 // Contact vragen
                 if (message.includes('contact') || message.includes('bellen') || message.includes('afspraak')) {
-                    return expertResponses.contact[0];
+                    return expertResponses.contact[0].replace('{{EXPERT_LINK}}', expertLink);
                 }
                 
                 return null;
@@ -1057,8 +1325,13 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
                 
                 // 3. Fallback naar basis response
                 console.log('💡 Using fallback response');
+                
+                const fallbackLink = userProfile.setup_completed 
+                    ? createContextualMailtoLink('Praktijk Advies') 
+                    : 'mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,';
+                
                 return { 
-                    response: "Interessante vraag! 💭<br><br>Voor de beste hulp bij praktijkinrichting kan ik je in contact brengen met onze specialisten.<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='mailto:expert@dentalspacepro.nl?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspacepro.nl</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>", 
+                    response: `Interessante vraag! 💭<br><br>Voor de beste hulp bij praktijkinrichting kan ik je in contact brengen met onze specialisten.<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>`, 
                     source: 'fallback' 
                 };
             }
@@ -1077,24 +1350,593 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
             
             openaiApiKey = apiKey;
             aiEnabled = true;
+            aiInitialized = true;
             
-            // Hide setup panel
+            // Save API key for future sessions
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem('dentalspace_ai_key', apiKey);
+                    localStorage.setItem('dentalspace_ai_enabled', 'true');
+                    console.log('✅ AI settings saved for future sessions');
+                }
+            } catch (error) {
+                console.log('⚠️ Could not save AI settings');
+            }
+            
+            // Hide setup panel and show intake choice
             document.getElementById('setupPanel').classList.add('hidden');
-            
-            // Update status
             updateAIStatus('🟢 AI Actief', '#28a745');
             
-            // Add confirmation message
-            addMessage("🧠 AI succesvol geactiveerd! Ik kan nu complexe vragen beantwoorden en slimme adviezen geven.<br><br><strong>🎯 Alle vragen worden doorverwezen naar onze expert voor persoonlijke service:</strong><br>• 'Kosten informatie' - Kostenbegroting via expert<br>• 'Planning advies' - Praktijkplanning via expert<br>• 'Persoonlijk contact' - Direct expert advies<br><br><strong>🚀 Test AI features:</strong><br>• 'Geef me 5 tips voor een efficiënte praktijkindeling'<br>• 'Wat zijn de nieuwste trends in tandartspraktijk inrichting?'<br>• 'Hoe kan ik mijn praktijk duurzamer maken?'<br><br><strong>💡 Voordeel:</strong> Persoonlijke begeleiding en maatwerk advies via onze expert!<div class='message-source'>🎉 AI + Expert Mode Active</div>", false, 'ai');
-            
-            console.log('✅ AI activated successfully');
+            // Check if we have saved profile
+            const savedProfile = loadUserProfile();
+            if (savedProfile && savedProfile.setup_completed) {
+                // Skip choice if already completed
+                showEnhancedPersonalizedWelcome();
+            } else {
+                // Show choice between intake or direct start
+                showIntakeChoice();
+            }
         }
 
-        function skipAI() {
-            document.getElementById('setupPanel').classList.add('hidden');
-            updateAIStatus('🔴 Basis Mode', '#e74c3c');
+        function showIntakeChoice() {
+            addMessage("🧠 <strong>AI Succesvol Geactiveerd!</strong><br><br><strong>🎯 Kies je aanpak:</strong><br><br><strong>📋 Optie 1: Persoonlijke Intake (aanbevolen)</strong><br>Vertel me over jouw situatie voor gepersonaliseerde adviezen afgestemd op jouw budget, ervaring en zorgen.<br><br><strong>⚡ Optie 2: Direct Starten</strong><br>Begin meteen met vragen stellen. Je kunt altijd later je profiel aanvullen.<br><br>Beide opties werken perfect - kies wat jij fijn vindt!<div class='message-source'>🎯 AI Setup - Jouw Keuze</div>", false, 'ai');
             
-            addMessage("💡 Basis mode geactiveerd. Ik help je graag met praktijkinrichting vragen op basis van onze expert kennis!<br><br><strong>🎯 Alle vragen worden doorverwezen naar onze expert:</strong><br>• 'Kosten informatie' - Kostenbegroting<br>• 'Planning advies' - Praktijkplanning<br>• 'Persoonlijk contact' - Direct expert advies<br><br><strong>💡 Voordeel:</strong> Onze expert zorgt voor persoonlijke begeleiding en maatwerk advies! 📞📧<div class='message-source'>💼 Expert Mode Active</div>", false, 'bot');
+            // Add choice buttons  
+            addChoiceButtons();
+        }
+
+        function addChoiceButtons() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const choiceDiv = document.createElement('div');
+            choiceDiv.className = 'message ai';
+            choiceDiv.id = 'choiceButtons';
+            
+            choiceDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content" style="text-align: center;">
+                    <button onclick="startIntake()" style="background: linear-gradient(45deg, #007bff, #0056b3); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">📋 Start Persoonlijke Intake</button>
+                    <button onclick="skipIntakeAndStart()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">⚡ Direct Starten</button>
+                    <div style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
+                        💡 Je kunt altijd later je profiel toevoegen voor betere adviezen
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(choiceDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function startIntake() {
+            // Remove choice buttons
+            const choiceButtons = document.getElementById('choiceButtons');
+            if (choiceButtons) {
+                choiceButtons.remove();
+            }
+            
+            addMessage("📋 <strong>Perfect! Laten we jouw profiel aanmaken</strong><br><br>Dit duurt maar 2 minuten en zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Vul hieronder je gegevens in:</strong><div class='message-source'>🎯 Persoonlijke Intake Gestart</div>", false, 'ai');
+            
+            document.getElementById('intakePanel').classList.add('show');
+        }
+
+        function skipIntakeAndStart() {
+            // Remove choice buttons
+            const choiceButtons = document.getElementById('choiceButtons');
+            if (choiceButtons) {
+                choiceButtons.remove();
+            }
+            
+            addMessage("⚡ <strong>AI Klaar om te Helpen!</strong><br><br><strong>🎯 Beschikbare AI features:</strong><br>• 💡 Slimme praktijkinrichting tips<br>• 💰 Gedetailleerde kostenberekeningen<br>• 🏗️ Workflow optimalisatie adviezen<br>• 🌟 Nieuwste 2025 trends en innovaties<br>• 💎 Materiaal vergelijkingen en specs<br><br><strong>💡 Tip:</strong> Voor nog betere, gepersonaliseerde adviezen kun je later je profiel aanvullen via de 'Profiel' knop.<br><br><strong>🚀 Start direct:</strong> Klik op de paarse AI-knoppen of stel je vraag!<div class='message-source'>🎉 AI Expert Mode Active</div>", false, 'ai');
+            
+            // Show profile button for later
+            showProfileButton();
+        }
+
+        function selectIntakeOption(category, value) {
+            // Remove previous selection in this category
+            const categoryOptions = document.querySelectorAll(`[onclick*="${category}"]`);
+            categoryOptions.forEach(option => {
+                if (option.onclick.toString().includes(`'${category}'`)) {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Add selection to clicked option
+            event.target.classList.add('selected');
+            
+            // Save to profile
+            userProfile[category] = value;
+            console.log('Selected:', category, value);
+        }
+
+        function togglePriority(priority) {
+            const element = event.target;
+            
+            if (userProfile.priorities.includes(priority)) {
+                // Remove priority
+                userProfile.priorities = userProfile.priorities.filter(p => p !== priority);
+                element.classList.remove('selected');
+            } else {
+                // Add priority
+                userProfile.priorities.push(priority);
+                element.classList.add('selected');
+            }
+            
+            console.log('Priorities updated:', userProfile.priorities);
+        }
+
+        function toggleSpecialization(specialization) {
+            const element = event.target;
+            
+            if (userProfile.specializations.includes(specialization)) {
+                // Remove specialization
+                userProfile.specializations = userProfile.specializations.filter(s => s !== specialization);
+                element.classList.remove('selected');
+            } else {
+                // Add specialization
+                userProfile.specializations.push(specialization);
+                element.classList.add('selected');
+            }
+            
+            console.log('Specializations updated:', userProfile.specializations);
+        }
+
+        function toggleConcern(concern) {
+            const element = event.target;
+            
+            if (userProfile.concerns.includes(concern)) {
+                // Remove concern
+                userProfile.concerns = userProfile.concerns.filter(c => c !== concern);
+                element.classList.remove('selected');
+            } else {
+                // Add concern
+                userProfile.concerns.push(concern);
+                element.classList.add('selected');
+            }
+            
+            console.log('Concerns updated:', userProfile.concerns);
+        }
+
+        function generateContextualEmailBody(subject = 'Praktijk Advies') {
+            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie website bezocht en wil graag advies over praktijkinrichting.%0D%0A%0D%0A`;
+            
+            if (userProfile.setup_completed) {
+                emailBody += `=== MIJN SITUATIE ===%0D%0A`;
+                
+                // Basic info
+                const situationLabels = {
+                    'nieuw': 'Nieuwe praktijk starten',
+                    'verbouw': 'Bestaande praktijk verbouwen',
+                    'uitbreiding': 'Praktijk uitbreiden',
+                    'overgang': 'Praktijkovergang'
+                };
+                
+                const experienceLabels = {
+                    'student': 'Nog student tandheelkunde',
+                    'beginnend': 'Beginnend tandarts (0-2 jaar)',
+                    'ervaren': 'Ervaren tandarts (2-10 jaar)',
+                    'senior': 'Senior tandarts (10+ jaar)'
+                };
+                
+                emailBody += `Situatie: ${situationLabels[userProfile.situation] || 'Onbekend'}%0D%0A`;
+                emailBody += `Ervaring: ${experienceLabels[userProfile.experience] || 'Niet opgegeven'}%0D%0A`;
+                emailBody += `Aantal behandelkamers: ${userProfile.rooms || 'Nog te bepalen'}%0D%0A`;
+                emailBody += `Budget indicatie: ${userProfile.budget || 'Nog te bepalen'}%0D%0A`;
+                emailBody += `Timeline: ${userProfile.timeline || 'Nog te bepalen'}%0D%0A`;
+                
+                if (userProfile.location) {
+                    const locationLabels = {
+                        'randstad': 'Randstad',
+                        'brabant': 'Noord-Brabant',
+                        'gelderland': 'Gelderland',
+                        'noord': 'Noord-Nederland',
+                        'zeeland': 'Zeeland/Zuid-Holland',
+                        'overig': 'Andere provincie'
+                    };
+                    emailBody += `Regio: ${locationLabels[userProfile.location]}%0D%0A`;
+                }
+                
+                // Specializations
+                if (userProfile.specializations.length > 0) {
+                    const specializationLabels = {
+                        'algemeen': 'Algemene tandheelkunde',
+                        'kinderen': 'Kindertandheelkunde',
+                        'orthodontie': 'Orthodontie',
+                        'implantaten': 'Implantologie',
+                        'cosmetisch': 'Cosmetische tandheelkunde',
+                        'kaakchirurgie': 'Kaakchirurgie'
+                    };
+                    
+                    const specs = userProfile.specializations.map(s => specializationLabels[s]).join(', ');
+                    emailBody += `Specialisaties: ${specs}%0D%0A`;
+                }
+                
+                // Concerns
+                if (userProfile.concerns.length > 0) {
+                    const concernLabels = {
+                        'financiering': 'Financiering regelen',
+                        'locatie': 'Juiste locatie vinden',
+                        'concurrentie': 'Concurrentie in de buurt',
+                        'patienten': 'Patiënten aantrekken',
+                        'technologie': 'Juiste technologie kiezen',
+                        'personeel': 'Personeel vinden',
+                        'administratie': 'Administratie & regelgeving',
+                        'werk_prive': 'Werk-privé balans'
+                    };
+                    
+                    const concerns = userProfile.concerns.map(c => concernLabels[c]).join(', ');
+                    emailBody += `Zorgen/overwegingen: ${concerns}%0D%0A`;
+                }
+                
+                // Priorities
+                if (userProfile.priorities.length > 0) {
+                    const priorityLabels = {
+                        'kosten': 'Kostenbeheersing',
+                        'kwaliteit': 'Hoge kwaliteit',
+                        'snelheid': 'Snelle realisatie',
+                        'duurzaam': 'Duurzaamheid',
+                        'modern': 'Modern design',
+                        'efficiency': 'Workflow efficiency'
+                    };
+                    
+                    const priorities = userProfile.priorities.map(p => priorityLabels[p]).join(', ');
+                    emailBody += `Prioriteiten: ${priorities}%0D%0A`;
+                }
+                
+                emailBody += `%0D%0A`;
+            }
+            
+            // Add recent questions if any
+            if (recentQuestions.length > 0) {
+                emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
+                recentQuestions.slice(-3).forEach((q, index) => {
+                    emailBody += `${index + 1}. ${encodeURIComponent(q)}%0D%0A`;
+                });
+                emailBody += `%0D%0A`;
+            }
+            
+            emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
+            
+            return emailBody;
+        }
+
+        function createContextualMailtoLink(subject) {
+            const emailBody = generateContextualEmailBody(subject);
+            return `mailto:expert@dentalspace.pro?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+        }
+
+        function completeIntake() {
+            // Validate required fields
+            if (!userProfile.situation || !userProfile.budget || !userProfile.rooms || !userProfile.timeline || !userProfile.experience) {
+                alert('⚠️ Vul alle basis velden in (situatie, budget, kamers, timeline, ervaring) voor de beste gepersonaliseerde adviezen!');
+                return;
+            }
+            
+            userProfile.setup_completed = true;
+            
+            // Save profile
+            saveUserProfile();
+            
+            // Hide intake panel
+            document.getElementById('intakePanel').classList.remove('show');
+            
+            // Show personalized welcome with full context
+            showEnhancedPersonalizedWelcome();
+        }
+
+        function showEnhancedPersonalizedWelcome() {
+            const situationText = {
+                'nieuw': 'nieuwe praktijk',
+                'verbouw': 'praktijkverbouwing', 
+                'uitbreiding': 'praktijkuitbreiding',
+                'overgang': 'praktijkovergang'
+            };
+            
+            const experienceText = {
+                'student': 'student',
+                'beginnend': 'beginnend tandarts',
+                'ervaren': 'ervaren tandarts',
+                'senior': 'senior tandarts'
+            };
+            
+            const budgetText = {
+                'onder50k': 'onder €50k',
+                '50k-100k': '€50k - €100k',
+                '100k-200k': '€100k - €200k', 
+                'boven200k': '€200k+',
+                'onbekend': 'nog te bepalen'
+            };
+            
+            let message = `🎯 <strong>Perfect! AI Volledig Gepersonaliseerd:</strong><br><br>`;
+            message += `<strong>👤 Jouw profiel:</strong><br>`;
+            message += `• ${experienceText[userProfile.experience]} met ${situationText[userProfile.situation]}<br>`;
+            message += `• ${userProfile.rooms} behandelkamers, budget: ${budgetText[userProfile.budget]}<br>`;
+            message += `• Timeline: ${userProfile.timeline}<br>`;
+            
+            if (userProfile.location) {
+                const locationText = {
+                    'randstad': 'Randstad',
+                    'brabant': 'Noord-Brabant', 
+                    'gelderland': 'Gelderland',
+                    'noord': 'Noord-Nederland',
+                    'zeeland': 'Zeeland/Zuid-Holland',
+                    'overig': 'andere provincie'
+                };
+                message += `• Regio: ${locationText[userProfile.location]}<br>`;
+            }
+            
+            if (userProfile.specializations.length > 0) {
+                const specs = userProfile.specializations.join(', ');
+                message += `• Specialisaties: ${specs}<br>`;
+            }
+            
+            if (userProfile.concerns.length > 0) {
+                const concerns = userProfile.concerns.join(', ');
+                message += `• Zorgen: ${concerns}<br>`;
+            }
+            
+            if (userProfile.priorities.length > 0) {
+                const priorities = userProfile.priorities.join(', ');
+                message += `• Prioriteiten: ${priorities}<br>`;
+            }
+            
+            message += `<br><strong>🧠 AI Voordelen:</strong><br>`;
+            message += `• Alle adviezen zijn afgestemd op jouw specifieke situatie<br>`;
+            message += `• Tips voor ${experienceText[userProfile.experience]} niveau<br>`;
+            message += `• Budget-optimalisatie voor ${budgetText[userProfile.budget]}<br>`;
+            message += `• Speciaal focus op jouw zorgen en prioriteiten<br><br>`;
+            
+            message += `<strong>📧 Expert Contact:</strong><br>`;
+            message += `<a href="${createContextualMailtoLink('Gepersonaliseerd Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Mijn Context naar Expert</a><br><br>`;
+            
+            message += `<strong>🚀 Test nu:</strong> Klik op de paarse AI-knoppen voor adviezen op maat!`;
+            message += `<div class='message-source'>🎉 AI Volledig Gepersonaliseerd + Context Ready</div>`;
+            
+            addMessage(message, false, 'ai');
+            
+            // Show expert button and hide profile button
+            const expertButton = document.getElementById('expertButton');
+            const profileButton = document.getElementById('profileButton');
+            
+            if (expertButton) {
+                expertButton.style.display = 'block';
+            }
+            if (profileButton) {
+                profileButton.style.display = 'none';
+            }
+        }
+
+        function saveUserProfile() {
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem('dentalspace_user_profile', JSON.stringify(userProfile));
+                    console.log('✅ User profile saved');
+                }
+            } catch (error) {
+                console.log('⚠️ Could not save user profile');
+            }
+        }
+
+        function loadUserProfile() {
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    const saved = localStorage.getItem('dentalspace_user_profile');
+                    if (saved) {
+                        const profile = JSON.parse(saved);
+                        userProfile = { ...userProfile, ...profile };
+                        console.log('✅ User profile loaded:', userProfile);
+                        return profile;
+                    }
+                }
+            } catch (error) {
+                console.log('⚠️ Could not load user profile');
+            }
+            return null;
+        }
+
+        function getPersonalizedContext() {
+            if (!userProfile.setup_completed) return '';
+            
+            const situationText = {
+                'nieuw': 'nieuwe praktijk starten',
+                'verbouw': 'praktijkverbouwing',
+                'uitbreiding': 'praktijkuitbreiding', 
+                'overgang': 'praktijkovergang'
+            };
+            
+            const experienceText = {
+                'student': 'tandheelkunde student',
+                'beginnend': 'beginnend tandarts (0-2 jaar ervaring)',
+                'ervaren': 'ervaren tandarts (2-10 jaar ervaring)',
+                'senior': 'senior tandarts (10+ jaar ervaring)'
+            };
+            
+            const budgetText = {
+                'onder50k': 'onder €50.000',
+                '50k-100k': '€50.000 - €100.000',
+                '100k-200k': '€100.000 - €200.000',
+                'boven200k': '€200.000+',
+                'onbekend': 'nog te bepalen budget'
+            };
+            
+            let context = `
+GEBRUIKER PROFIEL (gebruik dit voor gepersonaliseerde adviezen):
+- Tandarts ervaring: ${experienceText[userProfile.experience]}
+- Situatie: ${situationText[userProfile.situation]}
+- Aantal behandelkamers: ${userProfile.rooms}
+- Budget: ${budgetText[userProfile.budget]}  
+- Timeline: ${userProfile.timeline}`;
+
+            if (userProfile.location) {
+                const locationText = {
+                    'randstad': 'Randstad (hoge concurrentie, dure grond)',
+                    'brabant': 'Noord-Brabant (gezonde markt)',
+                    'gelderland': 'Gelderland (stabiele markt)',
+                    'noord': 'Noord-Nederland (minder concurrentie)',
+                    'zeeland': 'Zeeland/Zuid-Holland (toeristische invloed)',
+                    'overig': 'andere provincie'
+                };
+                context += `\n- Regio: ${locationText[userProfile.location]}`;
+            }
+
+            if (userProfile.specializations.length > 0) {
+                const specializationText = {
+                    'algemeen': 'algemene tandheelkunde',
+                    'kinderen': 'kindertandheelkunde (speelhoek, kindvriendelijk)',
+                    'orthodontie': 'orthodontie (meer ruimte, digitale scan)',
+                    'implantaten': 'implantologie (steriele omgeving, chirurgie)',
+                    'cosmetisch': 'cosmetische tandheelkunde (luxe uitstraling)',
+                    'kaakchirurgie': 'kaakchirurgie (operatiekamer-achtig)'
+                };
+                const specs = userProfile.specializations.map(s => specializationText[s]).join(', ');
+                context += `\n- Specialisaties: ${specs}`;
+            }
+
+            if (userProfile.concerns.length > 0) {
+                const concernText = {
+                    'financiering': 'financiering (geef budgetvriendelijke opties)',
+                    'locatie': 'locatie kiezen (geef locatie tips)',
+                    'concurrentie': 'concurrentie (focus differentiatie)',
+                    'patienten': 'patiënten aantrekken (marketing aspecten)',
+                    'technologie': 'technologie keuzes (praktische info)',
+                    'personeel': 'personeel vinden (werkplek attractiviteit)',
+                    'administratie': 'administratie (focus eenvoud)',
+                    'werk_prive': 'werk-privé balans (efficiency focus)'
+                };
+                const concerns = userProfile.concerns.map(c => concernText[c]).join(', ');
+                context += `\n- Zorgen/overwegingen: ${concerns}`;
+            }
+
+            if (userProfile.priorities.length > 0) {
+                const priorityText = {
+                    'kosten': 'kostenbeheersing (budget oplossingen)',
+                    'kwaliteit': 'hoge kwaliteit (premium materialen)', 
+                    'snelheid': 'snelle realisatie (kortere timeline)',
+                    'duurzaam': 'duurzaamheid (eco-friendly opties)',
+                    'modern': 'modern design (contemporary uitstraling)',
+                    'efficiency': 'workflow efficiency (optimale indeling)'
+                };
+                const priorities = userProfile.priorities.map(p => priorityText[p]).join(', ');
+                context += `\n- Prioriteiten: ${priorities}`;
+            }
+
+            context += `
+
+BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel. 
+- Voor beginners: meer uitleg en basis tips
+- Voor senioren: focus op upgrade/modernisering
+- Budget-gerelateerde tips op basis van hun budget
+- Specialisatie-specifieke inrichtingsadviezen
+- Rekening houden met hun zorgen en prioriteiten
+`;
+            
+            return context;
+        }
+
+        function startBasicMode() {
+            document.getElementById('setupPanel').classList.add('hidden');
+            updateAIStatus('💼 Expert Mode', '#6c757d');
+            aiInitialized = true;
+            
+            addMessage("💼 <strong>Expert Mode Actief</strong><br><br><strong>🎯 Beschikbare services:</strong><br>• 💰 Kostenberekeningen en budgettering<br>• 📋 Praktijkplanning en compliance check<br>• 🤝 Direct expert contact en begeleiding<br>• 🏗️ Complete praktijkrealisatie via DentalMa<br>• 💎 Maatwerk Solid Surface meubilair via IsSolid<br><br><strong>📞 Persoonlijk contact:</strong><br>Al je vragen krijgen direct antwoord van onze specialist voor maatwerk oplossingen en implementatie.<div class='message-source'>💼 Expert Knowledge Active</div>", false, 'bot');
+        }
+
+        function autoLoadAI() {
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    const savedKey = localStorage.getItem('dentalspace_ai_key');
+                    const aiWasEnabled = localStorage.getItem('dentalspace_ai_enabled') === 'true';
+                    
+                    if (savedKey && savedKey.startsWith('sk-') && aiWasEnabled) {
+                        // Auto-activate AI silently
+                        openaiApiKey = savedKey;
+                        aiEnabled = true;
+                        aiInitialized = true;
+                        
+                        // Load user profile
+                        const savedProfile = loadUserProfile();
+                        
+                        // Hide setup panel immediately
+                        document.getElementById('setupPanel').classList.add('hidden');
+                        updateAIStatus('🟢 AI Actief', '#28a745');
+                        
+                        // Replace welcome message based on profile status
+                        const welcomeMsg = document.getElementById('welcomeMessage');
+                        if (welcomeMsg) {
+                            if (savedProfile && savedProfile.setup_completed) {
+                                // Personalized welcome for returning users
+                                const situationText = {
+                                    'nieuw': 'nieuwe praktijk',
+                                    'verbouw': 'praktijkverbouwing',
+                                    'uitbreiding': 'praktijkuitbreiding',
+                                    'overgang': 'praktijkovergang'
+                                };
+                                
+                                welcomeMsg.innerHTML = `
+                                    <div class="message-avatar">🧠</div>
+                                    <div class="message-content">
+                                        Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
+                                        <br><br>
+                                        <strong>📋 Jouw project:</strong> ${situationText[userProfile.situation]} met ${userProfile.rooms} behandelkamers
+                                        <br><br>
+                                        <strong>🧠 AI features actief:</strong><br>
+                                        • Adviezen afgestemd op jouw budget & prioriteiten<br>
+                                        • Specifieke tips voor jouw aantal kamers<br>
+                                        • Timeline-aangepaste planning adviezen<br>
+                                        • Materiaal keuzes voor jouw situatie
+                                        <br><br>
+                                        <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd voor jouw project!
+                                        <br><br>
+                                        <strong>📧 Expert Contact:</strong><br>
+                                        <a href="${createContextualMailtoLink('Terugkerende Bezoeker - Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Context naar Expert</a>
+                                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
+                                    </div>
+                                `;
+                                
+                                // Show expert button for returning users with profile
+                                setTimeout(() => {
+                                    const expertButton = document.getElementById('expertButton');
+                                    if (expertButton) {
+                                        expertButton.style.display = 'block';
+                                    }
+                                }, 500);
+                            } else {
+                                // Generic AI welcome for users without completed profile
+                                welcomeMsg.innerHTML = `
+                                    <div class="message-avatar">🧠</div>
+                                    <div class="message-content">
+                                        Je AI is automatisch geactiveerd! 🚀
+                                        <br><br>
+                                        <strong>🎯 AI functies beschikbaar:</strong><br>
+                                        • Slimme praktijkinrichting adviezen<br>
+                                        • Materiaal vergelijkingen & kostenanalyses<br>
+                                        • Nieuwste 2025 trends en innovaties<br>
+                                        • Workflow optimalisatie tips
+                                        <br><br>
+                                        <strong>💡 Voor nog betere adviezen:</strong><br>
+                                        Klik op 'Maak Profiel' om gepersonaliseerde tips te krijgen afgestemd op jouw specifieke situatie!
+                                        <div class="message-source">🔄 AI Auto-Activated</div>
+                                    </div>
+                                `;
+                                
+                                // Show profile button for users without completed profile
+                                setTimeout(() => {
+                                    const profileButton = document.getElementById('profileButton');
+                                    if (profileButton) {
+                                        profileButton.style.display = 'block';
+                                    }
+                                }, 500);
+                            }
+                            welcomeMsg.className = 'message ai';
+                        }
+                        
+                        console.log('✅ AI auto-activated with profile:', savedProfile ? 'LOADED' : 'NEW USER');
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.log('⚠️ Could not auto-load AI settings');
+            }
+            return false;
         }
 
         function updateAIStatus(status, color) {
@@ -1217,7 +2059,7 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
             } catch (error) {
                 hideTypingIndicator();
                 console.error('Error:', error);
-                addMessage("Sorry, er ging iets mis. Probeer het opnieuw of neem contact op via <a href='mailto:expert@dentalspacepro.nl?subject=Chatbot%20Error&body=Hallo,%0D%0A%0D%0AEr%20ging%20iets%20mis%20met%20de%20chatbot.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspacepro.nl</a> of bel <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a>", false, 'bot');
+                addMessage("🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='mailto:expert@dentalspace.pro?subject=Chatbot%20Technische%20Vraag&body=Hallo,%0D%0A%0D%0AEr%20ging%20iets%20mis%20met%20de%20chatbot.%20Ik%20wil%20graag%20hulp%20bij%20mijn%20praktijkinrichting%20vraag.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Voordeel:</strong> Persoonlijke begeleiding werkt altijd perfect!", false, 'bot');
             }
             
             // Re-enable input
@@ -1225,6 +2067,54 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
             sendButton.disabled = false;
             sendButton.textContent = '➤';
             input.focus();
+        }
+
+        function showProfileButton() {
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'block';
+            }
+        }
+
+        function showProfileSetup() {
+            // Hide profile button
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'none';
+            }
+            
+            addMessage("👤 <strong>Profiel Aanmaken</strong><br><br>Geweldig dat je je profiel wilt aanvullen! Dit zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>📋 Vul hieronder je gegevens in:</strong><div class='message-source'>🎯 Profiel Setup Gestart</div>", false, 'ai');
+            
+            document.getElementById('intakePanel').classList.add('show');
+        }
+
+        function sendToExpert() {
+            if (userProfile.setup_completed) {
+                const mailtoLink = createContextualMailtoLink('Complete Praktijk Advies - Alle Context');
+                window.location.href = mailtoLink;
+            } else {
+                // Fallback for users without profile
+                const basicEmailBody = generateBasicEmailBody();
+                const mailtoLink = `mailto:expert@dentalspace.pro?subject=${encodeURIComponent('Praktijk Advies - Chat Conversation')}&body=${basicEmailBody}`;
+                window.location.href = mailtoLink;
+            }
+        }
+
+        function generateBasicEmailBody() {
+            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie AI chatbot gebruikt en wil graag persoonlijk contact voor praktijkinrichting advies.%0D%0A%0D%0A`;
+            
+            // Add recent questions if any
+            if (recentQuestions.length > 0) {
+                emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
+                recentQuestions.slice(-3).forEach((q, index) => {
+                    emailBody += `${index + 1}. ${encodeURIComponent(q)}%0D%0A`;
+                });
+                emailBody += `%0D%0A`;
+            }
+            
+            emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
+            
+            return emailBody;
         }
 
         function sendSuggestion(suggestion) {
@@ -1282,19 +2172,28 @@ Antwoord altijd in HTML format met <br> voor nieuwe regels en <strong> voor bela
                 chatInput.focus();
             }
             
+            // Try to auto-load AI first
+            const aiAutoLoaded = autoLoadAI();
+            
+            // If AI wasn't auto-loaded, setup might be needed
+            if (!aiAutoLoaded) {
+                console.log('💡 AI setup required - showing setup panel');
+            }
+            
             // Check cookies
             checkCookies();
             
             // Console startup info
             console.log('🚀 DentalSpace Pro Website geladen!');
-            console.log('🌐 Klaar voor: https://dentalspacepro.nl');
-            console.log('💡 Setup AI voor de beste ervaring');
+            console.log('🌐 Domain: https://dentalspace.pro');
+            console.log('🧠 AI Auto-detection: ' + (aiAutoLoaded ? 'SUCCESS' : 'SETUP NEEDED'));
             
             // Test essential functions
             try {
                 // Test that all key functions exist
                 if (typeof setupAI !== 'function') console.error('❌ setupAI function missing');
-                if (typeof skipAI !== 'function') console.error('❌ skipAI function missing');
+                if (typeof startBasicMode !== 'function') console.error('❌ startBasicMode function missing');
+                if (typeof autoLoadAI !== 'function') console.error('❌ autoLoadAI function missing');
                 if (typeof sendMessage !== 'function') console.error('❌ sendMessage function missing');
                 if (typeof scrollToChat !== 'function') console.error('❌ scrollToChat function missing');
                 
