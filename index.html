@@ -922,29 +922,20 @@
                         <p>Specialist kennis + AI intelligentie</p>
                     </div>
 
-                    <!-- Simplified API Setup Panel -->
+                    <!-- Simple Working API Setup -->
                     <div class="setup-panel" id="setupPanel">
                         <div style="text-align: center; margin-bottom: 20px;">
                             <h4 style="margin: 0 0 8px 0; color: #333;">🧠 AI Chat Activeren</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voer OpenAI API key in voor AI functionaliteit</p>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voer je OpenAI API key in</p>
                         </div>
                         
-                        <!-- Simple API Key Input - Always Visible -->
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <input type="password" id="apiKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
-                            <button onclick="setupAI()" id="setupButton" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer AI</button>
-                        </div>
-                        
-                        <div style="text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 15px;">
-                            Deze key wordt opgeslagen zodat alle bezoekers AI kunnen gebruiken
+                            <input type="password" id="apiKeyInput" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 12px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none; font-size: 0.9rem;">
+                            <button onclick="activateAI()" style="padding: 12px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer; font-size: 0.9rem;">🚀 Activeer</button>
                         </div>
                         
                         <div style="text-align: center;">
                             <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start zonder AI (Expert Mode)</span>
-                            <br><br>
-                            <div id="removeKeyOption" style="display: none;">
-                                <span onclick="removeStoredKey()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.8rem;">🗑️ Verwijder opgeslagen key</span>
-                            </div>
                         </div>
                     </div>
 
