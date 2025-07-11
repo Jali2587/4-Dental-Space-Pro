@@ -1,4 +1,471 @@
-<!DOCTYPE html>
+// AI Suggestion Functions
+        function sendAITips() {
+            if (chatbot.ai.enabled) {
+                const tipsPrompt = "Geef me 5 concrete, praktische tips voor een efficiënte praktijkindeling. Focus op workflow, ergonomie en ruimte-optimalisatie. Geef specifieke afmetingen en praktische voorbeelden.";
+                sendSuggestion(tipsPrompt);
+            } else {
+                addMessage("🧠 <strong>AI Tips voor Efficiënte Praktijkindeling</strong><br><br><strong>1. 🔄 One-Way Patient Flow</strong><br>• Maak een eenrichtingsverkeer voor patiënten<br>• Ingang → Wachtruimte → Behandelkamer → Uitgang<br>• Minimale gangbreedte: 1.2 meter<br><br><strong>2. 🏥 Centrale Sterilisatie</strong><br>• Max 15 meter van behandelkamers<br>• Aparte vuile/schone kant<br>• Direct toegang vanuit alle kamers<br><br><strong>3. 📐 Optimale Behandelkamer</strong><br>• 12-14m² (3.5x4m ideaal)<br>• Behandelstoel op 45° ten opzichte van deur<br>• Werkblad aan beide zijden<br><br><strong>4. 👥 Wachtruimte Dimensies</strong><br>• 1.5m² per stoel<br>• Max 8 stoelen voor privacy<br>• Aparte kinderwachtruimte<br><br><strong>5. 📦 Slim Opslag Systeem</strong><br>• 80% materialen binnen 3 stappen<br>• Hoge kastjes voor zeldzame items<br>• Lade-systeem voor dagelijks gebruik<br><br><strong>💡 Voor implementatie:</strong> <a href='mailto:expert@dentalspace.pro?subject=Praktijkindeling%20Tips' style='color: #4a90e2; font-weight: bold;'>expert@dentalspace.pro</a><div class='message-source'>🧠 AI Tips - Expert Knowledge</div>", false, 'ai');
+            }
+        }
+
+        function sendAITrends() {
+            if (chatbot.ai.enabled) {
+                const trendsPrompt = "Wat zijn de nieuwste trends in tandartspraktijk inrichting voor 2025? Focus op duurzaamheid, technologie, patiëntcomfort en efficiency. Geef concrete voorbeelden en implementatie tips.";
+                sendSuggestion(trendsPrompt);
+            } else {
+                addMessage("🚀 <strong>Nieuwste Trends Tandartspraktijk 2025</strong><br><br><strong>🌱 Duurzaamheid & Eco-Design</strong><br>• 40% gerecycled Solid Surface materiaal<br>• LED verlichting met daglichtsensoren<br>• Waterbesparende apparatuur (-30%)<br>• Zonnepanelen en warmtepompen<br><br><strong>💻 Smart Technology</strong><br>• IoT sensoren voor luchtkwaliteit<br>• Automatische verlichting per ruimte<br>• Digital patient journey apps<br>• AI-gestuurde plannungsoftware<br><br><strong>🤖 Contactloze Oplossingen</strong><br>• Sensorgestuurde kranen en zepen<br>• Automatische deurhoudersystemen<br>• Contactloze check-in systemen<br>• UV-C desinfectie units<br><br><strong>🎨 Biophilic Design</strong><br>• Levende plantenwanden (air purifying)<br>• Natuurlijke materialen en kleuren<br>• Maximaal natuurlijk licht<br>• Waterfeatures voor relaxatie<br><br><strong>🔧 Modulaire Flexibiliteit</strong><br>• Verplaatsbare wanden en meubilair<br>• Multi-functionele behandelruimtes<br>• Flexibele werkstations<br>• Uitbreidbare infrastructuur<br><br><strong>🎯 Voor 2025 upgrade:</strong> <a href='mailto:expert@dentalspace.pro?subject=2025%20Trends%20Implementatie' style='color: #4a90e2; font-weight: bold;'>expert@dentalspace.pro</a><div class='message-source'>🚀 2025 Trends - Future Ready</div>", false, 'ai');
+            }
+        }
+
+        function sendAIMaterials() {
+            if (chatbot.ai.enabled) {
+                const materialsPrompt = "Geef me een complete vergelijking van behandelkamer materialen voor tandartspraktijken. Analyseer: Solid Surface, Fenolhars, Laminaat, RVS, en Keramiek. Per materiaal: exacte kosten per m², onderhoudseisen, levensduur, hygiëne-eigenschappen, en voor welke situaties het beste past.";
+                sendSuggestion(materialsPrompt);
+            } else {
+                addMessage("💎 <strong>Complete Materialen Vergelijking 2025</strong><br><br><strong>🏆 Solid Surface (Corian/DuPont) - AANBEVOLEN</strong><br>• 💰 Kosten: €800-1200/m²<br>• 🧼 Onderhoud: Eenvoudig, repareerbaar<br>• ⏱️ Levensduur: 15-20 jaar<br>• 🦠 Hygiëne: Non-poreus, bacterie-resistent<br>• ✅ Best voor: Behandelmeubels, bladen, wanden<br><br><strong>⚗️ Fenolhars Platen</strong><br>• 💰 Kosten: €400-600/m²<br>• 🧼 Onderhoud: Gemiddeld, chemisch resistent<br>• ⏱️ Levensduur: 10-15 jaar<br>• 🦠 Hygiëne: Goed, dense structuur<br>• ✅ Best voor: Laboratorium, sterilisatie<br><br><strong>🎨 Laminaat HPL</strong><br>• 💰 Kosten: €200-400/m²<br>• 🧼 Onderhoud: Moeilijk bij beschadiging<br>• ⏱️ Levensduur: 8-12 jaar<br>• 🦠 Hygiëne: Redelijk, voegen problematisch<br>• ✅ Best voor: Budget projecten, receptie<br><br><strong>🔧 RVS 316L Medical Grade</strong><br>• 💰 Kosten: €600-900/m²<br>• 🧼 Onderhoud: Intensief, krassen zichtbaar<br>• ⏱️ Levensduur: 20+ jaar<br>• 🦠 Hygiëne: Uitstekend, medical grade<br>• ✅ Best voor: Sterilisatie, instrumenten<br><br><strong>🏺 Keramische Tegels</strong><br>• 💰 Kosten: €300-500/m²<br>• 🧼 Onderhoud: Voegen onderhoud nodig<br>• ⏱️ Levensduur: 15-25 jaar<br>• 🦠 Hygiëne: Goed, afhankelijk van voegen<br>• ✅ Best voor: Vloeren, wanden<br><br><strong>🎯 Onze keuze-advies:</strong> <a href='mailto:expert@dentalspace.pro?subject=Materiaal%20Keuze%20Advies' style='color: #4a90e2; font-weight: bold;'>expert@dentalspace.pro</a><div class='message-source'>💎 Materialen Expert - Complete Guide</div>", false, 'ai');
+            }
+        }
+
+        function showIntakeChoice() {
+            addMessage("🧠 <strong>AI Succesvol Geactiveerd!</strong><br><br><strong>🎯 Kies je aanpak:</strong><br><br><strong>📋 Optie 1: Persoonlijke Intake (aanbevolen)</strong><br>Vertel me over jouw situatie voor gepersonaliseerde adviezen afgestemd op jouw budget, ervaring en zorgen.<br><br><strong>⚡ Optie 2: Direct Starten</strong><br>Begin meteen met vragen stellen. Je kunt altijd later je profiel aanvullen.<br><br>Beide opties werken perfect - kies wat jij fijn vindt!<div class='message-source'>🎯 AI Setup - Jouw Keuze</div>", false, 'ai');
+            
+            addChoiceButtons();
+        }
+
+        function addChoiceButtons() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const choiceDiv = document.createElement('div');
+            choiceDiv.className = 'message ai';
+            choiceDiv.id = 'choiceButtons';
+            
+            choiceDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content" style="text-align: center;">
+                    <button onclick="startIntake()" style="background: linear-gradient(45deg, #007bff, #0056b3); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">📋 Start Persoonlijke Intake</button>
+                    <button onclick="skipIntakeAndStart()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">⚡ Direct Starten</button>
+                    <div style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
+                        💡 Je kunt altijd later je profiel toevoegen voor betere adviezen
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(choiceDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function startIntake() {
+            removeChoiceButtons();
+            addMessage("📋 <strong>Perfect! Laten we jouw profiel aanmaken</strong><br><br>Dit duurt maar 2 minuten en zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Scroll door de vragen hieronder:</strong><div class='message-source'>🎯 Persoonlijke Intake Gestart</div>", false, 'ai');
+            
+            document.getElementById('intakePanel').classList.add('show');
+            
+            setTimeout(() => {
+                const intakePanel = document.getElementById('intakePanel');
+                if (intakePanel) {
+                    intakePanel.scrollTop = 0;
+                }
+            }, 100);
+        }
+
+        function skipIntakeAndStart() {
+            removeChoiceButtons();
+            addMessage("⚡ <strong>AI Klaar om te Helpen!</strong><br><br><strong>🎯 Beschikbare AI features:</strong><br>• 💡 Slimme praktijkinrichting tips<br>• 💰 Gedetailleerde kostenberekeningen<br>• 🏗️ Workflow optimalisatie adviezen<br>• 🌟 Nieuwste 2025 trends en innovaties<br>• 💎 Materiaal vergelijkingen en specs<br><br><strong>💡 Tip:</strong> Voor nog betere, gepersonaliseerde adviezen kun je later je profiel aanvullen via de 'Profiel' knop.<br><br><strong>🚀 Start direct:</strong> Klik op de paarse AI-knoppen of stel je vraag!<div class='message-source'>🎉 AI Expert Mode Active</div>", false, 'ai');
+            
+            showProfileButton();
+        }
+
+        function removeChoiceButtons() {
+            const choiceButtons = document.getElementById('choiceButtons');
+            if (choiceButtons) {
+                choiceButtons.remove();
+            }
+        }
+
+        function showProfileButton() {
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'block';
+            }
+        }
+
+        function showProfileSetup() {
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'none';
+            }
+            
+            addMessage("👤 <strong>Profiel Aanmaken</strong><br><br>Geweldig dat je je profiel wilt aanvullen! Dit zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Scroll door de vragen hieronder:</strong><div class='message-source'>🎯 Profiel Setup Gestart</div>", false, 'ai');
+            
+            document.getElementById('intakePanel').classList.add('show');
+            
+            setTimeout(() => {
+                const intakePanel = document.getElementById('intakePanel');
+                if (intakePanel) {
+                    intakePanel.scrollTop = 0;
+                }
+            }, 100);
+        }
+
+        function selectIntakeOption(category, value) {
+            // Visual feedback
+            const categoryOptions = document.querySelectorAll(`[onclick*="${category}"]`);
+            categoryOptions.forEach(option => {
+                if (option.onclick.toString().includes(`'${category}'`)) {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            event.target.classList.add('selected');
+            
+            // Save to profile
+            chatbot.profile.selectOption(category, value);
+        }
+
+        function toggleSpecialization(specialization) {
+            const element = event.target;
+            element.classList.toggle('selected');
+            chatbot.profile.toggleMultiSelect('specializations', specialization);
+        }
+
+        function toggleConcern(concern) {
+            const element = event.target;
+            element.classList.toggle('selected');
+            chatbot.profile.toggleMultiSelect('concerns', concern);
+        }
+
+        function togglePriority(priority) {
+            const element = event.target;
+            element.classList.toggle('selected');
+            chatbot.profile.toggleMultiSelect('priorities', priority);
+        }
+
+        function completeIntake() {
+            if (chatbot.profile.completeSetup()) {
+                document.getElementById('intakePanel').classList.remove('show');
+                showEnhancedPersonalizedWelcome();
+            }
+        }
+
+        function showEnhancedPersonalizedWelcome() {
+            const profile = chatbot.profile.profile;
+            
+            const situationText = {
+                'nieuw': 'nieuwe praktijk',
+                'verbouw': 'praktijkverbouwing',
+                'uitbreiding': 'praktijkuitbreiding',
+                'overgang': 'praktijkovergang'
+            };
+            
+            const experienceText = {
+                'student': 'student',
+                'beginnend': 'beginnend tandarts',
+                'ervaren': 'ervaren tandarts',
+                'senior': 'senior tandarts'
+            };
+            
+            let message = `🎯 <strong>Perfect! AI Volledig Gepersonaliseerd:</strong><br><br>`;
+            message += `<strong>👤 Jouw profiel:</strong><br>`;
+            message += `• ${experienceText[profile.experience]} met ${situationText[profile.situation]}<br>`;
+            message += `• ${profile.rooms} behandelkamers, budget: ${profile.budget}<br>`;
+            message += `• Timeline: ${profile.timeline}<br>`;
+            
+            if (profile.location) {
+                message += `• Regio: ${profile.location}<br>`;
+            }
+            
+            if (profile.specializations.length > 0) {
+                message += `• Specialisaties: ${profile.specializations.join(', ')}<br>`;
+            }
+            
+            if (profile.concerns.length > 0) {
+                message += `• Zorgen: ${profile.concerns.join(', ')}<br>`;
+            }
+            
+            if (profile.priorities.length > 0) {
+                message += `• Prioriteiten: ${profile.priorities.join(', ')}<br>`;
+            }
+            
+            message += `<br><strong>🧠 AI Voordelen:</strong><br>`;
+            message += `• Alle adviezen zijn afgestemd op jouw specifieke situatie<br>`;
+            message += `• Tips voor ${experienceText[profile.experience]} niveau<br>`;
+            message += `• Budget-optimalisatie voor ${profile.budget}<br>`;
+            message += `• Speciaal focus op jouw zorgen en prioriteiten<br><br>`;
+            
+            message += `<strong>📧 Expert Contact:</strong><br>`;
+            message += `<a href="${chatbot.createMailtoLink('Gepersonaliseerd Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Mijn Context naar Expert</a><br><br>`;
+            
+            message += `<strong>🚀 Test nu:</strong> Klik op de paarse AI-knoppen voor adviezen op maat!`;
+            message += `<div class='message-source'>🎉 AI Volledig Gepersonaliseerd + Context Ready</div>`;
+            
+            addMessage(message, false, 'ai');
+            
+            // Show expert button
+            const expertButton = document.getElementById('expertButton');
+            if (expertButton) {
+                expertButton.style.display = 'block';
+            }
+        }
+
+        function sendToExpert() {
+            const mailtoLink = chatbot.createMailtoLink('Complete Praktijk Advies - Alle Context');
+            window.location.href = mailtoLink;
+        }        // Enhanced User Profile Management
+        class UserProfileManager {
+            constructor() {
+                this.profile = {
+                    situation: null,
+                    experience: null,
+                    rooms: null,
+                    budget: null,
+                    timeline: null,
+                    location: null,
+                    specializations: [],
+                    concerns: [],
+                    priorities: [],
+                    setup_completed: false
+                };
+                this.recentQuestions = [];
+                this.loadProfile();
+            }
+
+            selectOption(category, value) {
+                this.profile[category] = value;
+                this.saveProfile();
+            }
+
+            toggleMultiSelect(category, value) {
+                if (!Array.isArray(this.profile[category])) {
+                    this.profile[category] = [];
+                }
+
+                const index = this.profile[category].indexOf(value);
+                if (index === -1) {
+                    this.profile[category].push(value);
+                } else {
+                    this.profile[category].splice(index, 1);
+                }
+                this.saveProfile();
+            }
+
+            completeSetup() {
+                // Validate required fields
+                const required = ['situation', 'experience', 'rooms', 'budget', 'timeline'];
+                const missing = required.filter(field => !this.profile[field]);
+                
+                if (missing.length > 0) {
+                    showToast(`Vul de verplichte velden in: ${missing.join(', ')}`, 'error');
+                    return false;
+                }
+
+                this.profile.setup_completed = true;
+                this.saveProfile();
+                showToast('Profiel succesvol aangemaakt!', 'success');
+                return true;
+            }
+
+            addRecentQuestion(question) {
+                this.recentQuestions.push(question);
+                if (this.recentQuestions.length > 5) {
+                    this.recentQuestions = this.recentQuestions.slice(-5);
+                }
+                this.saveProfile();
+            }
+
+            generateEmailBody(subject = 'Praktijk Advies') {
+                let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie website bezocht en wil graag advies over praktijkinrichting.%0D%0A%0D%0A`;
+                
+                if (this.profile.setup_completed) {
+                    emailBody += `=== MIJN SITUATIE ===%0D%0A`;
+                    emailBody += `Situatie: ${this.profile.situation}%0D%0A`;
+                    emailBody += `Ervaring: ${this.profile.experience}%0D%0A`;
+                    emailBody += `Aantal kamers: ${this.profile.rooms}%0D%0A`;
+                    emailBody += `Budget: ${this.profile.budget}%0D%0A`;
+                    emailBody += `Timeline: ${this.profile.timeline}%0D%0A`;
+                    
+                    if (this.profile.location) {
+                        emailBody += `Regio: ${this.profile.location}%0D%0A`;
+                    }
+                    
+                    if (this.profile.specializations.length > 0) {
+                        emailBody += `Specialisaties: ${this.profile.specializations.join(', ')}%0D%0A`;
+                    }
+                    
+                    if (this.profile.concerns.length > 0) {
+                        emailBody += `Zorgen: ${this.profile.concerns.join(', ')}%0D%0A`;
+                    }
+                    
+                    if (this.profile.priorities.length > 0) {
+                        emailBody += `Prioriteiten: ${this.profile.priorities.join(', ')}%0D%0A`;
+                    }
+                    
+                    emailBody += `%0D%0A`;
+                }
+                
+                if (this.recentQuestions.length > 0) {
+                    emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
+                    this.recentQuestions.slice(-3).forEach((q, index) => {
+                        emailBody += `${index + 1}. ${encodeURIComponent(q)}%0D%0A`;
+                    });
+                    emailBody += `%0D%0A`;
+                }
+                
+                emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
+                return emailBody;
+            }
+
+            saveProfile() {
+                try {
+                    const data = {
+                        profile: this.profile,
+                        recentQuestions: this.recentQuestions,
+                        lastSaved: Date.now()
+                    };
+                    localStorage.setItem('dentalspace_profile', JSON.stringify(data));
+                } catch (error) {
+                    console.warn('Could not save profile');
+                }
+            }
+
+            loadProfile() {
+                try {
+                    const saved = localStorage.getItem('dentalspace_profile');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        this.profile = { ...this.profile, ...data.profile };
+                        this.recentQuestions = data.recentQuestions || [];
+                        return true;
+                    }
+                } catch (error) {
+                    console.warn('Could not load profile');
+                }
+                return false;
+            }
+
+            reset() {
+                this.profile = {
+                    situation: null,
+                    experience: null,
+                    rooms: null,
+                    budget: null,
+                    timeline: null,
+                    location: null,
+                    specializations: [],
+                    concerns: [],
+                    priorities: [],
+                    setup_completed: false
+                };
+                this.recentQuestions = [];
+                localStorage.removeItem('dentalspace_profile');
+            }
+        }                    <!-- User Intake Panel -->
+                    <div class="intake-panel" id="intakePanel">
+                        <div style="text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #007bff;">
+                            <h4 style="color: #007bff; margin: 0; font-size: 1.1rem;">🎯 Vertel me over jouw situatie</h4>
+                            <p style="font-size: 0.85rem; color: #666; margin: 5px 0 0 0;">Voor gepersonaliseerde adviezen (2 minuten)</p>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>📋 Wat is jouw situatie?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'nieuw')">🏗️ Nieuwe praktijk</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'verbouw')">🔨 Verbouwing</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'uitbreiding')">📈 Uitbreiding</div>
+                                <div class="intake-option" onclick="selectIntakeOption('situation', 'overgang')">🔄 Praktijkovergang</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🦷 Wat is jouw ervaring als tandarts?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'student')">🎓 Student</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'beginnend')">🌱 Beginnend (0-2j)</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'ervaren')">💼 Ervaren (2-10j)</div>
+                                <div class="intake-option" onclick="selectIntakeOption('experience', 'senior')">👨‍⚕️ Senior (10j+)</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🏥 Hoeveel behandelkamers?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '1-2')">1-2 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '3-4')">3-4 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '5-6')">5-6 kamers</div>
+                                <div class="intake-option" onclick="selectIntakeOption('rooms', '7plus')">7+ kamers</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>💰 Wat is je budget indicatie?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'onder50k')">< €50k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', '50k-100k')">€50k-€100k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', '100k-200k')">€100k-€200k</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'boven200k')">€200k+</div>
+                                <div class="intake-option" onclick="selectIntakeOption('budget', 'onbekend')">🤷 Onbekend</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>⏰ Wanneer wil je starten?</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'direct')">🚀 Direct</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', '3maanden')">📅 Binnen 3mnd</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', '6maanden')">📅 Binnen 6mnd</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'volgend_jaar')">📅 Volgend jaar</div>
+                                <div class="intake-option" onclick="selectIntakeOption('timeline', 'orienterend')">🔍 Oriënterend</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🌍 In welke regio? (optioneel)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'randstad')">🏙️ Randstad</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'brabant')">🌾 Noord-Brabant</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'gelderland')">🌲 Gelderland</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'noord')">⭐ Noord-NL</div>
+                                <div class="intake-option" onclick="selectIntakeOption('location', 'overig')">📍 Overig</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>🔬 Specialisaties? (optioneel, meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="toggleSpecialization('algemeen')">🦷 Algemeen</div>
+                                <div class="intake-option" onclick="toggleSpecialization('kinderen')">👶 Kinderen</div>
+                                <div class="intake-option" onclick="toggleSpecialization('orthodontie')">📐 Orthodontie</div>
+                                <div class="intake-option" onclick="toggleSpecialization('implantaten')">🔩 Implantaten</div>
+                                <div class="intake-option" onclick="toggleSpecialization('cosmetisch')">✨ Cosmetisch</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>😰 Grootste zorgen? (optioneel, meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="toggleConcern('financiering')">💳 Financiering</div>
+                                <div class="intake-option" onclick="toggleConcern('locatie')">📍 Locatie vinden</div>
+                                <div class="intake-option" onclick="toggleConcern('concurrentie')">🏢 Concurrentie</div>
+                                <div class="intake-option" onclick="toggleConcern('patienten')">👥 Patiënten</div>
+                                <div class="intake-option" onclick="toggleConcern('technologie')">💻 Technologie</div>
+                                <div class="intake-option" onclick="toggleConcern('personeel')">👨‍⚕️ Personeel</div>
+                            </div>
+                        </div>
+
+                        <div class="intake-question">
+                            <h4>⭐ Prioriteiten inrichting? (optioneel, meerdere mogelijk)</h4>
+                            <div class="intake-options">
+                                <div class="intake-option" onclick="togglePriority('kosten')">💰 Kosten</div>
+                                <div class="intake-option" onclick="togglePriority('kwaliteit')">💎 Kwaliteit</div>
+                                <div class="intake-option" onclick="togglePriority('snelheid')">⚡ Snelheid</div>
+                                <div class="intake-option" onclick="togglePriority('duurzaam')">🌱 Duurzaam</div>
+                                <div class="intake-option" onclick="togglePriority('modern')">🎨 Modern</div>
+                                <div class="intake-option" onclick="togglePriority('efficiency')">🏗️ Efficiency</div>
+                            </div>
+                        </div>
+
+                        <button onclick="completeIntake()" class="intake-btn">
+                            ✅ Klaar - Start Gepersonaliseerde Adviezen
+                        </button>
+                    </div><!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
@@ -248,6 +715,106 @@
             background: #218838;
         }
 
+        .intake-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .intake-panel.show {
+            display: block;
+        }
+
+        .intake-question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .intake-question:last-of-type {
+            border-bottom: none;
+            margin-bottom: 10px;
+        }
+
+        .intake-question h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .intake-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .intake-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .intake-option:hover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .intake-option.selected {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .intake-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .intake-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        /* Scroll styling for intake panel */
+        .intake-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .intake-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .intake-panel::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 3px;
+        }
+
+        .intake-panel::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -420,6 +987,18 @@
 
         .suggestion-btn.ai-suggestion {
             background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+        }
+
+        .suggestion-btn.profile-btn {
+            background: linear-gradient(45deg, #6f42c1, #5a369d);
+            color: white;
+            border: none;
+        }
+
+        .suggestion-btn.expert-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
             color: white;
             border: none;
         }
@@ -764,11 +1343,13 @@
 
                     <div class="quick-suggestions" id="suggestions">
                         <div class="suggestion-btn" onclick="sendSuggestion('Wat kost een moderne praktijk met 3 behandelkamers?')">💰 Kosten Info</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Geef me 5 concrete tips voor efficiënte praktijkindeling')">🧠 AI Tips</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendAITips()">🧠 AI Tips</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('persoonlijk contact')">🤝 Expert Contact</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Nieuwste trends tandartspraktijk 2025')">🚀 AI Trends</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendAITrends()">🚀 AI Trends</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('Hoe plan ik mijn praktijkinrichting?')">📋 Planning</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Vergelijk materialen: Solid Surface vs andere opties')">💎 Materialen</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendAIMaterials()">💎 AI Materialen</div>
+                        <div class="suggestion-btn profile-btn" id="profileButton" onclick="showProfileSetup()" style="display: none;">👤 Maak Profiel</div>
+                        <div class="suggestion-btn expert-btn" id="expertButton" onclick="sendToExpert()" style="display: none;">📧 Send All to Expert</div>
                     </div>
 
                     <div class="chat-input-container">
@@ -1012,19 +1593,35 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 try {
                     const encoded = sessionStorage.getItem('dentalspace_ai_key');
                     if (encoded) {
-                        this.apiKey = atob(encoded);
-                        this.enabled = true;
-                        return true;
+                        const key = atob(encoded);
+                        if (key && key.startsWith('sk-') && key.length > 40) {
+                            this.apiKey = key;
+                            this.enabled = true;
+                            console.log('✅ AI key restored from session');
+                            return true;
+                        } else {
+                            console.warn('Invalid key in session, clearing');
+                            sessionStorage.removeItem('dentalspace_ai_key');
+                        }
                     }
                 } catch (error) {
-                    console.warn('Could not load AI from session');
+                    console.warn('Could not load AI from session:', error);
+                    sessionStorage.removeItem('dentalspace_ai_key');
                 }
                 return false;
             }
 
-            async getAIResponse(userMessage) {
+            async getAIResponse(userMessage, userProfile = null) {
                 if (!this.enabled || !this.apiKey) {
                     throw new Error('AI niet geactiveerd');
+                }
+
+                console.log('🧠 AI Request starting...', { enabled: this.enabled, hasKey: !!this.apiKey });
+
+                // Build context with user profile if available
+                let systemPromptWithContext = this.systemPrompt;
+                if (userProfile && userProfile.setup_completed) {
+                    systemPromptWithContext += this.buildPersonalizedContext(userProfile);
                 }
 
                 try {
@@ -1035,7 +1632,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     const payload = {
                         model: "gpt-3.5-turbo",
                         messages: [
-                            { role: "system", content: this.systemPrompt },
+                            { role: "system", content: systemPromptWithContext },
                             ...this.conversationHistory.slice(-4),
                             { role: "user", content: userMessage }
                         ],
@@ -1043,6 +1640,8 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                         temperature: 0.7
                     };
 
+                    console.log('🌐 Making API request...');
+                    
                     const response = await fetch(proxyUrl + encodeURIComponent(targetUrl), {
                         method: 'POST',
                         headers: {
@@ -1052,12 +1651,23 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                         body: JSON.stringify(payload)
                     });
 
+                    console.log('📡 API Response status:', response.status);
+
                     if (!response.ok) {
-                        throw new Error(`API Error: ${response.status}`);
+                        const errorText = await response.text().catch(() => 'Unknown error');
+                        console.error('❌ API Error:', response.status, errorText);
+                        throw new Error(`API Error: ${response.status} - ${errorText.substring(0, 100)}`);
                     }
 
                     const data = await response.json();
+                    
+                    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+                        console.error('❌ Invalid API response structure:', data);
+                        throw new Error('Invalid response from API');
+                    }
+                    
                     const aiResponse = data.choices[0].message.content;
+                    console.log('✅ AI Response received, length:', aiResponse.length);
                     
                     // Update conversation history
                     this.conversationHistory.push(
@@ -1072,9 +1682,78 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
 
                     return aiResponse;
                 } catch (error) {
-                    console.error('AI Response Error:', error);
-                    throw new Error('AI tijdelijk niet beschikbaar. Probeer expert contact.');
+                    console.error('❌ AI Response Error:', error);
+                    
+                    // Detailed error for debugging
+                    if (error.message.includes('fetch')) {
+                        throw new Error('Netwerkfout - check internetverbinding');
+                    } else if (error.message.includes('401')) {
+                        throw new Error('API key ongeldig - controleer je OpenAI key');
+                    } else if (error.message.includes('429')) {
+                        throw new Error('Rate limit bereikt - probeer over een minuut');
+                    } else {
+                        throw new Error(`AI fout: ${error.message}`);
+                    }
                 }
+            }
+
+            buildPersonalizedContext(userProfile) {
+                const situationLabels = {
+                    'nieuw': 'nieuwe praktijk starten',
+                    'verbouw': 'praktijkverbouwing',
+                    'uitbreiding': 'praktijkuitbreiding',
+                    'overgang': 'praktijkovergang'
+                };
+
+                const experienceLabels = {
+                    'student': 'tandheelkunde student',
+                    'beginnend': 'beginnend tandarts (0-2 jaar)',
+                    'ervaren': 'ervaren tandarts (2-10 jaar)',
+                    'senior': 'senior tandarts (10+ jaar)'
+                };
+
+                const budgetLabels = {
+                    'onder50k': 'onder €50.000',
+                    '50k-100k': '€50.000 - €100.000',
+                    '100k-200k': '€100.000 - €200.000',
+                    'boven200k': '€200.000+',
+                    'onbekend': 'nog te bepalen budget'
+                };
+
+                let context = `
+
+GEBRUIKER PROFIEL (gebruik dit voor gepersonaliseerde adviezen):
+- Tandarts ervaring: ${experienceLabels[userProfile.experience]}
+- Situatie: ${situationLabels[userProfile.situation]}
+- Aantal behandelkamers: ${userProfile.rooms}
+- Budget: ${budgetLabels[userProfile.budget]}
+- Timeline: ${userProfile.timeline}`;
+
+                if (userProfile.location) {
+                    context += `\n- Regio: ${userProfile.location}`;
+                }
+
+                if (userProfile.specializations?.length > 0) {
+                    context += `\n- Specialisaties: ${userProfile.specializations.join(', ')}`;
+                }
+
+                if (userProfile.concerns?.length > 0) {
+                    context += `\n- Zorgen: ${userProfile.concerns.join(', ')}`;
+                }
+
+                if (userProfile.priorities?.length > 0) {
+                    context += `\n- Prioriteiten: ${userProfile.priorities.join(', ')}`;
+                }
+
+                context += `
+
+BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
+- Voor beginners: meer uitleg en basis tips
+- Voor senioren: focus op upgrade/modernisering
+- Budget-gerelateerde tips op basis van hun budget
+- Specialisatie-specifieke inrichtingsadviezen`;
+
+                return context;
             }
 
             reset() {
@@ -1088,6 +1767,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
         class DentalSpaceChatbot {
             constructor() {
                 this.ai = new DentalSpaceAI();
+                this.profile = new UserProfileManager();
                 this.expertResponses = this.buildExpertResponses();
                 this.isProcessing = false;
             }
@@ -1110,6 +1790,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 }
 
                 this.isProcessing = true;
+                this.profile.addRecentQuestion(userMessage);
 
                 try {
                     // 1. Check for expert responses first
@@ -1122,7 +1803,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     if (this.ai.enabled) {
                         try {
                             updateAIStatus('🤔 AI Denkt...', '#f39c12');
-                            const aiResponse = await this.ai.getAIResponse(userMessage);
+                            const aiResponse = await this.ai.getAIResponse(userMessage, this.profile.profile);
                             updateAIStatus('🟢 AI Actief', '#28a745');
                             return { 
                                 response: aiResponse + "<div class='message-source'>🧠 AI + Expert Knowledge</div>", 
@@ -1170,6 +1851,11 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 }
                 
                 return null;
+            }
+
+            createMailtoLink(subject) {
+                const emailBody = this.profile.generateEmailBody(subject);
+                return `mailto:expert@dentalspace.pro?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
             }
         }
 
@@ -1289,17 +1975,51 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 return;
             }
             
+            // Show loading state
+            const setupPanel = document.getElementById('setupPanel');
+            const originalHTML = setupPanel.innerHTML;
+            setupPanel.innerHTML = '<div style="text-align: center; padding: 20px;"><div style="font-size: 1.5rem;">⏳</div><p>AI activeren...</p></div>';
+            
             try {
+                console.log('🚀 Activating AI with key:', apiKey.substring(0, 10) + '...');
                 const success = await chatbot.ai.setupAI(apiKey);
+                
                 if (success) {
-                    document.getElementById('setupPanel').classList.add('hidden');
+                    console.log('✅ AI activation successful');
+                    setupPanel.classList.add('hidden');
                     updateAIStatus('🟢 AI Actief', '#28a745');
                     
-                    addMessage("🧠 <strong>AI Succesvol Geactiveerd!</strong><br><br><strong>🎯 AI functies nu beschikbaar:</strong><br>• Slimme praktijkinrichting adviezen<br>• Gedetailleerde materiaal vergelijkingen<br>• Kostenberekeningen en budgettering<br>• Nieuwste 2025 trends en innovaties<br>• Workflow optimalisatie tips<br><br><strong>🚀 Test direct:</strong> Klik op de paarse AI-knoppen voor geavanceerde adviezen!<div class='message-source'>🎉 AI System Active</div>", false, 'ai');
+                    // Clear input for security
+                    apiKeyInput.value = '';
+                    
+                    // Check if profile exists and show appropriate welcome
+                    if (chatbot.profile.profile.setup_completed) {
+                        showEnhancedPersonalizedWelcome();
+                    } else {
+                        showIntakeChoice();
+                    }
+                    
+                    showToast('🎉 AI succesvol geactiveerd!', 'success');
+                } else {
+                    throw new Error('AI activatie mislukt');
                 }
             } catch (error) {
+                console.error('❌ AI activation failed:', error);
                 showToast(error.message, 'error');
                 apiKeyInput.style.borderColor = '#dc3545';
+                
+                // Restore original setup panel
+                setupPanel.innerHTML = originalHTML;
+                setupPanel.classList.remove('hidden');
+                
+                // Re-attach event listeners
+                setTimeout(() => {
+                    const newApiKeyInput = document.getElementById('apiKeyInput');
+                    if (newApiKeyInput) {
+                        newApiKeyInput.focus();
+                        newApiKeyInput.value = apiKey; // Restore the key for correction
+                    }
+                }, 100);
             }
         }
 
@@ -1344,9 +2064,17 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 
                 hideTypingIndicator();
                 
+                // Add bot response with context if profile completed
+                let responseWithContext = result.response;
+                
+                // Add contextual contact option if profile is completed
+                if (chatbot.profile.profile.setup_completed && (message.length > 50 || result.source === 'ai')) {
+                    responseWithContext += `<br><br><strong>📧 Direct Expert Contact:</strong><br><a href="${chatbot.createMailtoLink('Vraag: ' + message.substring(0, 50) + '...')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur deze vraag + mijn context naar expert</a>`;
+                }
+                
                 // Add bot response
                 const messageType = result.source === 'ai' ? 'ai' : result.source === 'error' ? 'error' : 'bot';
-                addMessage(result.response, false, messageType);
+                addMessage(responseWithContext, false, messageType);
                 
             } catch (error) {
                 hideTypingIndicator();
@@ -1400,7 +2128,20 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             if (chatbot.ai.loadFromSession()) {
                 document.getElementById('setupPanel').classList.add('hidden');
                 updateAIStatus('🟢 AI Actief (Hersteld)', '#28a745');
-                showToast('AI hersteld van vorige sessie', 'success');
+                showToast('✅ AI hersteld van vorige sessie', 'success');
+                
+                // Add restoration message based on profile status
+                setTimeout(() => {
+                    if (chatbot.profile.profile.setup_completed) {
+                        showEnhancedPersonalizedWelcome();
+                    } else {
+                        addMessage("🔄 <strong>AI Sessie Hersteld!</strong><br><br>Je AI is automatisch opnieuw geactiveerd. Alle functies zijn beschikbaar:<br><br>• 🧠 Slimme praktijkadviezen<br>• 💰 Kostenberekeningen<br>• 🎯 Materiaal vergelijkingen<br>• 🚀 2025 trends<br><br><strong>💡 Tip:</strong> Maak een profiel voor gepersonaliseerde adviezen!<br><br>Stel gerust je vraag!<div class='message-source'>🔄 AI Session Restored</div>", false, 'ai');
+                        showProfileButton();
+                    }
+                }, 500);
+            } else {
+                console.log('No valid AI session found, showing setup panel');
+                updateAIStatus('🟡 AI Setup', '#f39c12');
             }
             
             // Focus input
@@ -1435,9 +2176,10 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             }
             
             console.log('✅ DentalSpace Pro initialized successfully');
+            console.log('🧠 AI Status:', chatbot.ai.enabled ? 'ENABLED' : 'DISABLED');
         });
 
-        // Export for testing
+        // Export for testing and debugging
         window.DentalSpaceTest = {
             chatbot: () => chatbot,
             sendTestMessage: (msg) => {
@@ -1449,11 +2191,53 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             },
             getStatus: () => ({
                 aiEnabled: chatbot.ai.enabled,
-                hasApiKey: !!chatbot.ai.apiKey
-            })
+                hasApiKey: !!chatbot.ai.apiKey,
+                keyLength: chatbot.ai.apiKey ? chatbot.ai.apiKey.length : 0,
+                conversationLength: chatbot.ai.conversationHistory.length,
+                sessionKey: !!sessionStorage.getItem('dentalspace_ai_key')
+            }),
+            
+            // Debug functions
+            resetAI: () => {
+                chatbot.ai.reset();
+                location.reload();
+            },
+            
+            checkSession: () => {
+                const encoded = sessionStorage.getItem('dentalspace_ai_key');
+                if (encoded) {
+                    try {
+                        const key = atob(encoded);
+                        console.log('Session key found:', key.substring(0, 10) + '...');
+                        return true;
+                    } catch (e) {
+                        console.error('Invalid session key encoding');
+                        return false;
+                    }
+                } else {
+                    console.log('No session key found');
+                    return false;
+                }
+            },
+            
+            forceActivateAI: (apiKey) => {
+                if (apiKey) {
+                    chatbot.ai.apiKey = apiKey;
+                    chatbot.ai.enabled = true;
+                    sessionStorage.setItem('dentalspace_ai_key', btoa(apiKey));
+                    document.getElementById('setupPanel').classList.add('hidden');
+                    updateAIStatus('🟢 AI Geforceerd Actief', '#28a745');
+                    console.log('✅ AI force activated');
+                }
+            }
         };
         
         console.log('🧪 Test functies beschikbaar via window.DentalSpaceTest');
+        console.log('📋 Debug commands:');
+        console.log('  - DentalSpaceTest.getStatus() - Check AI status');
+        console.log('  - DentalSpaceTest.checkSession() - Check session storage');
+        console.log('  - DentalSpaceTest.resetAI() - Reset and reload');
+        console.log('  - DentalSpaceTest.forceActivateAI("sk-...") - Force activate');
     </script>
 </body>
 </html>
