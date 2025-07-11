@@ -929,27 +929,61 @@
                             <p style="font-size: 0.9rem; color: #666; margin: 0;">Gratis AI adviezen voor praktijkinrichting</p>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <button onclick="activateAI()" class="setup-btn" style="padding: 12px 24px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer; font-size: 1rem;">🚀 Activeer AI Chat</button>
+                            <button onclick="tryActivateAI()" class="setup-btn" style="padding: 12px 24px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer; font-size: 1rem;">🚀 Activeer AI Chat</button>
                         </div>
                         <div style="text-align: center;">
                             <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start met Expert Mode (zonder AI)</span>
-                            <br><br>
-                            <span onclick="showPersonalKeyInput()" style="cursor: pointer; color: #6c757d; text-decoration: underline; font-size: 0.8rem;">🔑 Gebruik eigen OpenAI key</span>
+                            
+                            <!-- Admin options - only visible when no master key is set -->
+                            <div id="adminOnlyOptions" style="margin-top: 15px;">
+                                <span onclick="showMasterKeySetup()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.8rem;">⚙️ Website eigenaar: Stel AI in</span>
+                            </div>
+                            
+                            <!-- Discrete admin access - only visible when master key is set -->
+                            <div id="discreteAdmin" style="display: none; margin-top: 15px;">
+                                <span onclick="discreteAdminAccess()" style="cursor: pointer; color: #999; text-decoration: none; font-size: 0.7rem;" title="Website eigenaar toegang">⚙️</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Personal API Key Panel (Hidden by default) -->
+                    <!-- Master Key Setup Panel (for website owner only) -->
+                    <div class="setup-panel hidden" id="masterKeyPanel">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h4 style="margin: 0 0 8px 0; color: #333;">⚙️ Website Eigenaar Setup</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Stel AI in voor alle bezoekers</p>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                            <input type="password" id="masterKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
+                            <button onclick="setupMasterKey()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #dc3545, #c82333); color: white; border: none; font-weight: 600; cursor: pointer;">💾 Opslaan</button>
+                        </div>
+                        <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 15px;">
+                            Deze key wordt opgeslagen zodat alle bezoekers AI kunnen gebruiken.<br>
+                            Bezoekers zien alleen "🚀 Activeer AI Chat" zonder verdere setup opties.
+                        </div>
+                        <div style="text-align: center;">
+                            <span onclick="showPersonalKeyOptionInAdmin()" style="cursor: pointer; color: #6c757d; text-decoration: underline; font-size: 0.9rem;">🔑 Eigen OpenAI key gebruiken</span>
+                            <span style="margin: 0 10px;">|</span>
+                            <span onclick="removeMasterKeyUI()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.9rem;">🗑️ Verwijder huidige key</span>
+                            <span style="margin: 0 10px;">|</span>
+                            <span onclick="backToMainSetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug</span>
+                        </div>
+                    </div>
+
+                    <!-- Personal API Key Panel (Only accessible via admin) -->
                     <div class="setup-panel hidden" id="personalKeyPanel">
                         <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">🔑 Eigen OpenAI API Key</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voor persoonlijke AI configuratie</p>
+                            <h4 style="margin: 0 0 8px 0; color: #333;">🔑 Website Eigenaar - Eigen Key</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voor website eigenaar met eigen OpenAI account</p>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
                             <input type="password" id="personalApiKeyInput" class="api-input" placeholder="Eigen OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
                             <button onclick="setupPersonalAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
                         </div>
+                        <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 15px;">
+                            Deze key wordt alleen voor jouw sessie gebruikt. Bezoekers kunnen AI niet gebruiken.
+                        </div>
                         <div style="text-align: center;">
-                            <span onclick="backToMainSetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug naar hoofdmenu</span>
+                            <span onclick="backToMasterKeySetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug naar master key setup</span>
                         </div>
                     </div>
 
@@ -1258,41 +1292,70 @@
                 this.systemPrompt = this.buildSystemPrompt();
             }
 
-            // Master Key Management (for website owner)
-            setMasterKey(apiKey) {
+        // Simplified Master Key Management
+        class MasterKeyManager {
+            static setMasterKey(apiKey) {
                 try {
-                    const encrypted = btoa(apiKey);
-                    localStorage.setItem('dentalspace_master_key', encrypted);
-                    console.log('✅ Master key set successfully');
+                    // Simple storage - just base64 encode for basic obfuscation
+                    const encoded = btoa(apiKey);
+                    localStorage.setItem('dentalspace_master_ai_key', encoded);
+                    console.log('✅ Master key stored successfully');
                     return true;
                 } catch (error) {
-                    console.error('❌ Could not set master key:', error);
+                    console.error('❌ Failed to store master key:', error);
                     return false;
                 }
             }
-
-            getMasterKey() {
+            
+            static getMasterKey() {
                 try {
-                    const encrypted = localStorage.getItem('dentalspace_master_key');
-                    if (encrypted) {
-                        return atob(encrypted);
+                    const encoded = localStorage.getItem('dentalspace_master_ai_key');
+                    if (encoded) {
+                        return atob(encoded);
                     }
                 } catch (error) {
-                    console.warn('Could not load master key');
+                    console.warn('Could not retrieve master key');
                 }
                 return null;
             }
-
-            hasMasterKey() {
+            
+            static hasMasterKey() {
                 return this.getMasterKey() !== null;
+            }
+            
+            static removeMasterKey() {
+                localStorage.removeItem('dentalspace_master_ai_key');
+                console.log('✅ Master key removed');
+                return true;
+            }
+        }
+
+        // Enhanced AI Configuration with Simplified Master Key Support
+        class DentalSpaceProAI {
+            constructor() {
+                this.apiKey = '';
+                this.enabled = false;
+                this.initialized = false;
+                this.conversationHistory = [];
+                this.rateLimitCount = 0;
+                this.rateLimitWindow = 60000; // 1 minute
+                this.maxRequestsPerMinute = 10;
+                this.lastRequestTime = 0;
+                this.isTyping = false;
+                this.usingMasterKey = false;
+                
+                this.systemPrompt = this.buildSystemPrompt();
             }
 
             async activateWithMasterKey() {
-                const masterKey = this.getMasterKey();
+                const masterKey = MasterKeyManager.getMasterKey();
                 if (!masterKey) {
-                    throw new Error('Geen master key beschikbaar');
+                    throw new Error('Geen master key beschikbaar. Website eigenaar moet eerst AI instellen.');
                 }
 
+                console.log('🔑 Trying to activate with master key...');
+                
+                // Validate the master key
                 const validation = await this.validateApiKey(masterKey);
                 if (!validation.valid) {
                     throw new Error('Master key niet geldig: ' + validation.error);
@@ -1303,8 +1366,45 @@
                 this.initialized = true;
                 this.usingMasterKey = true;
 
-                console.log('✅ AI activated with master key');
+                console.log('✅ AI activated successfully with master key');
                 return true;
+            }
+
+            async setupPersonalKey(apiKey) {
+                console.log('🔑 Setting up personal key...');
+                
+                const validation = await this.validateApiKey(apiKey);
+                if (!validation.valid) {
+                    throw new Error(validation.error);
+                }
+
+                this.apiKey = apiKey;
+                this.enabled = true;
+                this.initialized = true;
+                this.usingMasterKey = false;
+
+                // Store in session only
+                sessionStorage.setItem('dentalspace_personal_key', btoa(apiKey));
+                
+                console.log('✅ AI activated with personal key');
+                return true;
+            }
+
+            loadFromSession() {
+                try {
+                    const encoded = sessionStorage.getItem('dentalspace_personal_key');
+                    if (encoded) {
+                        this.apiKey = atob(encoded);
+                        this.enabled = true;
+                        this.initialized = true;
+                        this.usingMasterKey = false;
+                        console.log('✅ Personal key loaded from session');
+                        return true;
+                    }
+                } catch (error) {
+                    console.warn('Could not load personal key from session');
+                }
+                return false;
             }
 
             buildSystemPrompt() {
@@ -2225,28 +2325,53 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             }
         }
 
-        // Auto-initialization with Master Key Support
-        function autoInitialize() {
-            // First try to load personal session
+        // Auto-initialization with UI Updates
+        async function autoInitialize() {
+            console.log('🚀 Auto-initializing AI...');
+            
+            // First check if we should update UI based on master key presence
+            if (MasterKeyManager.hasMasterKey()) {
+                updateUIForMasterKey();
+            } else {
+                updateUIForNoMasterKey();
+            }
+            
+            // Then try to load personal session
             if (chatbot.ai.loadFromSession()) {
-                document.getElementById('setupPanel').classList.add('hidden');
+                hideAllSetupPanels();
                 updateAIStatus('🟢 AI Actief (Sessie)', '#28a745');
-                showAutoLoadedMessage();
+                showAutoLoadedMessage('personal');
+                console.log('✅ Personal key restored from session');
                 return true;
             }
             
             // Then try master key
-            if (chatbot.ai.hasMasterKey()) {
-                activateAI();
-                return true;
+            if (MasterKeyManager.hasMasterKey()) {
+                try {
+                    await chatbot.ai.activateWithMasterKey();
+                    hideAllSetupPanels();
+                    updateAIStatus('🟢 AI Actief', '#28a745');
+                    showAutoLoadedMessage('master');
+                    console.log('✅ Master key activated automatically');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Master key activation failed:', error);
+                    showToast('Master key fout - klik op ⚙️ om nieuwe key in te stellen', 'error');
+                    
+                    // Show that master key is invalid
+                    updateAIStatus('🟡 Master Key Fout', '#f39c12');
+                }
             }
             
+            console.log('💡 No AI key available - user will need to activate manually');
             return false;
         }
 
-        function showAutoLoadedMessage() {
+        function showAutoLoadedMessage(keyType) {
             const welcomeMsg = document.getElementById('welcomeMessage');
-            if (welcomeMsg && chatbot.profile.profile.setup_completed) {
+            if (!welcomeMsg) return;
+            
+            if (chatbot.profile.profile.setup_completed) {
                 const profile = chatbot.profile.profile;
                 welcomeMsg.innerHTML = `
                     <div class="message-avatar">🧠</div>
@@ -2262,7 +2387,7 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                         • Materiaal keuzes voor jouw situatie
                         <br><br>
                         <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd!
-                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
+                        <div class="message-source">🔄 AI Auto-Restored (${keyType === 'master' ? 'Website' : 'Persoonlijk'})</div>
                     </div>
                 `;
                 welcomeMsg.className = 'message ai';
@@ -2272,7 +2397,7 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                     const expertButton = document.getElementById('expertButton');
                     if (expertButton) expertButton.style.display = 'block';
                 }, 500);
-            } else if (welcomeMsg) {
+            } else {
                 welcomeMsg.innerHTML = `
                     <div class="message-avatar">🧠</div>
                     <div class="message-content">
@@ -2287,7 +2412,7 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                         <strong>💡 Tip:</strong> Klik op 'Maak Profiel' voor gepersonaliseerde adviezen!
                         <br><br>
                         <strong>🚀 Start direct:</strong> Klik op de paarse AI-knoppen!
-                        <div class="message-source">🎉 AI Ready to Help</div>
+                        <div class="message-source">🎉 AI Ready to Help (${keyType === 'master' ? 'Website Setup' : 'Persoonlijke Setup'})</div>
                     </div>
                 `;
                 welcomeMsg.className = 'message ai';
@@ -2299,7 +2424,8 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                 }, 500);
             }
             
-            showToast('AI automatisch geactiveerd', 'success');
+            const keyTypeText = keyType === 'master' ? 'AI automatisch beschikbaar' : 'AI hersteld van vorige sessie';
+            showToast(keyTypeText, 'success');
         }
 
         function startBasicMode() {
@@ -2614,58 +2740,10 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             }
         }
 
-        // Auto-initialization
-        function autoInitialize() {
-            // Try to restore AI session
-            if (chatbot.ai.loadFromSession()) {
-                document.getElementById('setupPanel').classList.add('hidden');
-                updateAIStatus('🟢 AI Actief', '#28a745');
-                
-                // Update welcome message for returning users
-                const welcomeMsg = document.getElementById('welcomeMessage');
-                if (welcomeMsg && chatbot.profile.profile.setup_completed) {
-                    const profile = chatbot.profile.profile;
-                    welcomeMsg.innerHTML = `
-                        <div class="message-avatar">🧠</div>
-                        <div class="message-content">
-                            Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
-                            <br><br>
-                            <strong>📋 Jouw project:</strong> ${profile.situation} met ${profile.rooms} behandelkamers
-                            <br><br>
-                            <strong>🧠 AI features actief:</strong><br>
-                            • Adviezen afgestemd op jouw budget & prioriteiten<br>
-                            • Specifieke tips voor jouw aantal kamers<br>
-                            • Timeline-aangepaste planning adviezen<br>
-                            • Materiaal keuzes voor jouw situatie
-                            <br><br>
-                            <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd!
-                            <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
-                        </div>
-                    `;
-                    welcomeMsg.className = 'message ai';
-                    
-                    // Show expert button
-                    setTimeout(() => {
-                        const expertButton = document.getElementById('expertButton');
-                        if (expertButton) expertButton.style.display = 'block';
-                    }, 500);
-                } else {
-                    // Show profile button for users without completed profile
-                    setTimeout(() => {
-                        const profileButton = document.getElementById('profileButton');
-                        if (profileButton) profileButton.style.display = 'block';
-                    }, 500);
-                }
-                
-                showToast('AI automatisch hersteld van vorige sessie', 'success');
-            }
-        }
-
         // Test OpenAI API Connection
         async function testOpenAIConnection() {
             console.log('🧪 Testing OpenAI API connection...');
             
-            // Test with a dummy key to check if the API endpoint is reachable
             try {
                 const response = await fetch('https://api.openai.com/v1/models', {
                     method: 'GET',
@@ -2675,7 +2753,6 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                     }
                 });
                 
-                // We expect a 401 (unauthorized) which means the API is reachable
                 if (response.status === 401) {
                     console.log('✅ OpenAI API endpoint is reachable');
                     return true;
