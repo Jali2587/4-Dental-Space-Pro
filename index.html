@@ -922,68 +922,29 @@
                         <p>Specialist kennis + AI intelligentie</p>
                     </div>
 
-                    <!-- API Setup Panel -->
+                    <!-- Simplified API Setup Panel -->
                     <div class="setup-panel" id="setupPanel">
                         <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 AI Chat Beschikbaar</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Gratis AI adviezen voor praktijkinrichting</p>
+                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 AI Chat Activeren</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voer OpenAI API key in voor AI functionaliteit</p>
                         </div>
+                        
+                        <!-- Simple API Key Input - Always Visible -->
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <button onclick="tryActivateAI()" class="setup-btn" style="padding: 12px 24px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer; font-size: 1rem;">🚀 Activeer AI Chat</button>
+                            <input type="password" id="apiKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
+                            <button onclick="setupAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer AI</button>
                         </div>
+                        
+                        <div style="text-align: center; font-size: 0.85rem; color: #666; margin-bottom: 15px;">
+                            Deze key wordt opgeslagen zodat alle bezoekers AI kunnen gebruiken
+                        </div>
+                        
                         <div style="text-align: center;">
-                            <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start met Expert Mode (zonder AI)</span>
-                            
-                            <!-- Admin options - only visible when no master key is set -->
-                            <div id="adminOnlyOptions" style="margin-top: 15px;">
-                                <span onclick="showMasterKeySetup()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.8rem;">⚙️ Website eigenaar: Stel AI in</span>
+                            <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start zonder AI (Expert Mode)</span>
+                            <br><br>
+                            <div id="removeKeyOption" style="display: none;">
+                                <span onclick="removeStoredKey()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.8rem;">🗑️ Verwijder opgeslagen key</span>
                             </div>
-                            
-                            <!-- Discrete admin access - only visible when master key is set -->
-                            <div id="discreteAdmin" style="display: none; margin-top: 15px;">
-                                <span onclick="discreteAdminAccess()" style="cursor: pointer; color: #999; text-decoration: none; font-size: 0.7rem;" title="Website eigenaar toegang">⚙️</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Master Key Setup Panel (for website owner only) -->
-                    <div class="setup-panel hidden" id="masterKeyPanel">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">⚙️ Website Eigenaar Setup</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Stel AI in voor alle bezoekers</p>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <input type="password" id="masterKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
-                            <button onclick="setupMasterKey()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #dc3545, #c82333); color: white; border: none; font-weight: 600; cursor: pointer;">💾 Opslaan</button>
-                        </div>
-                        <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 15px;">
-                            Deze key wordt opgeslagen zodat alle bezoekers AI kunnen gebruiken.<br>
-                            Bezoekers zien alleen "🚀 Activeer AI Chat" zonder verdere setup opties.
-                        </div>
-                        <div style="text-align: center;">
-                            <span onclick="showPersonalKeyOptionInAdmin()" style="cursor: pointer; color: #6c757d; text-decoration: underline; font-size: 0.9rem;">🔑 Eigen OpenAI key gebruiken</span>
-                            <span style="margin: 0 10px;">|</span>
-                            <span onclick="removeMasterKeyUI()" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-size: 0.9rem;">🗑️ Verwijder huidige key</span>
-                            <span style="margin: 0 10px;">|</span>
-                            <span onclick="backToMainSetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug</span>
-                        </div>
-                    </div>
-
-                    <!-- Personal API Key Panel (Only accessible via admin) -->
-                    <div class="setup-panel hidden" id="personalKeyPanel">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">🔑 Website Eigenaar - Eigen Key</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voor website eigenaar met eigen OpenAI account</p>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <input type="password" id="personalApiKeyInput" class="api-input" placeholder="Eigen OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
-                            <button onclick="setupPersonalAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
-                        </div>
-                        <div style="text-align: center; font-size: 0.8rem; color: #666; margin-bottom: 15px;">
-                            Deze key wordt alleen voor jouw sessie gebruikt. Bezoekers kunnen AI niet gebruiken.
-                        </div>
-                        <div style="text-align: center;">
-                            <span onclick="backToMasterKeySetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug naar master key setup</span>
                         </div>
                     </div>
 
