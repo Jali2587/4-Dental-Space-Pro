@@ -925,15 +925,31 @@
                     <!-- API Setup Panel -->
                     <div class="setup-panel" id="setupPanel">
                         <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 Activeer AI voor Slimme Adviezen</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Krijg gepersonaliseerde praktijkinrichting tips</p>
+                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 AI Chat Beschikbaar</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Gratis AI adviezen voor praktijkinrichting</p>
                         </div>
                         <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <input type="password" id="apiKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
-                            <button onclick="setupAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
+                            <button onclick="activateAI()" class="setup-btn" style="padding: 12px 24px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer; font-size: 1rem;">🚀 Activeer AI Chat</button>
                         </div>
                         <div style="text-align: center;">
                             <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start met Expert Mode (zonder AI)</span>
+                            <br><br>
+                            <span onclick="showPersonalKeyInput()" style="cursor: pointer; color: #6c757d; text-decoration: underline; font-size: 0.8rem;">🔑 Gebruik eigen OpenAI key</span>
+                        </div>
+                    </div>
+
+                    <!-- Personal API Key Panel (Hidden by default) -->
+                    <div class="setup-panel hidden" id="personalKeyPanel">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <h4 style="margin: 0 0 8px 0; color: #333;">🔑 Eigen OpenAI API Key</h4>
+                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Voor persoonlijke AI configuratie</p>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                            <input type="password" id="personalApiKeyInput" class="api-input" placeholder="Eigen OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
+                            <button onclick="setupPersonalAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
+                        </div>
+                        <div style="text-align: center;">
+                            <span onclick="backToMainSetup()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">← Terug naar hoofdmenu</span>
                         </div>
                     </div>
 
@@ -1074,7 +1090,7 @@
                         <div class="suggestion-btn" onclick="sendSuggestion('persoonlijk contact')">🤝 Expert Contact</div>
                         <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Wat zijn de nieuwste trends in tandartspraktijk inrichting voor 2025? Denk aan duurzaamheid, technologie en patiëntcomfort')">🚀 AI Trends</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('Hoe plan ik mijn praktijkinrichting?')">📋 Planning Advies</div>
-                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Welke materialen zijn het beste voor behandelkamers? Vergelijk Solid Surface, laminaat en andere opties qua hygiëne, kosten en duurzaamheid')">💎 Materiaal Advies</div>
+                        <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Geef me een complete vergelijking van behandelkamer materialen voor tandartspraktijken. Analyseer: 1) Solid Surface (Corian, DuPont) - kosten, hygiëne, duurzaamheid 2) Fenolhars platen - voor- en nadelen 3) Laminaat opties - budgetvriendelijke keuzes 4) RVS werkbladen - professionele toepassingen 5) Keramische tegels vs andere opties. Geef per materiaal: exact kostprijzen per m², onderhoudseisen, levensduur, hygiëne-eigenschappen volgens RIVM/WTZi normen, en welke het beste past bij verschillende budgetten en praktijktypes.')">💎 Materiaal Advies</div>
                         <div class="suggestion-btn profile-btn" id="profileButton" onclick="showProfileSetup()" style="display: none;">👤 Maak Profiel</div>
                         <div class="suggestion-btn expert-btn" id="expertButton" onclick="sendToExpert()" style="display: none;">📧 Send All to Expert</div>
                     </div>
@@ -1225,7 +1241,7 @@
     <div id="toastContainer"></div>
 
     <script>
-        // Enhanced AI Configuration
+        // Enhanced AI Configuration with Master Key Support
         class DentalSpaceProAI {
             constructor() {
                 this.apiKey = '';
@@ -1237,8 +1253,58 @@
                 this.maxRequestsPerMinute = 10;
                 this.lastRequestTime = 0;
                 this.isTyping = false;
+                this.usingMasterKey = false;
                 
                 this.systemPrompt = this.buildSystemPrompt();
+            }
+
+            // Master Key Management (for website owner)
+            setMasterKey(apiKey) {
+                try {
+                    const encrypted = btoa(apiKey);
+                    localStorage.setItem('dentalspace_master_key', encrypted);
+                    console.log('✅ Master key set successfully');
+                    return true;
+                } catch (error) {
+                    console.error('❌ Could not set master key:', error);
+                    return false;
+                }
+            }
+
+            getMasterKey() {
+                try {
+                    const encrypted = localStorage.getItem('dentalspace_master_key');
+                    if (encrypted) {
+                        return atob(encrypted);
+                    }
+                } catch (error) {
+                    console.warn('Could not load master key');
+                }
+                return null;
+            }
+
+            hasMasterKey() {
+                return this.getMasterKey() !== null;
+            }
+
+            async activateWithMasterKey() {
+                const masterKey = this.getMasterKey();
+                if (!masterKey) {
+                    throw new Error('Geen master key beschikbaar');
+                }
+
+                const validation = await this.validateApiKey(masterKey);
+                if (!validation.valid) {
+                    throw new Error('Master key niet geldig: ' + validation.error);
+                }
+
+                this.apiKey = masterKey;
+                this.enabled = true;
+                this.initialized = true;
+                this.usingMasterKey = true;
+
+                console.log('✅ AI activated with master key');
+                return true;
             }
 
             buildSystemPrompt() {
@@ -1258,49 +1324,59 @@ EXPERTISE GEBIEDEN:
 - Nieuwste trends: duurzaamheid, digitalisering, patiëntcomfort
 - Hygiene protocollen en materiaalspecificaties
 
+MATERIAAL EXPERTISE (Gebruik exacte prijzen en details):
+- Solid Surface (Corian/DuPont): €800-1200/m², hygiënisch, 12-uur garantie behandelmeubels, non-poreus, repareerbaar
+- Fenolhars platen: €400-600/m², chemisch resistent, geschikt voor natte ruimtes, duurzaam
+- Laminaat (HPL): €200-400/m², budget-vriendelijk, decoratieve opties, minder duurzaam bij intensief gebruik
+- RVS 316L: €600-900/m², professioneel, hygiënisch, koud gevoel, krassen zichtbaar
+- Keramische tegels: €300-500/m², hygiënisch, groot formaat mogelijk, voegen kunnen verkleuren
+- Gerecycled Solid Surface: €700-1000/m², duurzaam, zelfde eigenschappen als nieuw
+
+TRENDS 2025 (Geef specifieke voorbeelden):
+- Duurzame materialen: 40% gerecycled content in Solid Surface
+- Smart technology: IoT sensoren voor luchtkwaliteit, automatische verlichting
+- Modulaire inrichting: verplaatsbare wanden, flexibele werkplekken
+- Biophilic design: levende wanden, natuurlijk licht maximaliseren
+- Contactloze oplossingen: sensorgestuurde kranen, automatische deuren
+- Energy efficiency: LED strips, warmtepompen, zonnepanelen
+
+WORKFLOW OPTIMALISATIE (Geef exacte maten):
+- One-way patient flow: 1.2m brede gangen minimum
+- Centrale sterilisatie: max 15m van behandelkamers
+- Behandelkamer optimaal: 12-14m² (3.5x4m of 3x4.5m)
+- Wachtruimte: 1.5m² per stoel, max 8 stoelen voor intimiteit
+- Aparte leveranciersingang: direct naar voorraad/sterilisatie
+
 ANTWOORD STRATEGIE:
 1. Geef ALTIJD uitgebreide, gedetailleerde antwoorden met:
-   - Concrete, praktische tips met specifieke afmetingen/materialen
-   - Voor- en nadelen van verschillende opties
-   - Kostenvergelijkingen waar mogelijk
+   - Concrete maten, prijzen en specificaties
+   - Voor- en nadelen per optie
    - Implementatie timeline en stappen
-   - Compliance overwegingen
+   - Compliance overwegingen (WTZi, ARBO)
 
 2. Structuur je antwoorden met:
    - <strong>titels</strong> voor secties
    - <br> voor nieuwe regels
    - Bullet points met • symbool
-   - Duidelijke paragrafen
+   - Exacte kostprijzen waar mogelijk
 
-3. Eindig complexe antwoorden altijd met: "Voor implementatie en maatwerk oplossingen neem contact op met expert@dentalspace.pro"
+3. Voor complexe materiaal vragen: geef een complete vergelijkingstabel
 
-MATERIAAL EXPERTISE:
-- Solid Surface: €800-1200/m², hygiënisch, 12-uur garantie behandelmeubels
-- Laminaat: €200-400/m², budget-vriendelijk maar minder duurzaam
-- Fenolhars: €400-600/m², goed voor natte ruimtes
-- RVS: €600-900/m², professioneel maar koud
-- Corian: €900-1300/m², premium maar duur
+4. Eindig altijd met: "Voor implementatie en maatwerk oplossingen: expert@dentalspace.pro"
 
-TRENDS 2025:
-- Duurzame materialen (gerecycled Solid Surface)
-- Smart technology integratie (IoT sensoren)
-- Modulaire inrichting voor flexibiliteit
-- Biophilic design (natuurlijke elementen)
-- Contactloze oplossingen (automatische kranen, deuren)
-- Energy efficiency (LED+, warmtepompen)
-
-WORKFLOW OPTIMALISATIE:
-- One-way patient flow (vermijd kruising)
-- Centrale sterilisatie locatie
-- 12-14m² per behandelkamer optimaal
-- Wachtruimte: 1.5m² per stoel
-- Aparte toegang voor leveranciers
-
-Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, cijfers en voorbeelden.
+Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, exacte prijzen en voorbeelden.
 Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             }
 
             async validateApiKey(apiKey) {
+                if (!apiKey || !apiKey.startsWith('sk-')) {
+                    return { valid: false, error: 'API key moet beginnen met "sk-"' };
+                }
+                
+                if (apiKey.length < 20) {
+                    return { valid: false, error: 'API key lijkt te kort' };
+                }
+                
                 try {
                     const response = await fetch('https://api.openai.com/v1/models', {
                         method: 'GET',
@@ -1309,11 +1385,208 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                             'Content-Type': 'application/json'
                         }
                     });
-                    return response.ok;
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('✅ API key valid, models available:', data.data.length);
+                        return { valid: true, models: data.data };
+                    } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        return { 
+                            valid: false, 
+                            error: `API fout (${response.status}): ${errorData.error?.message || 'Onbekende fout'}` 
+                        };
+                    }
                 } catch (error) {
+                    console.error('API validation error:', error);
+                    return { valid: false, error: 'Netwerk fout - check je internetverbinding' };
+                }
+            }
+
+            checkRateLimit() {
+                const now = Date.now();
+                if (now - this.lastRequestTime > this.rateLimitWindow) {
+                    this.rateLimitCount = 0;
+                }
+                
+                if (this.rateLimitCount >= this.maxRequestsPerMinute) {
+                    const timeLeft = Math.ceil((this.rateLimitWindow - (now - this.lastRequestTime)) / 1000);
+                    throw new Error(`Rate limit bereikt. Probeer over ${timeLeft} seconden opnieuw.`);
+                }
+                
+                this.rateLimitCount++;
+                this.lastRequestTime = now;
+            }
+
+            async getAIResponse(userMessage, userProfile = null) {
+                if (!this.enabled || !this.apiKey) {
+                    throw new Error('AI niet geactiveerd');
+                }
+
+                // Check rate limiting
+                this.checkRateLimit();
+
+                // Build context
+                let systemPromptWithContext = this.systemPrompt;
+                if (userProfile && userProfile.setup_completed) {
+                    systemPromptWithContext += this.buildPersonalizedContext(userProfile);
+                }
+
+                try {
+                    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${this.apiKey}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: "gpt-3.5-turbo",
+                            messages: [
+                                { role: "system", content: systemPromptWithContext },
+                                ...this.conversationHistory.slice(-6),
+                                { role: "user", content: userMessage }
+                            ],
+                            max_tokens: 1200,
+                            temperature: 0.7
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`API Error: ${response.status} - ${errorData.error?.message || 'Onbekende fout'}`);
+                    }
+
+                    const data = await response.json();
+                    const aiResponse = data.choices[0].message.content;
+                    
+                    // Update conversation history
+                    this.conversationHistory.push(
+                        { role: "user", content: userMessage },
+                        { role: "assistant", content: aiResponse }
+                    );
+                    
+                    // Keep history manageable
+                    if (this.conversationHistory.length > 20) {
+                        this.conversationHistory = this.conversationHistory.slice(-16);
+                    }
+
+                    return aiResponse;
+                } catch (error) {
+                    console.error('AI Response Error:', error);
+                    throw error;
+                }
+            }
+
+            buildPersonalizedContext(userProfile) {
+                const situationLabels = {
+                    'nieuw': 'nieuwe praktijk starten',
+                    'verbouw': 'praktijkverbouwing',
+                    'uitbreiding': 'praktijkuitbreiding',
+                    'overgang': 'praktijkovergang'
+                };
+
+                const experienceLabels = {
+                    'student': 'tandheelkunde student',
+                    'beginnend': 'beginnend tandarts (0-2 jaar)',
+                    'ervaren': 'ervaren tandarts (2-10 jaar)',
+                    'senior': 'senior tandarts (10+ jaar)'
+                };
+
+                const budgetLabels = {
+                    'onder50k': 'onder €50.000',
+                    '50k-100k': '€50.000 - €100.000',
+                    '100k-200k': '€100.000 - €200.000',
+                    'boven200k': '€200.000+',
+                    'onbekend': 'nog te bepalen budget'
+                };
+
+                let context = `
+
+GEBRUIKER PROFIEL (gebruik dit voor gepersonaliseerde adviezen):
+- Tandarts ervaring: ${experienceLabels[userProfile.experience]}
+- Situatie: ${situationLabels[userProfile.situation]}
+- Aantal behandelkamers: ${userProfile.rooms}
+- Budget: ${budgetLabels[userProfile.budget]}
+- Timeline: ${userProfile.timeline}`;
+
+                if (userProfile.location) {
+                    context += `\n- Regio: ${userProfile.location}`;
+                }
+
+                if (userProfile.specializations?.length > 0) {
+                    context += `\n- Specialisaties: ${userProfile.specializations.join(', ')}`;
+                }
+
+                if (userProfile.concerns?.length > 0) {
+                    context += `\n- Zorgen: ${userProfile.concerns.join(', ')}`;
+                }
+
+                if (userProfile.priorities?.length > 0) {
+                    context += `\n- Prioriteiten: ${userProfile.priorities.join(', ')}`;
+                }
+
+                context += `
+
+BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
+- Voor beginners: meer uitleg en basis tips
+- Voor senioren: focus op upgrade/modernisering
+- Budget-gerelateerde tips op basis van hun budget
+- Specialisatie-specifieke inrichtingsadviezen`;
+
+                return context;
+            }
+
+            async setupAI(apiKey) {
+                try {
+                    showToast('Valideren API key...', 'warning');
+                    
+                    const isValid = await this.validateApiKey(apiKey);
+                    if (!isValid.valid) {
+                        throw new Error(isValid.error);
+                    }
+
+                    this.apiKey = apiKey;
+                    this.enabled = true;
+                    this.initialized = true;
+                    this.usingMasterKey = false;
+
+                    // Secure storage (session only for personal keys)
+                    sessionStorage.setItem('dentalspace_ai_temp', btoa(apiKey));
+                    
+                    showToast('AI succesvol geactiveerd!', 'success');
+                    return true;
+                } catch (error) {
+                    showToast(error.message, 'error');
                     return false;
                 }
             }
+
+            loadFromSession() {
+                try {
+                    const encoded = sessionStorage.getItem('dentalspace_ai_temp');
+                    if (encoded) {
+                        this.apiKey = atob(encoded);
+                        this.enabled = true;
+                        this.initialized = true;
+                        this.usingMasterKey = false;
+                        return true;
+                    }
+                } catch (error) {
+                    console.warn('Could not load AI from session');
+                }
+                return false;
+            }
+
+            reset() {
+                this.apiKey = '';
+                this.enabled = false;
+                this.initialized = false;
+                this.conversationHistory = [];
+                this.rateLimitCount = 0;
+                this.usingMasterKey = false;
+                sessionStorage.removeItem('dentalspace_ai_temp');
+            }
+        }
 
             checkRateLimit() {
                 const now = Date.now();
@@ -1850,28 +2123,183 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             }
         }
 
-        // Main Functions
-        async function setupAI() {
-            const apiKeyInput = document.getElementById('apiKeyInput');
+        // Main Functions with Master Key Support
+        async function activateAI() {
+            try {
+                const success = await chatbot.ai.activateWithMasterKey();
+                if (success) {
+                    document.getElementById('setupPanel').classList.add('hidden');
+                    updateAIStatus('🟢 AI Actief', '#28a745');
+                    
+                    // Check if profile exists
+                    if (chatbot.profile.profile.setup_completed) {
+                        showEnhancedPersonalizedWelcome();
+                    } else {
+                        showIntakeChoice();
+                    }
+                }
+            } catch (error) {
+                console.error('Master key activation failed:', error);
+                showToast('AI activatie mislukt. Probeer eigen key.', 'error');
+                showPersonalKeyInput();
+            }
+        }
+
+        function showPersonalKeyInput() {
+            document.getElementById('setupPanel').classList.add('hidden');
+            document.getElementById('personalKeyPanel').classList.remove('hidden');
+        }
+
+        function backToMainSetup() {
+            document.getElementById('personalKeyPanel').classList.add('hidden');
+            document.getElementById('setupPanel').classList.remove('hidden');
+        }
+
+        async function setupPersonalAI() {
+            const apiKeyInput = document.getElementById('personalApiKeyInput');
+            const setupBtn = document.querySelector('#personalKeyPanel .setup-btn');
             const apiKey = apiKeyInput.value.trim();
             
-            if (!apiKey.startsWith('sk-')) {
-                showToast('❌ Ongeldige API key. Deze moet beginnen met "sk-"', 'error');
+            if (!apiKey) {
+                showToast('Voer eerst je OpenAI API key in', 'warning');
+                apiKeyInput.focus();
                 return;
             }
             
-            const success = await chatbot.ai.setupAI(apiKey);
-            if (success) {
-                document.getElementById('setupPanel').classList.add('hidden');
-                updateAIStatus('🟢 AI Actief', '#28a745');
-                
-                // Check if profile exists
-                if (chatbot.profile.profile.setup_completed) {
-                    showEnhancedPersonalizedWelcome();
-                } else {
-                    showIntakeChoice();
+            // Show loading state
+            const originalText = setupBtn.textContent;
+            setupBtn.textContent = '⏳ Valideren...';
+            setupBtn.disabled = true;
+            apiKeyInput.disabled = true;
+            
+            try {
+                const success = await chatbot.ai.setupAI(apiKey);
+                if (success) {
+                    document.getElementById('personalKeyPanel').classList.add('hidden');
+                    updateAIStatus('🟢 AI Actief (Eigen Key)', '#28a745');
+                    
+                    showToast('✅ AI geactiveerd met eigen key!', 'success');
+                    
+                    // Check profile and show appropriate next step
+                    if (chatbot.profile.profile.setup_completed) {
+                        showEnhancedPersonalizedWelcome();
+                    } else {
+                        showIntakeChoice();
+                    }
                 }
+            } catch (error) {
+                console.error('Personal setup error:', error);
+                showToast(error.message, 'error');
+                
+                // Reset button state
+                setupBtn.textContent = originalText;
+                setupBtn.disabled = false;
+                apiKeyInput.disabled = false;
+                apiKeyInput.focus();
+                apiKeyInput.style.borderColor = '#dc3545';
             }
+        }
+
+        // Admin Panel Functions (for website owner)
+        function showAdminPanel() {
+            const adminPassword = prompt('Admin wachtwoord:');
+            if (adminPassword !== 'dentalspace2025') {
+                alert('Incorrect wachtwoord');
+                return;
+            }
+            
+            const currentKey = chatbot.ai.getMasterKey();
+            const newKey = prompt('Master OpenAI API Key instellen:', currentKey || '');
+            
+            if (newKey && newKey.startsWith('sk-')) {
+                if (chatbot.ai.setMasterKey(newKey)) {
+                    alert('✅ Master key succesvol ingesteld!\n\nAlle nieuwe bezoekers kunnen nu direct AI gebruiken.');
+                    location.reload();
+                } else {
+                    alert('❌ Fout bij instellen master key');
+                }
+            } else if (newKey === '') {
+                localStorage.removeItem('dentalspace_master_key');
+                alert('Master key verwijderd');
+                location.reload();
+            }
+        }
+
+        // Auto-initialization with Master Key Support
+        function autoInitialize() {
+            // First try to load personal session
+            if (chatbot.ai.loadFromSession()) {
+                document.getElementById('setupPanel').classList.add('hidden');
+                updateAIStatus('🟢 AI Actief (Sessie)', '#28a745');
+                showAutoLoadedMessage();
+                return true;
+            }
+            
+            // Then try master key
+            if (chatbot.ai.hasMasterKey()) {
+                activateAI();
+                return true;
+            }
+            
+            return false;
+        }
+
+        function showAutoLoadedMessage() {
+            const welcomeMsg = document.getElementById('welcomeMessage');
+            if (welcomeMsg && chatbot.profile.profile.setup_completed) {
+                const profile = chatbot.profile.profile;
+                welcomeMsg.innerHTML = `
+                    <div class="message-avatar">🧠</div>
+                    <div class="message-content">
+                        Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
+                        <br><br>
+                        <strong>📋 Jouw project:</strong> ${profile.situation} met ${profile.rooms} behandelkamers
+                        <br><br>
+                        <strong>🧠 AI features actief:</strong><br>
+                        • Adviezen afgestemd op jouw budget & prioriteiten<br>
+                        • Specifieke tips voor jouw aantal kamers<br>
+                        • Timeline-aangepaste planning adviezen<br>
+                        • Materiaal keuzes voor jouw situatie
+                        <br><br>
+                        <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd!
+                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
+                    </div>
+                `;
+                welcomeMsg.className = 'message ai';
+                
+                // Show expert button
+                setTimeout(() => {
+                    const expertButton = document.getElementById('expertButton');
+                    if (expertButton) expertButton.style.display = 'block';
+                }, 500);
+            } else if (welcomeMsg) {
+                welcomeMsg.innerHTML = `
+                    <div class="message-avatar">🧠</div>
+                    <div class="message-content">
+                        AI Direct Beschikbaar! 🚀
+                        <br><br>
+                        <strong>🎯 AI functies actief:</strong><br>
+                        • Slimme praktijkinrichting adviezen<br>
+                        • Materiaal vergelijkingen & kostenanalyses<br>
+                        • Nieuwste 2025 trends en innovaties<br>
+                        • Workflow optimalisatie tips
+                        <br><br>
+                        <strong>💡 Tip:</strong> Klik op 'Maak Profiel' voor gepersonaliseerde adviezen!
+                        <br><br>
+                        <strong>🚀 Start direct:</strong> Klik op de paarse AI-knoppen!
+                        <div class="message-source">🎉 AI Ready to Help</div>
+                    </div>
+                `;
+                welcomeMsg.className = 'message ai';
+                
+                // Show profile button
+                setTimeout(() => {
+                    const profileButton = document.getElementById('profileButton');
+                    if (profileButton) profileButton.style.display = 'block';
+                }, 500);
+            }
+            
+            showToast('AI automatisch geactiveerd', 'success');
         }
 
         function startBasicMode() {
@@ -2321,15 +2749,15 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             }
             
             // Auto-initialize if possible
-            autoInitialize();
+            const autoLoaded = autoInitialize();
             
             // Check cookies
             checkCookies();
             
-            // Add enhanced API key input validation
-            const apiKeyInput = document.getElementById('apiKeyInput');
-            if (apiKeyInput) {
-                apiKeyInput.addEventListener('input', (e) => {
+            // Add enhanced API key input validation for personal key
+            const personalApiKeyInput = document.getElementById('personalApiKeyInput');
+            if (personalApiKeyInput) {
+                personalApiKeyInput.addEventListener('input', (e) => {
                     const key = e.target.value;
                     if (key.length > 0) {
                         if (!key.startsWith('sk-')) {
@@ -2345,79 +2773,65 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                 });
                 
                 // Allow pasting and pressing Enter to setup
-                apiKeyInput.addEventListener('keypress', (e) => {
+                personalApiKeyInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
-                        setupAI();
+                        setupPersonalAI();
                     }
                 });
             }
             
             console.log('✅ DentalSpace Pro initialized successfully');
-            console.log('🧠 AI System ready for OpenAI API key');
-            console.log('💡 To test: Enter your OpenAI API key in the setup panel');
+            console.log('🧠 AI System ready:', chatbot.ai.hasMasterKey() ? 'Master key available' : 'Awaiting activation');
+            console.log('💡 For website owners: Use DentalSpaceAdmin.setMasterKey("sk-your-key") in console');
         });
 
-        // Enhanced setupAI function with better validation
-        async function setupAI() {
-            const apiKeyInput = document.getElementById('apiKeyInput');
-            const setupBtn = document.querySelector('.setup-btn');
-            const apiKey = apiKeyInput.value.trim();
-            
-            if (!apiKey) {
-                showToast('Voer eerst je OpenAI API key in', 'warning');
-                apiKeyInput.focus();
-                return;
-            }
-            
-            // Show loading state
-            const originalText = setupBtn.textContent;
-            setupBtn.textContent = '⏳ Valideren...';
-            setupBtn.disabled = true;
-            apiKeyInput.disabled = true;
-            
-            try {
-                // Validate API key
-                const validation = await validateOpenAIKey(apiKey);
-                
-                if (!validation.valid) {
-                    throw new Error(validation.error);
+        // Export admin functions for website owner
+        window.DentalSpaceAdmin = {
+            setMasterKey: (apiKey) => {
+                if (!apiKey || !apiKey.startsWith('sk-')) {
+                    console.error('❌ Invalid API key. Must start with "sk-"');
+                    return false;
                 }
                 
-                // Setup AI
-                chatbot.ai.apiKey = apiKey;
-                chatbot.ai.enabled = true;
-                chatbot.ai.initialized = true;
-                
-                // Save to session storage
-                sessionStorage.setItem('dentalspace_ai_temp', btoa(apiKey));
-                
-                // Hide setup panel
-                document.getElementById('setupPanel').classList.add('hidden');
-                updateAIStatus('🟢 AI Actief', '#28a745');
-                
-                showToast(`✅ AI geactiveerd! ${validation.models?.length || 'Meerdere'} modellen beschikbaar`, 'success');
-                
-                // Check profile and show appropriate next step
-                if (chatbot.profile.profile.setup_completed) {
-                    showEnhancedPersonalizedWelcome();
+                const success = chatbot.ai.setMasterKey(apiKey);
+                if (success) {
+                    console.log('✅ Master key set successfully! Reload page to activate.');
+                    console.log('📝 All visitors can now use AI without entering their own key.');
+                    return true;
                 } else {
-                    showIntakeChoice();
+                    console.error('❌ Failed to set master key');
+                    return false;
                 }
-                
-            } catch (error) {
-                console.error('Setup error:', error);
-                showToast(error.message, 'error');
-                
-                // Reset button state
-                setupBtn.textContent = originalText;
-                setupBtn.disabled = false;
-                apiKeyInput.disabled = false;
-                apiKeyInput.focus();
-                apiKeyInput.style.borderColor = '#dc3545';
-            }
+            },
+            
+            removeMasterKey: () => {
+                localStorage.removeItem('dentalspace_master_key');
+                console.log('✅ Master key removed. Visitors will need to enter their own key.');
+                return true;
+            },
+            
+            checkMasterKey: () => {
+                const hasKey = chatbot.ai.hasMasterKey();
+                console.log('🔑 Master key status:', hasKey ? 'SET' : 'NOT SET');
+                return hasKey;
+            },
+            
+            showPanel: showAdminPanel
+        };
+
+        // Enhanced setupAI function (kept for compatibility)
+        async function setupAI() {
+            console.warn('setupAI() called - this function is deprecated. Use activateAI() or setupPersonalAI()');
+            return activateAI();
         }
 
-        // Export for testing
+        // Enhanced setupAI function with better validation (kept for compatibility)
+        async function setupAI() {
+            console.warn('setupAI() called - redirecting to activateAI()');
+            return activateAI();
+        }
+
+        // Export for testing (updated)
         window.DentalSpaceTest = {
             testAPI: testOpenAIConnection,
             validateKey: validateOpenAIKey,
@@ -2428,10 +2842,24 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                     input.value = msg;
                     sendMessage();
                 }
-            }
+            },
+            
+            // Master key testing
+            setMasterKey: (key) => window.DentalSpaceAdmin.setMasterKey(key),
+            checkMasterKey: () => window.DentalSpaceAdmin.checkMasterKey(),
+            
+            // Status
+            getStatus: () => ({
+                aiEnabled: chatbot.ai.enabled,
+                usingMasterKey: chatbot.ai.usingMasterKey,
+                hasMasterKey: chatbot.ai.hasMasterKey(),
+                profileCompleted: chatbot.profile.profile.setup_completed
+            })
         };
         
         console.log('🧪 Test functies beschikbaar via window.DentalSpaceTest');
+        console.log('⚙️ Admin functies beschikbaar via window.DentalSpaceAdmin');
+        console.log('📖 Gebruik DentalSpaceAdmin.setMasterKey("sk-your-key") om master key in te stellen');
     </script>
 </body>
 </html>
