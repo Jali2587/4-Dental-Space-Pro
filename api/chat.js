@@ -1,18 +1,42 @@
-// /api/chat.js - Vercel Serverless Function
+// /api/chat.js - Netlify Function (GitHub Integration)
 // This file should be placed in /api/chat.js in your project
 
-export default async function handler(req, res) {
+exports.handler = async (event, context) => {
+    // CORS headers for browser requests
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    };
+
+    // Handle preflight requests
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers,
+            body: ''
+        };
+    }
+
     // Only allow POST requests
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+    if (event.httpMethod !== 'POST') {
+        return {
+            statusCode: 405,
+            headers,
+            body: JSON.stringify({ error: 'Method not allowed' })
+        };
     }
 
     try {
-        const { message, context, conversationHistory } = req.body;
+        const { message, context: userContext, conversationHistory } = JSON.parse(event.body);
 
         // Validate input
         if (!message) {
-            return res.status(400).json({ error: 'Message is required' });
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({ error: 'Message is required' })
+            };
         }
 
         // Get OpenAI API key from environment variable (SECURE!)
@@ -20,7 +44,11 @@ export default async function handler(req, res) {
         
         if (!openaiApiKey) {
             console.error('❌ OPENAI_API_KEY environment variable not set');
-            return res.status(500).json({ error: 'OpenAI API key not configured' });
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: 'OpenAI API key not configured' })
+            };
         }
 
         // System prompt for DentalSpace Pro
@@ -75,7 +103,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
 
         // Prepare messages for OpenAI
         const messages = [
-            { role: "system", content: systemPrompt + (context || '') },
+            { role: "system", content: systemPrompt + (userContext || '') },
             ...(conversationHistory || []),
             { role: "user", content: message }
         ];
@@ -100,31 +128,55 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             console.error('OpenAI API Error:', openaiResponse.status, errorText);
             
             if (openaiResponse.status === 401) {
-                return res.status(500).json({ error: 'OpenAI API key invalid' });
+                return {
+                    statusCode: 500,
+                    headers,
+                    body: JSON.stringify({ error: 'OpenAI API key invalid' })
+                };
             } else if (openaiResponse.status === 429) {
-                return res.status(429).json({ error: 'Rate limit exceeded' });
+                return {
+                    statusCode: 429,
+                    headers,
+                    body: JSON.stringify({ error: 'Rate limit exceeded' })
+                };
             } else {
-                return res.status(500).json({ error: 'OpenAI API error' });
+                return {
+                    statusCode: 500,
+                    headers,
+                    body: JSON.stringify({ error: 'OpenAI API error' })
+                };
             }
         }
 
         const openaiData = await openaiResponse.json();
         
         if (openaiData.choices && openaiData.choices[0] && openaiData.choices[0].message) {
-            return res.status(200).json({
-                response: openaiData.choices[0].message.content,
-                status: 'success'
-            });
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    response: openaiData.choices[0].message.content,
+                    status: 'success'
+                })
+            };
         } else {
             console.error('Unexpected OpenAI response format:', openaiData);
-            return res.status(500).json({ error: 'Unexpected response format' });
+            return {
+                statusCode: 500,
+                headers,
+                body: JSON.stringify({ error: 'Unexpected response format' })
+            };
         }
 
     } catch (error) {
-        console.error('Backend API Error:', error);
-        return res.status(500).json({ 
-            error: 'Internal server error',
-            details: error.message 
-        });
+        console.error('Netlify Function Error:', error);
+        return {
+            statusCode: 500,
+            headers,
+            body: JSON.stringify({ 
+                error: 'Internal server error',
+                details: error.message 
+            })
+        };
     }
-}
+};
