@@ -1255,13 +1255,36 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
 
             async getAIResponse(userMessage) {
                 if (!aiEnabled || !openaiApiKey) {
+                    console.error('❌ AI not enabled or API key missing');
+                    return null;
+                }
+
+                // Check if API key looks valid
+                if (!openaiApiKey.startsWith('sk-')) {
+                    console.error('❌ Invalid API key format');
+                    updateAIStatus('❌ Invalid API Key', '#dc3545');
                     return null;
                 }
 
                 try {
+                    console.log('🔑 Using API key starting with:', openaiApiKey.substring(0, 20) + '...');
+                    
                     // Get personalized context
                     const personalizedContext = getPersonalizedContext();
                     const systemPromptWithContext = this.systemPrompt + personalizedContext;
+                    
+                    const requestBody = {
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            { role: "system", content: systemPromptWithContext },
+                            ...conversationHistory.slice(-6),
+                            { role: "user", content: userMessage }
+                        ],
+                        max_tokens: 800,
+                        temperature: 0.7
+                    };
+                    
+                    console.log('📤 Sending request to OpenAI...');
                     
                     const response = await fetch('https://api.openai.com/v1/chat/completions', {
                         method: 'POST',
@@ -1269,27 +1292,48 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                             'Authorization': `Bearer ${openaiApiKey}`,
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({
-                            model: "gpt-3.5-turbo",
-                            messages: [
-                                { role: "system", content: systemPromptWithContext },
-                                ...conversationHistory.slice(-6),
-                                { role: "user", content: userMessage }
-                            ],
-                            max_tokens: 800,
-                            temperature: 0.7
-                        })
+                        body: JSON.stringify(requestBody)
                     });
 
+                    console.log('📥 Response status:', response.status);
+
                     if (!response.ok) {
-                        throw new Error(`API Error: ${response.status}`);
+                        const errorText = await response.text();
+                        console.error('❌ API Error Response:', errorText);
+                        
+                        if (response.status === 401) {
+                            updateAIStatus('❌ API Key Invalid', '#dc3545');
+                            throw new Error('Invalid API key - check credentials');
+                        } else if (response.status === 429) {
+                            updateAIStatus('⏳ Rate Limited', '#f39c12');
+                            throw new Error('Rate limit exceeded - try again later');
+                        } else {
+                            updateAIStatus('❌ API Error', '#dc3545');
+                            throw new Error(`API Error: ${response.status} - ${errorText}`);
+                        }
                     }
 
                     const data = await response.json();
-                    return data.choices[0].message.content;
+                    console.log('✅ AI Response received successfully');
+                    
+                    if (data.choices && data.choices[0] && data.choices[0].message) {
+                        return data.choices[0].message.content;
+                    } else {
+                        console.error('❌ Unexpected response format:', data);
+                        return null;
+                    }
+                    
                 } catch (error) {
-                    console.error('AI Error:', error);
-                    updateAIStatus('🟡 AI Error', '#f39c12');
+                    console.error('❌ AI Request Error:', error);
+                    
+                    if (error.message.includes('Invalid API key')) {
+                        updateAIStatus('❌ API Key Problem', '#dc3545');
+                    } else if (error.message.includes('Rate limit')) {
+                        updateAIStatus('⏳ Too Many Requests', '#f39c12');
+                    } else {
+                        updateAIStatus('❌ Connection Error', '#dc3545');
+                    }
+                    
                     return null;
                 }
             }
@@ -2055,29 +2099,8 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
 
         // Initialize and run tests
         document.addEventListener('DOMContentLoaded', () => {
-            // AI is always enabled when API key is set
-            if (openaiApiKey && openaiApiKey !== 'YOUR_OPENAI_API_KEY_HERE') {
-                aiEnabled = true;
-                aiInitialized = true;
-                updateAIStatus('🟢 AI Actief', '#28a745');
-                console.log('✅ AI automatically enabled with built-in API key');
-                
-                // Show profile button for users to optionally create profile
-                setTimeout(() => {
-                    const profileButton = document.getElementById('profileButton');
-                    if (profileButton) {
-                        profileButton.style.display = 'block';
-                    }
-                }, 500);
-                
-                // Load existing profile if available
-                loadUserProfile();
-            } else {
-                // Fallback if no API key is set
-                aiEnabled = false;
-                updateAIStatus('⚠️ API Key Needed', '#f39c12');
-                console.log('⚠️ Website owner needs to add API key');
-            }
+            // Test AI immediately on load
+            testAIConnection();
             
             // Focus input
             const chatInput = document.getElementById('chatInput');
@@ -2085,31 +2108,115 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                 chatInput.focus();
             }
             
+            // Show profile button for users to optionally create profile
+            setTimeout(() => {
+                const profileButton = document.getElementById('profileButton');
+                if (profileButton) {
+                    profileButton.style.display = 'block';
+                }
+            }, 1000);
+            
+            // Load existing profile if available
+            loadUserProfile();
+            
             // Check cookies
             checkCookies();
             
             // Console startup info
             console.log('🚀 DentalSpace Pro Website geladen!');
             console.log('🌐 Domain: https://dentalspace.pro');
-            console.log('🧠 AI Status: ' + (aiEnabled ? 'ACTIVE' : 'NEEDS_API_KEY'));
+            console.log('🔑 API Key test wordt uitgevoerd...');
             
             // Test essential functions
             try {
-                // Test that all key functions exist
-                if (typeof sendMessage !== 'function') console.error('❌ sendMessage function missing');
-                if (typeof scrollToChat !== 'function') console.error('❌ scrollToChat function missing');
-                
                 // Test that all key elements exist
                 if (!document.getElementById('chatInput')) console.error('❌ chatInput element missing');
                 if (!document.getElementById('chatMessages')) console.error('❌ chatMessages element missing');
                 if (!document.getElementById('sendButton')) console.error('❌ sendButton element missing');
                 
-                console.log('✅ All essential functions and elements found');
+                console.log('✅ All essential elements found');
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
             }
         });
+
+        // Debug function - can be called from browser console
+        window.debugAI = function() {
+            console.log('🔍 AI Debug Info:');
+            console.log('API Key present:', !!openaiApiKey);
+            console.log('API Key starts with sk-:', openaiApiKey.startsWith('sk-'));
+            console.log('API Key length:', openaiApiKey.length);
+            console.log('AI Enabled:', aiEnabled);
+            console.log('AI Initialized:', aiInitialized);
+            
+            // Test a simple AI call
+            console.log('Testing AI call...');
+            chatbot.getAIResponse('Say hello').then(response => {
+                console.log('AI Test Response:', response);
+            }).catch(error => {
+                console.error('AI Test Error:', error);
+            });
+        };
+
+        // Manual AI test function 
+        window.testAI = function() {
+            testAIConnection();
+        };
+
+        // Test AI connection immediately 
+        async function testAIConnection() {
+            console.log('🧪 Testing AI connection...');
+            updateAIStatus('🧪 Testing AI...', '#17a2b8');
+            
+            if (!openaiApiKey || openaiApiKey === 'YOUR_OPENAI_API_KEY_HERE') {
+                console.error('❌ No API key configured');
+                updateAIStatus('❌ No API Key', '#dc3545');
+                aiEnabled = false;
+                return;
+            }
+            
+            try {
+                const testResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${openaiApiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            { role: "user", content: "Test connection - respond with just 'OK'" }
+                        ],
+                        max_tokens: 10,
+                        temperature: 0
+                    })
+                });
+
+                if (testResponse.ok) {
+                    console.log('✅ AI connection successful!');
+                    updateAIStatus('🟢 AI Actief', '#28a745');
+                    aiEnabled = true;
+                    aiInitialized = true;
+                } else {
+                    const errorText = await testResponse.text();
+                    console.error('❌ AI test failed:', testResponse.status, errorText);
+                    
+                    if (testResponse.status === 401) {
+                        updateAIStatus('❌ Invalid API Key', '#dc3545');
+                    } else if (testResponse.status === 429) {
+                        updateAIStatus('⏳ Rate Limited', '#f39c12');
+                    } else {
+                        updateAIStatus('❌ API Error', '#dc3545');
+                    }
+                    aiEnabled = false;
+                }
+            } catch (error) {
+                console.error('❌ AI connection test failed:', error);
+                updateAIStatus('❌ Connection Failed', '#dc3545');
+                aiEnabled = false;
+            }
+        }
     </script>
 </body>
 </html>
