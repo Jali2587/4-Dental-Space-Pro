@@ -1272,8 +1272,8 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     
                     console.log('📤 Sending request to secure backend...');
                     
-                    // Use your own backend API endpoint instead of OpenAI directly
-                    const response = await fetch('/api/chat', {
+                    // Use Netlify Functions endpoint
+                    const response = await fetch('/.netlify/functions/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -2063,14 +2063,14 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
 
         // Debug function - can be called from browser console
         window.debugAI = function() {
-            console.log('🔍 AI Debug Info (Secure Backend):');
+            console.log('🔍 AI Debug Info (Netlify Functions):');
             console.log('AI Enabled:', aiEnabled);
             console.log('AI Initialized:', aiInitialized);
-            console.log('Backend endpoint: /api/chat');
+            console.log('Backend endpoint: /.netlify/functions/chat');
             
-            // Test a simple AI call via backend
-            console.log('Testing backend AI call...');
-            fetch('/api/chat', {
+            // Test a simple AI call via Netlify Functions
+            console.log('Testing Netlify Functions AI call...');
+            fetch('/.netlify/functions/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -2085,9 +2085,9 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                     throw new Error(`Backend error: ${response.status}`);
                 }
             }).then(data => {
-                console.log('✅ Backend Test Response:', data);
+                console.log('✅ Netlify Functions Test Response:', data);
             }).catch(error => {
-                console.error('❌ Backend Test Error:', error);
+                console.error('❌ Netlify Functions Test Error:', error);
             });
         };
 
@@ -2098,11 +2098,11 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
 
         // Test AI connection immediately 
         async function testAIConnection() {
-            console.log('🧪 Testing secure backend connection...');
-            updateAIStatus('🧪 Testing Backend...', '#17a2b8');
+            console.log('🧪 Testing Netlify Functions connection...');
+            updateAIStatus('🧪 Testing Functions...', '#17a2b8');
             
             try {
-                const testResponse = await fetch('/api/chat', {
+                const testResponse = await fetch('/.netlify/functions/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -2115,28 +2115,28 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                 });
 
                 if (testResponse.ok) {
-                    console.log('✅ Backend connection successful!');
+                    console.log('✅ Netlify Functions connection successful!');
                     updateAIStatus('🟢 AI Actief', '#28a745');
                     aiEnabled = true;
                     aiInitialized = true;
                 } else {
                     const errorText = await testResponse.text();
-                    console.error('❌ Backend test failed:', testResponse.status, errorText);
+                    console.error('❌ Netlify Functions test failed:', testResponse.status, errorText);
                     
                     if (testResponse.status === 404) {
-                        updateAIStatus('❌ Backend Not Found', '#dc3545');
-                        console.error('Backend API endpoint /api/chat not found - need to deploy backend');
+                        updateAIStatus('❌ Function Not Found', '#dc3545');
+                        console.error('Netlify Function /.netlify/functions/chat not found - check deployment');
                     } else if (testResponse.status === 500) {
-                        updateAIStatus('❌ Backend Error', '#dc3545');
+                        updateAIStatus('❌ Function Error', '#dc3545');
                     } else {
-                        updateAIStatus('❌ Backend Issue', '#dc3545');
+                        updateAIStatus('❌ Function Issue', '#dc3545');
                     }
                     aiEnabled = false;
                 }
             } catch (error) {
-                console.error('❌ Backend connection test failed:', error);
-                updateAIStatus('❌ Backend Offline', '#dc3545');
-                console.error('Need to deploy backend API - see setup instructions');
+                console.error('❌ Netlify Functions connection test failed:', error);
+                updateAIStatus('❌ Functions Offline', '#dc3545');
+                console.error('Need to check Netlify Functions deployment');
                 aiEnabled = false;
             }
         }
