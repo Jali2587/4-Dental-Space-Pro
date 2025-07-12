@@ -247,115 +247,6 @@
             background: #218838;
         }
 
-        .intake-panel {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border: 2px solid #007bff;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 10px 0;
-            display: none;
-            max-height: 400px;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .intake-panel.show {
-            display: block;
-        }
-
-        .intake-question {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        .intake-question:last-of-type {
-            border-bottom: none;
-            margin-bottom: 10px;
-        }
-
-        .intake-question h4 {
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .intake-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .intake-option {
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 15px;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .intake-option:hover {
-            border-color: #007bff;
-            background: #f0f8ff;
-        }
-
-        .intake-option.selected {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .intake-input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            margin-top: 5px;
-            font-size: 0.9rem;
-        }
-
-        .intake-btn {
-            background: linear-gradient(45deg, #007bff, #0056b3);
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            width: 100%;
-            margin-top: 15px;
-            font-size: 0.95rem;
-        }
-
-        .intake-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
-        }
-
-        /* Scroll styling for intake panel */
-        .intake-panel::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .intake-panel::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-
-        .intake-panel::-webkit-scrollbar-thumb {
-            background: #007bff;
-            border-radius: 3px;
-        }
-
-        .intake-panel::-webkit-scrollbar-thumb:hover {
-            background: #0056b3;
-        }
-
         .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -787,6 +678,115 @@
                 margin-right: 0;
                 margin-bottom: 10px;
             }
+        }
+
+        .intake-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px solid #007bff;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 10px 0;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .intake-panel.show {
+            display: block;
+        }
+
+        .intake-question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .intake-question:last-of-type {
+            border-bottom: none;
+            margin-bottom: 10px;
+        }
+
+        .intake-question h4 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .intake-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .intake-option {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 15px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .intake-option:hover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .intake-option.selected {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .intake-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-top: 5px;
+            font-size: 0.9rem;
+        }
+
+        .intake-btn {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .intake-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+        /* Scroll styling for intake panel */
+        .intake-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .intake-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .intake-panel::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 3px;
+        }
+
+        .intake-panel::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
         }
 
         /* Cookie Notice */
@@ -1263,6 +1263,8 @@ Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, cijfer
 LINK FORMAT:
 <a href='mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a>
 
+Geef ALTIJD praktische, implementeerbare adviezen met specifieke details, cijfers en voorbeelden.
+
 Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             }
 
@@ -1453,17 +1455,9 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 choiceButtons.remove();
             }
             
-            addMessage("📋 <strong>Perfect! Laten we jouw profiel aanmaken</strong><br><br>Dit duurt maar 2 minuten en zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Scroll door de vragen hieronder:</strong><div class='message-source'>🎯 Persoonlijke Intake Gestart</div>", false, 'ai');
+            addMessage("📋 <strong>Perfect! Laten we jouw profiel aanmaken</strong><br><br>Dit duurt maar 2 minuten en zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Vul hieronder je gegevens in:</strong><div class='message-source'>🎯 Persoonlijke Intake Gestart</div>", false, 'ai');
             
             document.getElementById('intakePanel').classList.add('show');
-            
-            // Scroll intake panel to top
-            setTimeout(() => {
-                const intakePanel = document.getElementById('intakePanel');
-                if (intakePanel) {
-                    intakePanel.scrollTop = 0;
-                }
-            }, 100);
         }
 
         function skipIntakeAndStart() {
@@ -1477,115 +1471,6 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             
             // Show profile button for later
             showProfileButton();
-        }
-
-        function startBasicMode() {
-            document.getElementById('setupPanel').classList.add('hidden');
-            updateAIStatus('💼 Expert Mode', '#6c757d');
-            aiInitialized = true;
-            
-            const basicContactLink = 'mailto:expert@dentalspace.pro?subject=Expert%20Mode%20Contact&body=Hallo,%0D%0A%0D%0AIk%20gebruik%20expert%20mode%20en%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AGroeten,';
-            
-            addMessage(`💼 <strong>Expert Mode Actief</strong><br><br><strong>🎯 Beschikbare services:</strong><br>• 💰 Kostenberekeningen en budgettering<br>• 📋 Praktijkplanning en compliance check<br>• 🤝 Direct expert contact en begeleiding<br>• 🏗️ Complete praktijkrealisatie via DentalMa<br>• 💎 Maatwerk Solid Surface meubilair via IsSolid<br><br><strong>📞 Persoonlijk contact:</strong><br>📧 <a href='${basicContactLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a> | ☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br>Al je vragen krijgen direct antwoord van onze specialist voor maatwerk oplossingen en implementatie.<div class='message-source'>💼 Expert Knowledge Active</div>`, false, 'bot');
-        }
-
-        function autoLoadAI() {
-            try {
-                if (typeof(Storage) !== "undefined") {
-                    const savedKey = localStorage.getItem('dentalspace_ai_key');
-                    const aiWasEnabled = localStorage.getItem('dentalspace_ai_enabled') === 'true';
-                    
-                    if (savedKey && savedKey.startsWith('sk-') && aiWasEnabled) {
-                        // Auto-activate AI silently
-                        openaiApiKey = savedKey;
-                        aiEnabled = true;
-                        aiInitialized = true;
-                        
-                        // Load user profile
-                        const savedProfile = loadUserProfile();
-                        
-                        // Hide setup panel immediately
-                        document.getElementById('setupPanel').classList.add('hidden');
-                        updateAIStatus('🟢 AI Actief', '#28a745');
-                        
-                        // Replace welcome message based on profile status
-                        const welcomeMsg = document.getElementById('welcomeMessage');
-                        if (welcomeMsg) {
-                            if (savedProfile && savedProfile.setup_completed) {
-                                // Personalized welcome for returning users
-                                const situationText = {
-                                    'nieuw': 'nieuwe praktijk',
-                                    'verbouw': 'praktijkverbouwing',
-                                    'uitbreiding': 'praktijkuitbreiding',
-                                    'overgang': 'praktijkovergang'
-                                };
-                                
-                                welcomeMsg.innerHTML = `
-                                    <div class="message-avatar">🧠</div>
-                                    <div class="message-content">
-                                        Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
-                                        <br><br>
-                                        <strong>📋 Jouw project:</strong> ${situationText[userProfile.situation]} met ${userProfile.rooms} behandelkamers
-                                        <br><br>
-                                        <strong>🧠 AI features actief:</strong><br>
-                                        • Adviezen afgestemd op jouw budget & prioriteiten<br>
-                                        • Specifieke tips voor jouw aantal kamers<br>
-                                        • Timeline-aangepaste planning adviezen<br>
-                                        • Materiaal keuzes voor jouw situatie
-                                        <br><br>
-                                        <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd voor jouw project!
-                                        <br><br>
-                                        <strong>📧 Expert Contact:</strong><br>
-                                        <a href="${createContextualMailtoLink('Terugkerende Bezoeker - Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Context naar Expert</a>
-                                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
-                                    </div>
-                                `;
-                                
-                                // Show expert button for returning users with profile
-                                setTimeout(() => {
-                                    const expertButton = document.getElementById('expertButton');
-                                    if (expertButton) {
-                                        expertButton.style.display = 'block';
-                                    }
-                                }, 500);
-                            } else {
-                                // Generic AI welcome for users without completed profile
-                                welcomeMsg.innerHTML = `
-                                    <div class="message-avatar">🧠</div>
-                                    <div class="message-content">
-                                        Je AI is automatisch geactiveerd! 🚀
-                                        <br><br>
-                                        <strong>🎯 AI functies beschikbaar:</strong><br>
-                                        • Slimme praktijkinrichting adviezen<br>
-                                        • Materiaal vergelijkingen & kostenanalyses<br>
-                                        • Nieuwste 2025 trends en innovaties<br>
-                                        • Workflow optimalisatie tips
-                                        <br><br>
-                                        <strong>💡 Voor nog betere adviezen:</strong><br>
-                                        Klik op 'Maak Profiel' om gepersonaliseerde tips te krijgen afgestemd op jouw specifieke situatie!
-                                        <div class="message-source">🔄 AI Auto-Activated</div>
-                                    </div>
-                                `;
-                                
-                                // Show profile button for users without completed profile
-                                setTimeout(() => {
-                                    const profileButton = document.getElementById('profileButton');
-                                    if (profileButton) {
-                                        profileButton.style.display = 'block';
-                                    }
-                                }, 500);
-                            }
-                            welcomeMsg.className = 'message ai';
-                        }
-                        
-                        console.log('✅ AI auto-activated with profile:', savedProfile ? 'LOADED' : 'NEW USER');
-                        return true;
-                    }
-                }
-            } catch (error) {
-                console.log('⚠️ Could not auto-load AI settings');
-            }
-            return false;
         }
 
         function selectIntakeOption(category, value) {
@@ -1651,6 +1536,114 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             }
             
             console.log('Concerns updated:', userProfile.concerns);
+        }
+
+        function generateContextualEmailBody(subject = 'Praktijk Advies') {
+            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie website bezocht en wil graag advies over praktijkinrichting.%0D%0A%0D%0A`;
+            
+            if (userProfile.setup_completed) {
+                emailBody += `=== MIJN SITUATIE ===%0D%0A`;
+                
+                // Basic info
+                const situationLabels = {
+                    'nieuw': 'Nieuwe praktijk starten',
+                    'verbouw': 'Bestaande praktijk verbouwen',
+                    'uitbreiding': 'Praktijk uitbreiden',
+                    'overgang': 'Praktijkovergang'
+                };
+                
+                const experienceLabels = {
+                    'student': 'Nog student tandheelkunde',
+                    'beginnend': 'Beginnend tandarts (0-2 jaar)',
+                    'ervaren': 'Ervaren tandarts (2-10 jaar)',
+                    'senior': 'Senior tandarts (10+ jaar)'
+                };
+                
+                emailBody += `Situatie: ${situationLabels[userProfile.situation] || 'Onbekend'}%0D%0A`;
+                emailBody += `Ervaring: ${experienceLabels[userProfile.experience] || 'Niet opgegeven'}%0D%0A`;
+                emailBody += `Aantal behandelkamers: ${userProfile.rooms || 'Nog te bepalen'}%0D%0A`;
+                emailBody += `Budget indicatie: ${userProfile.budget || 'Nog te bepalen'}%0D%0A`;
+                emailBody += `Timeline: ${userProfile.timeline || 'Nog te bepalen'}%0D%0A`;
+                
+                if (userProfile.location) {
+                    const locationLabels = {
+                        'randstad': 'Randstad',
+                        'brabant': 'Noord-Brabant',
+                        'gelderland': 'Gelderland',
+                        'noord': 'Noord-Nederland',
+                        'zeeland': 'Zeeland/Zuid-Holland',
+                        'overig': 'Andere provincie'
+                    };
+                    emailBody += `Regio: ${locationLabels[userProfile.location]}%0D%0A`;
+                }
+                
+                // Specializations
+                if (userProfile.specializations.length > 0) {
+                    const specializationLabels = {
+                        'algemeen': 'Algemene tandheelkunde',
+                        'kinderen': 'Kindertandheelkunde',
+                        'orthodontie': 'Orthodontie',
+                        'implantaten': 'Implantologie',
+                        'cosmetisch': 'Cosmetische tandheelkunde',
+                        'kaakchirurgie': 'Kaakchirurgie'
+                    };
+                    
+                    const specs = userProfile.specializations.map(s => specializationLabels[s]).join(', ');
+                    emailBody += `Specialisaties: ${specs}%0D%0A`;
+                }
+                
+                // Concerns
+                if (userProfile.concerns.length > 0) {
+                    const concernLabels = {
+                        'financiering': 'Financiering regelen',
+                        'locatie': 'Juiste locatie vinden',
+                        'concurrentie': 'Concurrentie in de buurt',
+                        'patienten': 'Patiënten aantrekken',
+                        'technologie': 'Juiste technologie kiezen',
+                        'personeel': 'Personeel vinden',
+                        'administratie': 'Administratie & regelgeving',
+                        'werk_prive': 'Werk-privé balans'
+                    };
+                    
+                    const concerns = userProfile.concerns.map(c => concernLabels[c]).join(', ');
+                    emailBody += `Zorgen/overwegingen: ${concerns}%0D%0A`;
+                }
+                
+                // Priorities
+                if (userProfile.priorities.length > 0) {
+                    const priorityLabels = {
+                        'kosten': 'Kostenbeheersing',
+                        'kwaliteit': 'Hoge kwaliteit',
+                        'snelheid': 'Snelle realisatie',
+                        'duurzaam': 'Duurzaamheid',
+                        'modern': 'Modern design',
+                        'efficiency': 'Workflow efficiency'
+                    };
+                    
+                    const priorities = userProfile.priorities.map(p => priorityLabels[p]).join(', ');
+                    emailBody += `Prioriteiten: ${priorities}%0D%0A`;
+                }
+                
+                emailBody += `%0D%0A`;
+            }
+            
+            // Add recent questions if any
+            if (recentQuestions.length > 0) {
+                emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
+                recentQuestions.slice(-3).forEach((q, index) => {
+                    emailBody += `${index + 1}. ${encodeURIComponent(q)}%0D%0A`;
+                });
+                emailBody += `%0D%0A`;
+            }
+            
+            emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
+            
+            return emailBody;
+        }
+
+        function createContextualMailtoLink(subject) {
+            const emailBody = generateContextualEmailBody(subject);
+            return `mailto:expert@dentalspace.pro?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
         }
 
         function completeIntake() {
@@ -1881,94 +1874,276 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             return context;
         }
 
-        function generateContextualEmailBody(subject = 'Praktijk Advies') {
-            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie website bezocht en wil graag advies over praktijkinrichting.%0D%0A%0D%0A`;
+        function startBasicMode() {
+            document.getElementById('setupPanel').classList.add('hidden');
+            updateAIStatus('💼 Expert Mode', '#6c757d');
+            aiInitialized = true;
             
-            if (userProfile.setup_completed) {
-                emailBody += `=== MIJN SITUATIE ===%0D%0A`;
-                
-                // Basic info
-                const situationLabels = {
-                    'nieuw': 'Nieuwe praktijk starten',
-                    'verbouw': 'Bestaande praktijk verbouwen',
-                    'uitbreiding': 'Praktijk uitbreiden',
-                    'overgang': 'Praktijkovergang'
-                };
-                
-                const experienceLabels = {
-                    'student': 'Nog student tandheelkunde',
-                    'beginnend': 'Beginnend tandarts (0-2 jaar)',
-                    'ervaren': 'Ervaren tandarts (2-10 jaar)',
-                    'senior': 'Senior tandarts (10+ jaar)'
-                };
-                
-                emailBody += `Situatie: ${situationLabels[userProfile.situation] || 'Onbekend'}%0D%0A`;
-                emailBody += `Ervaring: ${experienceLabels[userProfile.experience] || 'Niet opgegeven'}%0D%0A`;
-                emailBody += `Aantal behandelkamers: ${userProfile.rooms || 'Nog te bepalen'}%0D%0A`;
-                emailBody += `Budget indicatie: ${userProfile.budget || 'Nog te bepalen'}%0D%0A`;
-                emailBody += `Timeline: ${userProfile.timeline || 'Nog te bepalen'}%0D%0A`;
-                
-                if (userProfile.location) {
-                    const locationLabels = {
-                        'randstad': 'Randstad',
-                        'brabant': 'Noord-Brabant',
-                        'gelderland': 'Gelderland',
-                        'noord': 'Noord-Nederland',
-                        'zeeland': 'Zeeland/Zuid-Holland',
-                        'overig': 'Andere provincie'
-                    };
-                    emailBody += `Regio: ${locationLabels[userProfile.location]}%0D%0A`;
-                }
-                
-                // Specializations
-                if (userProfile.specializations.length > 0) {
-                    const specializationLabels = {
-                        'algemeen': 'Algemene tandheelkunde',
-                        'kinderen': 'Kindertandheelkunde',
-                        'orthodontie': 'Orthodontie',
-                        'implantaten': 'Implantologie',
-                        'cosmetisch': 'Cosmetische tandheelkunde',
-                        'kaakchirurgie': 'Kaakchirurgie'
-                    };
+            addMessage("💼 <strong>Expert Mode Actief</strong><br><br><strong>🎯 Beschikbare services:</strong><br>• 💰 Kostenberekeningen en budgettering<br>• 📋 Praktijkplanning en compliance check<br>• 🤝 Direct expert contact en begeleiding<br>• 🏗️ Complete praktijkrealisatie via DentalMa<br>• 💎 Maatwerk Solid Surface meubilair via IsSolid<br><br><strong>📞 Persoonlijk contact:</strong><br>Al je vragen krijgen direct antwoord van onze specialist voor maatwerk oplossingen en implementatie.<div class='message-source'>💼 Expert Knowledge Active</div>", false, 'bot');
+        }
+
+        function autoLoadAI() {
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    const savedKey = localStorage.getItem('dentalspace_ai_key');
+                    const aiWasEnabled = localStorage.getItem('dentalspace_ai_enabled') === 'true';
                     
-                    const specs = userProfile.specializations.map(s => specializationLabels[s]).join(', ');
-                    emailBody += `Specialisaties: ${specs}%0D%0A`;
+                    if (savedKey && savedKey.startsWith('sk-') && aiWasEnabled) {
+                        // Auto-activate AI silently
+                        openaiApiKey = savedKey;
+                        aiEnabled = true;
+                        aiInitialized = true;
+                        
+                        // Load user profile
+                        const savedProfile = loadUserProfile();
+                        
+                        // Hide setup panel immediately
+                        document.getElementById('setupPanel').classList.add('hidden');
+                        updateAIStatus('🟢 AI Actief', '#28a745');
+                        
+                        // Replace welcome message based on profile status
+                        const welcomeMsg = document.getElementById('welcomeMessage');
+                        if (welcomeMsg) {
+                            if (savedProfile && savedProfile.setup_completed) {
+                                // Personalized welcome for returning users
+                                const situationText = {
+                                    'nieuw': 'nieuwe praktijk',
+                                    'verbouw': 'praktijkverbouwing',
+                                    'uitbreiding': 'praktijkuitbreiding',
+                                    'overgang': 'praktijkovergang'
+                                };
+                                
+                                welcomeMsg.innerHTML = `
+                                    <div class="message-avatar">🧠</div>
+                                    <div class="message-content">
+                                        Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
+                                        <br><br>
+                                        <strong>📋 Jouw project:</strong> ${situationText[userProfile.situation]} met ${userProfile.rooms} behandelkamers
+                                        <br><br>
+                                        <strong>🧠 AI features actief:</strong><br>
+                                        • Adviezen afgestemd op jouw budget & prioriteiten<br>
+                                        • Specifieke tips voor jouw aantal kamers<br>
+                                        • Timeline-aangepaste planning adviezen<br>
+                                        • Materiaal keuzes voor jouw situatie
+                                        <br><br>
+                                        <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd voor jouw project!
+                                        <br><br>
+                                        <strong>📧 Expert Contact:</strong><br>
+                                        <a href="${createContextualMailtoLink('Terugkerende Bezoeker - Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Context naar Expert</a>
+                                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
+                                    </div>
+                                `;
+                                
+                                // Show expert button for returning users with profile
+                                setTimeout(() => {
+                                    const expertButton = document.getElementById('expertButton');
+                                    if (expertButton) {
+                                        expertButton.style.display = 'block';
+                                    }
+                                }, 500);
+                            } else {
+                                // Generic AI welcome for users without completed profile
+                                welcomeMsg.innerHTML = `
+                                    <div class="message-avatar">🧠</div>
+                                    <div class="message-content">
+                                        Je AI is automatisch geactiveerd! 🚀
+                                        <br><br>
+                                        <strong>🎯 AI functies beschikbaar:</strong><br>
+                                        • Slimme praktijkinrichting adviezen<br>
+                                        • Materiaal vergelijkingen & kostenanalyses<br>
+                                        • Nieuwste 2025 trends en innovaties<br>
+                                        • Workflow optimalisatie tips
+                                        <br><br>
+                                        <strong>💡 Voor nog betere adviezen:</strong><br>
+                                        Klik op 'Maak Profiel' om gepersonaliseerde tips te krijgen afgestemd op jouw specifieke situatie!
+                                        <div class="message-source">🔄 AI Auto-Activated</div>
+                                    </div>
+                                `;
+                                
+                                // Show profile button for users without completed profile
+                                setTimeout(() => {
+                                    const profileButton = document.getElementById('profileButton');
+                                    if (profileButton) {
+                                        profileButton.style.display = 'block';
+                                    }
+                                }, 500);
+                            }
+                            welcomeMsg.className = 'message ai';
+                        }
+                        
+                        console.log('✅ AI auto-activated with profile:', savedProfile ? 'LOADED' : 'NEW USER');
+                        return true;
+                    }
                 }
-                
-                // Concerns
-                if (userProfile.concerns.length > 0) {
-                    const concernLabels = {
-                        'financiering': 'Financiering regelen',
-                        'locatie': 'Juiste locatie vinden',
-                        'concurrentie': 'Concurrentie in de buurt',
-                        'patienten': 'Patiënten aantrekken',
-                        'technologie': 'Juiste technologie kiezen',
-                        'personeel': 'Personeel vinden',
-                        'administratie': 'Administratie & regelgeving',
-                        'werk_prive': 'Werk-privé balans'
-                    };
-                    
-                    const concerns = userProfile.concerns.map(c => concernLabels[c]).join(', ');
-                    emailBody += `Zorgen/overwegingen: ${concerns}%0D%0A`;
-                }
-                
-                // Priorities
-                if (userProfile.priorities.length > 0) {
-                    const priorityLabels = {
-                        'kosten': 'Kostenbeheersing',
-                        'kwaliteit': 'Hoge kwaliteit',
-                        'snelheid': 'Snelle realisatie',
-                        'duurzaam': 'Duurzaamheid',
-                        'modern': 'Modern design',
-                        'efficiency': 'Workflow efficiency'
-                    };
-                    
-                    const priorities = userProfile.priorities.map(p => priorityLabels[p]).join(', ');
-                    emailBody += `Prioriteiten: ${priorities}%0D%0A`;
-                }
-                
-                emailBody += `%0D%0A`;
+            } catch (error) {
+                console.log('⚠️ Could not auto-load AI settings');
             }
+            return false;
+        }
+
+        function updateAIStatus(status, color) {
+            const statusElement = document.getElementById('aiStatus');
+            if (statusElement) {
+                statusElement.textContent = status;
+                statusElement.style.background = color;
+            }
+        }
+
+        function addMessage(content, isUser = false, messageType = 'bot') {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : messageType}`;
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            
+            if (!isUser) {
+                messageContent.innerHTML = content;
+            } else {
+                messageContent.textContent = content;
+            }
+            
+            const messageAvatar = document.createElement('div');
+            messageAvatar.className = 'message-avatar';
+            
+            if (isUser) {
+                messageAvatar.textContent = '👤';
+            } else if (messageType === 'ai') {
+                messageAvatar.textContent = '🧠';
+            } else {
+                messageAvatar.textContent = '🤖';
+            }
+            
+            messageDiv.appendChild(messageAvatar);
+            messageDiv.appendChild(messageContent);
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            hideTypingIndicator(); // Remove existing
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="typing-indicator" style="display: block;">
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function hideTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const message = input.value.trim();
+            
+            if (!message) {
+                console.log('❌ Leeg bericht, verzending gestopt');
+                return;
+            }
+            
+            console.log('📤 Verzenden bericht:', message);
+            
+            // Disable input
+            input.disabled = true;
+            sendButton.disabled = true;
+            sendButton.textContent = '⏳';
+            
+            // Add user message
+            addMessage(message, true);
+            
+            // Add to conversation history
+            conversationHistory.push({ role: "user", content: message });
+            
+            // Clear input
+            input.value = '';
+            
+            // Show thinking
+            showTypingIndicator();
+            
+            try {
+                // Get response from chatbot
+                const result = await chatbot.generateResponse(message);
+                
+                hideTypingIndicator();
+                
+                // Add bot response
+                const messageType = result.source === 'ai' ? 'ai' : 'bot';
+                addMessage(result.response, false, messageType);
+                
+                // Add to conversation history
+                conversationHistory.push({ role: "assistant", content: result.response });
+                
+                // Keep conversation history manageable
+                if (conversationHistory.length > 20) {
+                    conversationHistory = conversationHistory.slice(-16);
+                }
+                
+            } catch (error) {
+                hideTypingIndicator();
+                console.error('Error:', error);
+                addMessage("🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='mailto:expert@dentalspace.pro?subject=Chatbot%20Technische%20Vraag&body=Hallo,%0D%0A%0D%0AEr%20ging%20iets%20mis%20met%20de%20chatbot.%20Ik%20wil%20graag%20hulp%20bij%20mijn%20praktijkinrichting%20vraag.%0D%0A%0D%0AGroeten,' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Voordeel:</strong> Persoonlijke begeleiding werkt altijd perfect!", false, 'bot');
+            }
+            
+            // Re-enable input
+            input.disabled = false;
+            sendButton.disabled = false;
+            sendButton.textContent = '➤';
+            input.focus();
+        }
+
+        function showProfileButton() {
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'block';
+            }
+        }
+
+        function showProfileSetup() {
+            // Hide profile button
+            const profileButton = document.getElementById('profileButton');
+            if (profileButton) {
+                profileButton.style.display = 'none';
+            }
+            
+            addMessage("👤 <strong>Profiel Aanmaken</strong><br><br>Geweldig dat je je profiel wilt aanvullen! Dit zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>📋 Vul hieronder je gegevens in:</strong><div class='message-source'>🎯 Profiel Setup Gestart</div>", false, 'ai');
+            
+            document.getElementById('intakePanel').classList.add('show');
+        }
+
+        function sendToExpert() {
+            if (userProfile.setup_completed) {
+                const mailtoLink = createContextualMailtoLink('Complete Praktijk Advies - Alle Context');
+                window.location.href = mailtoLink;
+            } else {
+                // Fallback for users without profile
+                const basicEmailBody = generateBasicEmailBody();
+                const mailtoLink = `mailto:expert@dentalspace.pro?subject=${encodeURIComponent('Praktijk Advies - Chat Conversation')}&body=${basicEmailBody}`;
+                window.location.href = mailtoLink;
+            }
+        }
+
+        function generateBasicEmailBody() {
+            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie AI chatbot gebruikt en wil graag persoonlijk contact voor praktijkinrichting advies.%0D%0A%0D%0A`;
             
             // Add recent questions if any
             if (recentQuestions.length > 0) {
@@ -1984,6 +2159,97 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             return emailBody;
         }
 
-        function createContextualMailtoLink(subject) {
-            const emailBody = generateContextualEmailBody(subject);
-            return `mailto:expert@dentalspace.pro?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
+        function sendSuggestion(suggestion) {
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.value = suggestion;
+                sendMessage();
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function scrollToChat() {
+            document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                document.getElementById('chatInput').focus();
+            }, 1000);
+        }
+
+        // Cookie Management
+        function acceptCookies() {
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('cookiesAccepted', 'true');
+            }
+            const notice = document.getElementById('cookieNotice');
+            if (notice) {
+                notice.classList.remove('show');
+                notice.style.display = 'none';
+            }
+        }
+
+        function checkCookies() {
+            // Only show cookie notice if localStorage is available and cookies not yet accepted
+            if (typeof(Storage) !== "undefined" && !localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const notice = document.getElementById('cookieNotice');
+                    if (notice) {
+                        notice.classList.add('show');
+                        notice.style.display = 'block';
+                    }
+                }, 2000);
+            }
+        }
+
+        // Initialize and run tests
+        document.addEventListener('DOMContentLoaded', () => {
+            // Focus input
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.focus();
+            }
+            
+            // Try to auto-load AI first
+            const aiAutoLoaded = autoLoadAI();
+            
+            // If AI wasn't auto-loaded, setup might be needed
+            if (!aiAutoLoaded) {
+                console.log('💡 AI setup required - showing setup panel');
+            }
+            
+            // Check cookies
+            checkCookies();
+            
+            // Console startup info
+            console.log('🚀 DentalSpace Pro Website geladen!');
+            console.log('🌐 Domain: https://dentalspace.pro');
+            console.log('🧠 AI Auto-detection: ' + (aiAutoLoaded ? 'SUCCESS' : 'SETUP NEEDED'));
+            
+            // Test essential functions
+            try {
+                // Test that all key functions exist
+                if (typeof setupAI !== 'function') console.error('❌ setupAI function missing');
+                if (typeof startBasicMode !== 'function') console.error('❌ startBasicMode function missing');
+                if (typeof autoLoadAI !== 'function') console.error('❌ autoLoadAI function missing');
+                if (typeof sendMessage !== 'function') console.error('❌ sendMessage function missing');
+                if (typeof scrollToChat !== 'function') console.error('❌ scrollToChat function missing');
+                
+                // Test that all key elements exist
+                if (!document.getElementById('chatInput')) console.error('❌ chatInput element missing');
+                if (!document.getElementById('chatMessages')) console.error('❌ chatMessages element missing');
+                if (!document.getElementById('sendButton')) console.error('❌ sendButton element missing');
+                
+                console.log('✅ All essential functions and elements found');
+                
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
