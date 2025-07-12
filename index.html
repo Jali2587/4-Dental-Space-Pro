@@ -872,25 +872,12 @@
             <div class="hero-chatbot" id="chat">
                 <div class="chatbot-container">
                     <div class="chatbot-header">
-                        <div class="ai-status" id="aiStatus">🔴 AI Uit</div>
+                        <div class="ai-status" id="aiStatus">🟢 AI Actief</div>
                         <h3>🦷 DentalSpace Pro AI Assistent</h3>
                         <p>Specialist kennis + AI intelligentie</p>
                     </div>
 
-                    <!-- API Setup Panel -->
-                    <div class="setup-panel" id="setupPanel">
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h4 style="margin: 0 0 8px 0; color: #333;">🧠 Activeer AI voor Slimme Adviezen</h4>
-                            <p style="font-size: 0.9rem; color: #666; margin: 0;">Krijg gepersonaliseerde praktijkinrichting tips</p>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
-                            <input type="password" id="apiKeyInput" class="api-input" placeholder="OpenAI API key (sk-...)" style="width: 70%; padding: 10px 15px; border-radius: 25px; border: 2px solid #ddd; outline: none;">
-                            <button onclick="setupAI()" class="setup-btn" style="padding: 10px 20px; border-radius: 25px; background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; font-weight: 600; cursor: pointer;">🚀 Activeer</button>
-                        </div>
-                        <div style="text-align: center;">
-                            <span onclick="startBasicMode()" style="cursor: pointer; color: #007bff; text-decoration: underline; font-size: 0.9rem;">💼 Start met Expert Mode (zonder AI)</span>
-                        </div>
-                    </div>
+                    <!-- Direct AI access - no setup needed -->
 
                     <!-- User Intake Panel -->
                     <div class="intake-panel" id="intakePanel">
@@ -1003,22 +990,23 @@
                     </div>
 
                     <div class="chat-messages" id="chatMessages">
-                        <div class="message bot" id="welcomeMessage">
-                            <div class="message-avatar">🤖</div>
+                        <div class="message ai" id="welcomeMessage">
+                            <div class="message-avatar">🧠</div>
                             <div class="message-content">
-                                Hallo! Welkom bij DentalSpace Pro! 🦷
+                                Welkom bij DentalSpace Pro! AI is klaar om te helpen! 🚀
                                 <br><br>
-                                <strong>🎯 Ik help je met:</strong><br>
-                                • Expert praktijkinrichting advies<br>
-                                • Kosten & budgetberekeningen<br>
-                                • Materiaal- en designkeuzes<br>
-                                • Workflow optimalisatie tips<br>
-                                • Direct contact met specialisten
+                                <strong>🎯 AI functies beschikbaar:</strong><br>
+                                • Slimme praktijkinrichting adviezen<br>
+                                • Materiaal vergelijkingen & kostenanalyses<br>
+                                • Nieuwste 2025 trends en innovaties<br>
+                                • Workflow optimalisatie tips
                                 <br><br>
-                                <strong>🚀 Voor AI features:</strong> Activeer AI bovenaan voor geavanceerde, gepersonaliseerde adviezen!
+                                <strong>🚀 Kies je aanpak:</strong><br>
+                                <strong>📋 Optie 1:</strong> Maak een profiel voor gepersonaliseerde adviezen<br>
+                                <strong>⚡ Optie 2:</strong> Begin direct met vragen stellen
                                 <br><br>
-                                <strong>💡 Start direct:</strong> Klik op een van de knoppen hieronder of stel je vraag!
-                                <div class="message-source">💡 DentalSpace Pro Welcome</div>
+                                <strong>💡 Start direct:</strong> Klik op de paarse AI-knoppen hieronder!
+                                <div class="message-source">🧠 AI Direct Beschikbaar</div>
                             </div>
                         </div>
                     </div>
@@ -1177,12 +1165,12 @@
     </div>
 
     <script>
-        // AI Configuration
-        let aiEnabled = false;
-        let openaiApiKey = '';
+        // AI Configuration - Website Owner: Add your OpenAI API key here
+        let aiEnabled = true; // Always enabled when API key is set
+        let openaiApiKey = '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'; // API key integrated
         let conversationHistory = [];
         let chatHistory = [];
-        let aiInitialized = false;
+        let aiInitialized = true;
         let userProfile = {
             situation: null,
             budget: null,
@@ -1378,80 +1366,8 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
 
         const chatbot = new AIEnhancedChatbot();
 
-        // UI Functions
-        function setupAI() {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            
-            if (!apiKey.startsWith('sk-')) {
-                alert('❌ Ongeldige API key. Deze moet beginnen met "sk-"');
-                return;
-            }
-            
-            openaiApiKey = apiKey;
-            aiEnabled = true;
-            aiInitialized = true;
-            
-            // Save API key for future sessions
-            try {
-                if (typeof(Storage) !== "undefined") {
-                    localStorage.setItem('dentalspace_ai_key', apiKey);
-                    localStorage.setItem('dentalspace_ai_enabled', 'true');
-                    console.log('✅ AI settings saved for future sessions');
-                }
-            } catch (error) {
-                console.log('⚠️ Could not save AI settings');
-            }
-            
-            // Hide setup panel and show intake choice
-            document.getElementById('setupPanel').classList.add('hidden');
-            updateAIStatus('🟢 AI Actief', '#28a745');
-            
-            // Check if we have saved profile
-            const savedProfile = loadUserProfile();
-            if (savedProfile && savedProfile.setup_completed) {
-                // Skip choice if already completed
-                showEnhancedPersonalizedWelcome();
-            } else {
-                // Show choice between intake or direct start
-                showIntakeChoice();
-            }
-        }
-
-        function showIntakeChoice() {
-            addMessage("🧠 <strong>AI Succesvol Geactiveerd!</strong><br><br><strong>🎯 Kies je aanpak:</strong><br><br><strong>📋 Optie 1: Persoonlijke Intake (aanbevolen)</strong><br>Vertel me over jouw situatie voor gepersonaliseerde adviezen afgestemd op jouw budget, ervaring en zorgen.<br><br><strong>⚡ Optie 2: Direct Starten</strong><br>Begin meteen met vragen stellen. Je kunt altijd later je profiel aanvullen.<br><br>Beide opties werken perfect - kies wat jij fijn vindt!<div class='message-source'>🎯 AI Setup - Jouw Keuze</div>", false, 'ai');
-            
-            // Add choice buttons  
-            addChoiceButtons();
-        }
-
-        function addChoiceButtons() {
-            const messagesContainer = document.getElementById('chatMessages');
-            const choiceDiv = document.createElement('div');
-            choiceDiv.className = 'message ai';
-            choiceDiv.id = 'choiceButtons';
-            
-            choiceDiv.innerHTML = `
-                <div class="message-avatar">🤖</div>
-                <div class="message-content" style="text-align: center;">
-                    <button onclick="startIntake()" style="background: linear-gradient(45deg, #007bff, #0056b3); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">📋 Start Persoonlijke Intake</button>
-                    <button onclick="skipIntakeAndStart()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; padding: 12px 24px; border: none; border-radius: 25px; margin: 5px 10px; cursor: pointer; font-weight: 600;">⚡ Direct Starten</button>
-                    <div style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7;">
-                        💡 Je kunt altijd later je profiel toevoegen voor betere adviezen
-                    </div>
-                </div>
-            `;
-            
-            messagesContainer.appendChild(choiceDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
+        // Profile and UI Functions
         function startIntake() {
-            // Remove choice buttons
-            const choiceButtons = document.getElementById('choiceButtons');
-            if (choiceButtons) {
-                choiceButtons.remove();
-            }
-            
             addMessage("📋 <strong>Perfect! Laten we jouw profiel aanmaken</strong><br><br>Dit duurt maar 2 minuten en zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Scroll door de vragen hieronder:</strong><div class='message-source'>🎯 Persoonlijke Intake Gestart</div>", false, 'ai');
             
             document.getElementById('intakePanel').classList.add('show');
@@ -1463,128 +1379,6 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     intakePanel.scrollTop = 0;
                 }
             }, 100);
-        }
-
-        function skipIntakeAndStart() {
-            // Remove choice buttons
-            const choiceButtons = document.getElementById('choiceButtons');
-            if (choiceButtons) {
-                choiceButtons.remove();
-            }
-            
-            addMessage("⚡ <strong>AI Klaar om te Helpen!</strong><br><br><strong>🎯 Beschikbare AI features:</strong><br>• 💡 Slimme praktijkinrichting tips<br>• 💰 Gedetailleerde budgetanalyses<br>• 🏗️ Workflow optimalisatie adviezen<br>• 🌟 Nieuwste 2025 trends en innovaties<br>• 💎 Materiaal vergelijkingen en specificaties<br><br><strong>💡 Tip:</strong> Voor nog betere, gepersonaliseerde adviezen kun je later je profiel aanvullen via de 'Profiel' knop.<br><br><strong>🚀 Start direct:</strong> Klik op de paarse AI-knoppen of stel je vraag!<div class='message-source'>🎉 AI Expert Mode Active</div>", false, 'ai');
-            
-            // Show profile button for later
-            showProfileButton();
-        }
-
-        function startBasicMode() {
-            document.getElementById('setupPanel').classList.add('hidden');
-            updateAIStatus('💼 Expert Mode', '#6c757d');
-            aiInitialized = true;
-            
-            const basicContactLink = 'mailto:expert@dentalspace.pro?subject=Expert%20Mode%20Contact&body=Hallo,%0D%0A%0D%0AIk%20gebruik%20expert%20mode%20en%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AGroeten,';
-            
-            addMessage(`💼 <strong>Expert Mode Actief</strong><br><br><strong>🎯 Beschikbare services:</strong><br>• 💰 Kostenberekeningen en budgettering<br>• 📋 Praktijkplanning en compliance check<br>• 🤝 Direct expert contact en begeleiding<br>• 🏗️ Complete praktijkrealisatie via DentalMa<br>• 💎 Maatwerk Solid Surface meubilair via IsSolid<br><br><strong>📞 Persoonlijk contact:</strong><br>📧 <a href='${basicContactLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a> | ☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br>Al je vragen krijgen direct antwoord van onze specialist voor maatwerk oplossingen en implementatie.<div class='message-source'>💼 Expert Knowledge Active</div>`, false, 'bot');
-        }
-
-        function autoLoadAI() {
-            try {
-                if (typeof(Storage) !== "undefined") {
-                    const savedKey = localStorage.getItem('dentalspace_ai_key');
-                    const aiWasEnabled = localStorage.getItem('dentalspace_ai_enabled') === 'true';
-                    
-                    if (savedKey && savedKey.startsWith('sk-') && aiWasEnabled) {
-                        // Auto-activate AI silently
-                        openaiApiKey = savedKey;
-                        aiEnabled = true;
-                        aiInitialized = true;
-                        
-                        // Load user profile
-                        const savedProfile = loadUserProfile();
-                        
-                        // Hide setup panel immediately
-                        document.getElementById('setupPanel').classList.add('hidden');
-                        updateAIStatus('🟢 AI Actief', '#28a745');
-                        
-                        // Replace welcome message based on profile status
-                        const welcomeMsg = document.getElementById('welcomeMessage');
-                        if (welcomeMsg) {
-                            if (savedProfile && savedProfile.setup_completed) {
-                                // Personalized welcome for returning users
-                                const situationText = {
-                                    'nieuw': 'nieuwe praktijk',
-                                    'verbouw': 'praktijkverbouwing',
-                                    'uitbreiding': 'praktijkuitbreiding',
-                                    'overgang': 'praktijkovergang'
-                                };
-                                
-                                welcomeMsg.innerHTML = `
-                                    <div class="message-avatar">🧠</div>
-                                    <div class="message-content">
-                                        Welkom terug! Je gepersonaliseerde AI is klaar! 🎯
-                                        <br><br>
-                                        <strong>📋 Jouw project:</strong> ${situationText[userProfile.situation]} met ${userProfile.rooms} behandelkamers
-                                        <br><br>
-                                        <strong>🧠 AI features actief:</strong><br>
-                                        • Adviezen afgestemd op jouw budget & prioriteiten<br>
-                                        • Specifieke tips voor jouw aantal kamers<br>
-                                        • Timeline-aangepaste planning adviezen<br>
-                                        • Materiaal keuzes voor jouw situatie
-                                        <br><br>
-                                        <strong>🚀 Direct aan de slag:</strong> Alle AI adviezen zijn gepersonaliseerd voor jouw project!
-                                        <br><br>
-                                        <strong>📧 Expert Contact:</strong><br>
-                                        <a href="${createContextualMailtoLink('Terugkerende Bezoeker - Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Context naar Expert</a>
-                                        <div class="message-source">🔄 AI Auto-Restored & Personalized</div>
-                                    </div>
-                                `;
-                                
-                                // Show expert button for returning users with profile
-                                setTimeout(() => {
-                                    const expertButton = document.getElementById('expertButton');
-                                    if (expertButton) {
-                                        expertButton.style.display = 'block';
-                                    }
-                                }, 500);
-                            } else {
-                                // Generic AI welcome for users without completed profile
-                                welcomeMsg.innerHTML = `
-                                    <div class="message-avatar">🧠</div>
-                                    <div class="message-content">
-                                        Je AI is automatisch geactiveerd! 🚀
-                                        <br><br>
-                                        <strong>🎯 AI functies beschikbaar:</strong><br>
-                                        • Slimme praktijkinrichting adviezen<br>
-                                        • Materiaal vergelijkingen & analyses<br>
-                                        • Nieuwste 2025 trends en innovaties<br>
-                                        • Workflow optimalisatie tips
-                                        <br><br>
-                                        <strong>💡 Voor nog betere adviezen:</strong><br>
-                                        Klik op 'Maak Profiel' om gepersonaliseerde tips te krijgen afgestemd op jouw specifieke situatie!
-                                        <div class="message-source">🔄 AI Auto-Activated</div>
-                                    </div>
-                                `;
-                                
-                                // Show profile button for users without completed profile
-                                setTimeout(() => {
-                                    const profileButton = document.getElementById('profileButton');
-                                    if (profileButton) {
-                                        profileButton.style.display = 'block';
-                                    }
-                                }, 500);
-                            }
-                            welcomeMsg.className = 'message ai';
-                        }
-                        
-                        console.log('✅ AI auto-activated with profile:', savedProfile ? 'LOADED' : 'NEW USER');
-                        return true;
-                    }
-                }
-            } catch (error) {
-                console.log('⚠️ Could not auto-load AI settings');
-            }
-            return false;
         }
 
         function selectIntakeOption(category, value) {
@@ -2002,17 +1796,8 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
                 profileButton.style.display = 'none';
             }
             
-            addMessage("👤 <strong>Profiel Aanmaken</strong><br><br>Geweldig dat je je profiel wilt aanvullen! Dit zorgt ervoor dat alle AI adviezen perfect aansluiten bij jouw specifieke situatie.<br><br><strong>Scroll door de vragen hieronder:</strong><div class='message-source'>🎯 Profiel Setup Gestart</div>", false, 'ai');
-            
-            document.getElementById('intakePanel').classList.add('show');
-            
-            // Scroll intake panel to top
-            setTimeout(() => {
-                const intakePanel = document.getElementById('intakePanel');
-                if (intakePanel) {
-                    intakePanel.scrollTop = 0;
-                }
-            }, 100);
+            // Start intake directly
+            startIntake();
         }
 
         function sendToExpert() {
@@ -2237,18 +2022,34 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
 
         // Initialize and run tests
         document.addEventListener('DOMContentLoaded', () => {
+            // AI is always enabled when API key is set
+            if (openaiApiKey && openaiApiKey !== 'YOUR_OPENAI_API_KEY_HERE') {
+                aiEnabled = true;
+                aiInitialized = true;
+                updateAIStatus('🟢 AI Actief', '#28a745');
+                console.log('✅ AI automatically enabled with built-in API key');
+                
+                // Show profile button for users to optionally create profile
+                setTimeout(() => {
+                    const profileButton = document.getElementById('profileButton');
+                    if (profileButton) {
+                        profileButton.style.display = 'block';
+                    }
+                }, 500);
+                
+                // Load existing profile if available
+                loadUserProfile();
+            } else {
+                // Fallback if no API key is set
+                aiEnabled = false;
+                updateAIStatus('⚠️ API Key Needed', '#f39c12');
+                console.log('⚠️ Website owner needs to add API key');
+            }
+            
             // Focus input
             const chatInput = document.getElementById('chatInput');
             if (chatInput) {
                 chatInput.focus();
-            }
-            
-            // Try to auto-load AI first
-            const aiAutoLoaded = autoLoadAI();
-            
-            // If AI wasn't auto-loaded, setup might be needed
-            if (!aiAutoLoaded) {
-                console.log('💡 AI setup required - showing setup panel');
             }
             
             // Check cookies
@@ -2257,14 +2058,11 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             // Console startup info
             console.log('🚀 DentalSpace Pro Website geladen!');
             console.log('🌐 Domain: https://dentalspace.pro');
-            console.log('🧠 AI Auto-detection: ' + (aiAutoLoaded ? 'SUCCESS' : 'SETUP NEEDED'));
+            console.log('🧠 AI Status: ' + (aiEnabled ? 'ACTIVE' : 'NEEDS_API_KEY'));
             
             // Test essential functions
             try {
                 // Test that all key functions exist
-                if (typeof setupAI !== 'function') console.error('❌ setupAI function missing');
-                if (typeof startBasicMode !== 'function') console.error('❌ startBasicMode function missing');
-                if (typeof autoLoadAI !== 'function') console.error('❌ autoLoadAI function missing');
                 if (typeof sendMessage !== 'function') console.error('❌ sendMessage function missing');
                 if (typeof scrollToChat !== 'function') console.error('❌ scrollToChat function missing');
                 
