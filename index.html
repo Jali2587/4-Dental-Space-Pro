@@ -1314,14 +1314,18 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     }
                 }
                 
-                // Kosten vragen
+                // Only respond to specific cost/contact questions
                 if (message.includes('kost') || message.includes('prijs') || message.includes('budget')) {
                     return expertResponses.kosten[0].replace('{{EXPERT_LINK}}', expertLink);
                 }
                 
-                // Contact vragen
                 if (message.includes('contact') || message.includes('bellen') || message.includes('afspraak')) {
                     return expertResponses.contact[0].replace('{{EXPERT_LINK}}', expertLink);
+                }
+                
+                // For AI suggestion buttons, always let AI handle them
+                if (message.includes('concrete tips') || message.includes('trends in tandartspraktijk') || message.includes('materialen zijn het beste')) {
+                    return null; // Force AI to handle these
                 }
                 
                 return null;
@@ -1330,16 +1334,16 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             async generateResponse(userMessage) {
                 console.log('🤖 Generating response for:', userMessage);
                 
-                // 1. Probeer eerst expert knowledge (snelle response)
+                // 1. Probeer eerst expert knowledge (alleen voor kosten/contact)
                 const expertResponse = this.getExpertResponse(userMessage);
                 if (expertResponse) {
                     console.log('✅ Expert response used');
                     return { response: expertResponse, source: 'expert' };
                 }
                 
-                // 2. Voor complexe vragen, gebruik AI
+                // 2. Voor alle andere vragen, gebruik AI (inclusief suggestion buttons)
                 if (aiEnabled) {
-                    console.log('🧠 Using AI for complex query...');
+                    console.log('🧠 Using AI for query...');
                     updateAIStatus('🤔 AI Denkt...', '#f39c12');
                     
                     const aiResponse = await this.getAIResponse(userMessage);
@@ -1347,20 +1351,49 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                         updateAIStatus('🟢 AI Actief', '#28a745');
                         console.log('✅ AI response generated');
                         return { response: aiResponse + "<div class='message-source'>🧠 AI + Expert Knowledge</div>", source: 'ai' };
+                    } else {
+                        // AI failed - try backup responses for specific topics
+                        console.log('⚠️ AI failed, trying backup responses');
+                        updateAIStatus('🟡 AI Backup', '#f39c12');
+                        
+                        const backupResponse = this.getBackupResponse(userMessage);
+                        if (backupResponse) {
+                            return { response: backupResponse, source: 'backup' };
+                        }
                     }
                 }
                 
-                // 3. Fallback naar basis response
+                // 3. Fallback naar basis response (alleen als laatste redmiddel)
                 console.log('💡 Using fallback response');
+                updateAIStatus('🔴 AI Niet Beschikbaar', '#dc3545');
                 
                 const fallbackLink = userProfile.setup_completed 
                     ? createContextualMailtoLink('Praktijk Advies') 
                     : 'mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,';
                 
                 return { 
-                    response: `Interessante vraag! 💭<br><br>Voor de beste hulp bij praktijkinrichting kan ik je in contact brengen met onze specialisten.<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>`, 
+                    response: `🔧 <strong>AI tijdelijk niet beschikbaar</strong><br><br>Geen zorgen! Voor direct advies kun je contact opnemen met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Tip:</strong> Probeer het later opnieuw - AI komt meestal snel weer online!<div class='message-source'>🔧 Tijdelijke Fallback</div>`, 
                     source: 'fallback' 
                 };
+            }
+
+            getBackupResponse(userMessage) {
+                const message = userMessage.toLowerCase();
+                
+                // Backup responses for AI suggestion buttons
+                if (message.includes('concrete tips') && message.includes('praktijkindeling')) {
+                    return `🏗️ <strong>5 Praktijkindeling Tips (Expert Knowledge):</strong><br><br><strong>1. One-way patient flow</strong><br>Plan routes zodat patiënten elkaar niet kruisen. Ingang → wachtruimte → behandelkamer → uitgang.<br><br><strong>2. Centrale sterilisatie</strong><br>Plaats sterilisatie centraal, toegankelijk vanuit alle behandelkamers. 12-15m² nodig.<br><br><strong>3. Optimale kamergrootte</strong><br>Behandelkamers: 12-14m² minimum. Wachtruimte: 1.5m² per stoel.<br><br><strong>4. Aparte leveranciersingang</strong><br>Voorkom dat leveranciers door patiëntgebied moeten. Apart entree planning.<br><br><strong>5. Flexibele kamers</strong><br>Ontwerp kamers die verschillende behandelingen aankunnen. Modulair meubilair.<br><br><strong>📧 Voor implementatie:</strong><br><a href='${createContextualMailtoLink('Praktijkindeling Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Expert implementatie advies</a><div class='message-source'>🏗️ Expert Backup Knowledge</div>`;
+                }
+                
+                if (message.includes('trends') && message.includes('2025')) {
+                    return `🚀 <strong>2025 Tandartspraktijk Trends (Expert Knowledge):</strong><br><br><strong>🌱 Duurzaamheid</strong><br>• Gerecycled Solid Surface materialen<br>• LED+ verlichting & slimme thermostaten<br>• Waterbesparende systemen<br><br><strong>🤖 Smart Technology</strong><br>• IoT sensoren voor ruimtebeheer<br>• Contactloze kranen & deuren<br>• Digitale patient check-in systemen<br><br><strong>🏢 Ruimte Optimalisatie</strong><br>• Modulaire inrichting voor flexibiliteit<br>• Multi-functionele behandelruimtes<br>• Compacte, efficiënte indelingen<br><br><strong>🌿 Biophilic Design</strong><br>• Natuurlijke materialen & kleuren<br>• Planten & natuurlijk licht<br>• Kalmerend, niet-klinisch gevoel<br><br><strong>📧 Voor 2025 implementatie:</strong><br><a href='${createContextualMailtoLink('2025 Trends Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Trendy praktijk realiseren</a><div class='message-source'>🚀 Expert Trend Knowledge</div>`;
+                }
+                
+                if (message.includes('materialen') && message.includes('behandelkamers')) {
+                    return `💎 <strong>Behandelkamer Materialen Vergelijking (Expert Knowledge):</strong><br><br><strong>🥇 Solid Surface (€800-1200/m²)</strong><br>✅ 100% hygiënisch, naadloos<br>✅ 12-uur antibacteriële garantie<br>✅ Repareerbaar, duurzaam 20+ jaar<br>⚠️ Hogere investering<br><br><strong>🥈 Fenolhars (€400-600/m²)</strong><br>✅ Vochtbestendig, sterke basis<br>✅ Goede hygiene eigenschappen<br>⚠️ Zichtbare naden, minder premium<br><br><strong>🥉 Laminaat (€200-400/m²)</strong><br>✅ Budget-vriendelijk<br>✅ Snelle installatie<br>❌ Niet repareerbaar, kortere levensduur<br>❌ Vochtgevoelig bij naden<br><br><strong>🔬 Hygiëne ranking:</strong> Solid Surface > Fenolhars > Laminaat<br><strong>🌱 Duurzaamheid:</strong> Solid Surface > Fenolhars > Laminaat<br><br><strong>📧 Materiaal keuze hulp:</strong><br><a href='${createContextualMailtoLink('Materiaal Keuze Advies')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Persoonlijk materiaal advies</a><div class='message-source'>💎 Expert Material Knowledge</div>`;
+                }
+                
+                return null;
             }
         }
 
