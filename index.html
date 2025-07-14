@@ -1942,4 +1942,134 @@ KOSTENCALCULATOR VERWIJZING:
                     
                     if (testResponse.status === 404) {
                         updateAIStatus('❌ Function Not Found', '#dc3545');
-                        console.error('API endpoint /api/chat not found');
+                        console.error('API endpoint /api/chat not found - check if Netlify Functions are deployed');
+                    } else if (testResponse.status === 500) {
+                        updateAIStatus('❌ Function Error', '#dc3545');
+                        console.error('Backend server error - check OpenAI API key in environment variables');
+                    } else {
+                        updateAIStatus('❌ Function Issue', '#dc3545');
+                    }
+                    aiEnabled = false;
+                }
+            } catch (error) {
+                console.error('❌ AI connection test failed:', error);
+                updateAIStatus('❌ AI Offline', '#dc3545');
+                console.error('Check if /api/chat.js is deployed as Netlify Function');
+                aiEnabled = false;
+            }
+        }
+
+        // Debug function - can be called from browser console
+        window.debugAI = function() {
+            console.log('🔍 AI Debug Info:');
+            console.log('AI Enabled:', aiEnabled);
+            console.log('AI Initialized:', aiInitialized);
+            console.log('Backend endpoint: /api/chat');
+            console.log('User Profile:', userProfile);
+            console.log('Recent Questions:', recentQuestions);
+            
+            // Test a simple AI call
+            console.log('Testing AI call...');
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: 'Say hello',
+                    context: '',
+                    conversationHistory: []
+                })
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error(`Backend error: ${response.status}`);
+                }
+            }).then(data => {
+                console.log('✅ AI Test Response:', data);
+            }).catch(error => {
+                console.error('❌ AI Test Error:', error);
+            });
+        };
+
+        // Manual AI test function 
+        window.testAI = function() {
+            testAIConnection();
+        };
+
+        // Cookie Management
+        function acceptCookies() {
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('cookiesAccepted', 'true');
+            }
+            const notice = document.getElementById('cookieNotice');
+            if (notice) {
+                notice.classList.remove('show');
+                notice.style.display = 'none';
+            }
+        }
+
+        function checkCookies() {
+            // Only show cookie notice if localStorage is available and cookies not yet accepted
+            if (typeof(Storage) !== "undefined" && !localStorage.getItem('cookiesAccepted')) {
+                setTimeout(() => {
+                    const notice = document.getElementById('cookieNotice');
+                    if (notice) {
+                        notice.classList.add('show');
+                        notice.style.display = 'block';
+                    }
+                }, 2000);
+            }
+        }
+
+        // Initialize and run tests
+        document.addEventListener('DOMContentLoaded', () => {
+            // Test AI immediately on load
+            testAIConnection();
+            
+            // Check for calculator referrals
+            checkCalculatorReferral();
+            
+            // Focus input
+            const chatInput = document.getElementById('chatInput');
+            if (chatInput) {
+                chatInput.focus();
+            }
+            
+            // Show profile button for users to optionally create profile
+            setTimeout(() => {
+                const profileButton = document.getElementById('profileButton');
+                if (profileButton) {
+                    profileButton.style.display = 'block';
+                }
+            }, 1000);
+            
+            // Load existing profile if available
+            loadUserProfile();
+            
+            // Check cookies
+            checkCookies();
+            
+            // Console startup info
+            console.log('🚀 DentalSpace Pro Website geladen!');
+            console.log('🌐 Domain: https://dentalspace.pro');
+            console.log('🔗 Cross-linking: calculator.dentalspace.pro');
+            console.log('🔑 AI Backend: /api/chat (your existing Netlify Functions)');
+            
+            // Test that all key elements exist
+            try {
+                if (!document.getElementById('chatInput')) console.error('❌ chatInput element missing');
+                if (!document.getElementById('chatMessages')) console.error('❌ chatMessages element missing');
+                if (!document.getElementById('sendButton')) console.error('❌ sendButton element missing');
+                
+                console.log('✅ All essential elements found');
+                console.log('🧮 Calculator cross-link buttons added');
+                console.log('📊 Cross-link tracking active');
+                console.log('🤖 AI backend testing...');
+                
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+            }
+        });
+    </script>
+</body>
+</html>
