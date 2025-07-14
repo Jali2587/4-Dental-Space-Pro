@@ -1343,8 +1343,8 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     
                     console.log('📤 Sending request to /api/chat...');
                     
-                    // Use YOUR existing Netlify Functions endpoint
-                    const response = await fetch('/api/chat', {
+                    // Use correct Netlify Functions endpoint
+                    const response = await fetch('/.netlify/functions/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1912,13 +1912,13 @@ KOSTENCALCULATOR VERWIJZING:
             }, 1000);
         }
 
-        // Test AI connection with YOUR existing backend
+        // Test AI connection with correct Netlify Functions endpoint
         async function testAIConnection() {
-            console.log('🧪 Testing your existing /api/chat endpoint...');
+            console.log('🧪 Testing Netlify Functions endpoint: /.netlify/functions/chat');
             updateAIStatus('🧪 Testing AI...', '#17a2b8');
             
             try {
-                const testResponse = await fetch('/api/chat', {
+                const testResponse = await fetch('/.netlify/functions/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1942,7 +1942,7 @@ KOSTENCALCULATOR VERWIJZING:
                     
                     if (testResponse.status === 404) {
                         updateAIStatus('❌ Function Not Found', '#dc3545');
-                        console.error('API endpoint /api/chat not found - check if Netlify Functions are deployed');
+                        console.error('API endpoint /.netlify/functions/chat not found - check if Netlify Functions are deployed');
                     } else if (testResponse.status === 500) {
                         updateAIStatus('❌ Function Error', '#dc3545');
                         console.error('Backend server error - check OpenAI API key in environment variables');
@@ -1954,7 +1954,7 @@ KOSTENCALCULATOR VERWIJZING:
             } catch (error) {
                 console.error('❌ AI connection test failed:', error);
                 updateAIStatus('❌ AI Offline', '#dc3545');
-                console.error('Check if /api/chat.js is deployed as Netlify Function');
+                console.error('Check if /.netlify/functions/chat.js is deployed as Netlify Function');
                 aiEnabled = false;
             }
         }
@@ -1964,13 +1964,13 @@ KOSTENCALCULATOR VERWIJZING:
             console.log('🔍 AI Debug Info:');
             console.log('AI Enabled:', aiEnabled);
             console.log('AI Initialized:', aiInitialized);
-            console.log('Backend endpoint: /api/chat');
+            console.log('Backend endpoint: /.netlify/functions/chat');
             console.log('User Profile:', userProfile);
             console.log('Recent Questions:', recentQuestions);
             
             // Test a simple AI call
             console.log('Testing AI call...');
-            fetch('/api/chat', {
+            fetch('/.netlify/functions/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -2053,7 +2053,7 @@ KOSTENCALCULATOR VERWIJZING:
             console.log('🚀 DentalSpace Pro Website geladen!');
             console.log('🌐 Domain: https://dentalspace.pro');
             console.log('🔗 Cross-linking: calculator.dentalspace.pro');
-            console.log('🔑 AI Backend: /api/chat (your existing Netlify Functions)');
+            console.log('🔑 AI Backend: /.netlify/functions/chat (Netlify Functions)');
             
             // Test that all key elements exist
             try {
