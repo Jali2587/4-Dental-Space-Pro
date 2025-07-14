@@ -894,8 +894,6 @@
                         <p>Specialist kennis + AI intelligentie</p>
                     </div>
 
-                    <!-- Direct AI access - no setup needed -->
-
                     <!-- User Intake Panel -->
                     <div class="intake-panel" id="intakePanel">
                         <div style="text-align: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #007bff;">
@@ -955,52 +953,6 @@
                             </div>
                         </div>
 
-                        <div class="intake-question">
-                            <h4>🌍 In welke regio? (optioneel)</h4>
-                            <div class="intake-options">
-                                <div class="intake-option" onclick="selectIntakeOption('location', 'randstad')">🏙️ Randstad</div>
-                                <div class="intake-option" onclick="selectIntakeOption('location', 'brabant')">🌾 Noord-Brabant</div>
-                                <div class="intake-option" onclick="selectIntakeOption('location', 'gelderland')">🌲 Gelderland</div>
-                                <div class="intake-option" onclick="selectIntakeOption('location', 'noord')">⭐ Noord-NL</div>
-                                <div class="intake-option" onclick="selectIntakeOption('location', 'overig')">📍 Overig</div>
-                            </div>
-                        </div>
-
-                        <div class="intake-question">
-                            <h4>🔬 Specialisaties? (optioneel, meerdere mogelijk)</h4>
-                            <div class="intake-options">
-                                <div class="intake-option" onclick="toggleSpecialization('algemeen')">🦷 Algemeen</div>
-                                <div class="intake-option" onclick="toggleSpecialization('kinderen')">👶 Kinderen</div>
-                                <div class="intake-option" onclick="toggleSpecialization('orthodontie')">📐 Orthodontie</div>
-                                <div class="intake-option" onclick="toggleSpecialization('implantaten')">🔩 Implantaten</div>
-                                <div class="intake-option" onclick="toggleSpecialization('cosmetisch')">✨ Cosmetisch</div>
-                            </div>
-                        </div>
-
-                        <div class="intake-question">
-                            <h4>😰 Grootste zorgen? (optioneel, meerdere mogelijk)</h4>
-                            <div class="intake-options">
-                                <div class="intake-option" onclick="toggleConcern('financiering')">💳 Financiering</div>
-                                <div class="intake-option" onclick="toggleConcern('locatie')">📍 Locatie vinden</div>
-                                <div class="intake-option" onclick="toggleConcern('concurrentie')">🏢 Concurrentie</div>
-                                <div class="intake-option" onclick="toggleConcern('patienten')">👥 Patiënten</div>
-                                <div class="intake-option" onclick="toggleConcern('technologie')">💻 Technologie</div>
-                                <div class="intake-option" onclick="toggleConcern('personeel')">👨‍⚕️ Personeel</div>
-                            </div>
-                        </div>
-
-                        <div class="intake-question">
-                            <h4>⭐ Prioriteiten inrichting? (optioneel, meerdere mogelijk)</h4>
-                            <div class="intake-options">
-                                <div class="intake-option" onclick="togglePriority('kosten')">💰 Kosten</div>
-                                <div class="intake-option" onclick="togglePriority('kwaliteit')">💎 Kwaliteit</div>
-                                <div class="intake-option" onclick="togglePriority('snelheid')">⚡ Snelheid</div>
-                                <div class="intake-option" onclick="togglePriority('duurzaam')">🌱 Duurzaam</div>
-                                <div class="intake-option" onclick="togglePriority('modern')">🎨 Modern</div>
-                                <div class="intake-option" onclick="togglePriority('efficiency')">🏗️ Efficiency</div>
-                            </div>
-                        </div>
-
                         <button onclick="completeIntake()" class="intake-btn">
                             ✅ Klaar - Start Gepersonaliseerde Adviezen
                         </button>
@@ -1020,7 +972,8 @@
                                 <br><br>
                                 <strong>🚀 Kies je aanpak:</strong><br>
                                 <strong>📋 Optie 1:</strong> Maak een profiel voor gepersonaliseerde adviezen<br>
-                                <strong>⚡ Optie 2:</strong> Begin direct met vragen stellen
+                                <strong>⚡ Optie 2:</strong> Begin direct met vragen stellen<br>
+                                <strong>🧮 Nieuw:</strong> Probeer onze kostencalculator!
                                 <br><br>
                                 <strong>💡 Start direct:</strong> Klik op de paarse AI-knoppen hieronder!
                                 <div class="message-source">🧠 AI Direct Beschikbaar</div>
@@ -1208,11 +1161,11 @@
     </div>
 
     <script>
-        // AI Configuration - SECURE VERSION (no exposed API key)
+        // AI Configuration - USING YOUR EXISTING NETLIFY FUNCTIONS
         let aiEnabled = true; 
         let conversationHistory = [];
         let chatHistory = [];
-        let aiInitialized = true;
+        let aiInitialized = false;
         let userProfile = {
             situation: null,
             budget: null,
@@ -1280,18 +1233,34 @@
             }
         }
 
+        // Cross-link analytics function
+        window.getCrossLinkStats = function() {
+            const calcClicks = JSON.parse(localStorage.getItem('calculator_clicks') || '[]');
+            
+            console.log('📊 Cross-Link Statistics:');
+            console.log('Calculator clicks from main site:', calcClicks.length);
+            console.log('Top calculator sources:', 
+                calcClicks.reduce((acc, click) => {
+                    acc[click.source] = (acc[click.source] || 0) + 1;
+                    return acc;
+                }, {})
+            );
+            
+            return { calculatorClicks: calcClicks };
+        };
+
         // Expert Knowledge Base
         const expertResponses = {
             kosten: [
-                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br>Voor de beste kostenbegroting en persoonlijk advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Tip:</strong> Probeer eerst onze <a href='//calculator.dentalspace.pro?ref=ai_advice&utm_source=dentalspace' onclick='trackCalculatorClick(\"ai_advice\")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe inschattingen!<div class='message-source'>💼 DentalSpace Pro Expert</div>",
+                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br><strong>🧮 Nieuw:</strong> Probeer eerst onze <a href='//calculator.dentalspace.pro?ref=cost_advice&utm_source=dentalspace' onclick='trackCalculatorClick(\"cost_advice\")' style='color: #f39c12; font-weight: bold;' target='_blank'>Kostencalculator</a> voor directe berekeningen!<br><br>Voor gedetailleerd advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>",
             ],
             
             contact: [
-                "Fijn dat je persoonlijk contact wilt! 🙂<br><br>Onze expert helpt je graag met praktijkinrichting advies:<br><br><strong>📞 Direct Contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br>Onze expert belt meestal binnen een dag terug voor een vrijblijvend adviesgesprek!<div class='message-source'>📞 DentalSpace Pro Expert</div>"
+                "Fijn dat je persoonlijk contact wilt! 🙂<br><br>Onze expert helpt je graag met praktijkinrichting advies:<br><br><strong>📞 Direct Contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Tip:</strong> Voor kostenschattingen probeer eerst onze <a href='//calculator.dentalspace.pro?ref=contact&utm_source=dentalspace' onclick='trackCalculatorClick(\"contact\")' style='color: #f39c12; font-weight: bold;' target='_blank'>Kostencalculator</a>!<br><br>Onze expert belt meestal binnen een dag terug voor een vrijblijvend adviesgesprek!<div class='message-source'>📞 DentalSpace Pro Expert</div>"
             ]
         };
 
-        // AI-Enhanced Chatbot Class
+        // AI-Enhanced Chatbot Class - FIXED TO USE YOUR /api/chat ENDPOINT
         class AIEnhancedChatbot {
             constructor() {
                 this.systemPrompt = `Je bent een expert adviseur voor DentalSpace Pro, gespecialiseerd in tandartspraktijk inrichting.
@@ -1361,7 +1330,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 }
 
                 try {
-                    console.log('🔑 Using secure backend API...');
+                    console.log('🔑 Using your existing Netlify Functions...');
                     
                     // Get personalized context
                     const personalizedContext = getPersonalizedContext();
@@ -1372,10 +1341,10 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                         conversationHistory: conversationHistory.slice(-6)
                     };
                     
-                    console.log('📤 Sending request to secure backend...');
+                    console.log('📤 Sending request to /api/chat...');
                     
-                    // Use Netlify Functions endpoint
-                    const response = await fetch('/.netlify/functions/chat', {
+                    // Use YOUR existing Netlify Functions endpoint
+                    const response = await fetch('/api/chat', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -1507,7 +1476,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     : 'mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,';
                 
                 return { 
-                    response: `🔧 <strong>AI tijdelijk niet beschikbaar</strong><br><br>Geen zorgen! Voor direct advies kun je contact opnemen met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=ai_fallback&utm_source=dentalspace' onclick='trackCalculatorClick("ai_fallback")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe kostenschattingen!<div class='message-source'>🔧 Tijdelijke Fallback</div>`, 
+                    response: `🔧 <strong>AI tijdelijk niet beschikbaar</strong><br><br>Geen zorgen! Voor direct advies kun je contact opnemen met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=ai_fallback&utm_source=dentalspace' onclick='trackCalculatorClick("ai_fallback")' style='color: #f39c12; font-weight: bold;' target='_blank'>🧮 Kostencalculator</a> voor directe kostenschattingen!<div class='message-source'>🔧 Tijdelijke Fallback</div>`, 
                     source: 'fallback' 
                 };
             }
@@ -1515,17 +1484,17 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             getBackupResponse(userMessage) {
                 const message = userMessage.toLowerCase();
                 
-                // Backup responses for AI suggestion buttons
+                // Backup responses for AI suggestion buttons with calculator links
                 if (message.includes('concrete tips') && message.includes('praktijkindeling')) {
-                    return `🏗️ <strong>5 Praktijkindeling Tips (Expert Knowledge):</strong><br><br><strong>1. One-way patient flow</strong><br>Plan routes zodat patiënten elkaar niet kruisen. Ingang → wachtruimte → behandelkamer → uitgang.<br><br><strong>2. Centrale sterilisatie</strong><br>Plaats sterilisatie centraal, toegankelijk vanuit alle behandelkamers. 12-15m² nodig.<br><br><strong>3. Optimale kamergrootte</strong><br>Behandelkamers: 12-14m² minimum. Wachtruimte: 1.5m² per stoel.<br><br><strong>4. Aparte leveranciersingang</strong><br>Voorkom dat leveranciers door patiëntgebied moeten. Apart entree planning.<br><br><strong>5. Flexibele kamers</strong><br>Ontwerp kamers die verschillende behandelingen aankunnen. Modulair meubilair.<br><br><strong>💡 Bereken de kosten:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=ai_tips&utm_source=dentalspace' onclick='trackCalculatorClick("ai_tips")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a><br><br><strong>📧 Voor implementatie:</strong><br><a href='${createContextualMailtoLink('Praktijkindeling Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Expert implementatie advies</a><div class='message-source'>🏗️ Expert Backup Knowledge</div>`;
+                    return `🏗️ <strong>5 Praktijkindeling Tips (Expert Knowledge):</strong><br><br><strong>1. One-way patient flow</strong><br>Plan routes zodat patiënten elkaar niet kruisen. Ingang → wachtruimte → behandelkamer → uitgang.<br><br><strong>2. Centrale sterilisatie</strong><br>Plaats sterilisatie centraal, toegankelijk vanuit alle behandelkamers. 12-15m² nodig.<br><br><strong>3. Optimale kamergrootte</strong><br>Behandelkamers: 12-14m² minimum. Wachtruimte: 1.5m² per stoel.<br><br><strong>4. Aparte leveranciersingang</strong><br>Voorkom dat leveranciers door patiëntgebied moeten. Apart entree planning.<br><br><strong>5. Flexibele kamers</strong><br>Ontwerp kamers die verschillende behandelingen aankunnen. Modulair meubilair.<br><br><strong>💰 Bereken de kosten:</strong> <a href='//calculator.dentalspace.pro?ref=ai_tips&utm_source=dentalspace' onclick='trackCalculatorClick("ai_tips")' style='color: #f39c12; font-weight: bold;' target='_blank'>🧮 Kostencalculator</a><br><br><strong>📧 Voor implementatie:</strong> <a href='${createContextualMailtoLink('Praktijkindeling Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Expert implementatie advies</a><div class='message-source'>🏗️ Expert Backup Knowledge</div>`;
                 }
                 
                 if (message.includes('trends') && message.includes('2025')) {
-                    return `🚀 <strong>2025 Tandartspraktijk Trends (Expert Knowledge):</strong><br><br><strong>🌱 Duurzaamheid</strong><br>• Gerecycled Solid Surface materialen<br>• LED+ verlichting & slimme thermostaten<br>• Waterbesparende systemen<br><br><strong>🤖 Smart Technology</strong><br>• IoT sensoren voor ruimtebeheer<br>• Contactloze kranen & deuren<br>• Digitale patient check-in systemen<br><br><strong>🏢 Ruimte Optimalisatie</strong><br>• Modulaire inrichting voor flexibiliteit<br>• Multi-functionele behandelruimtes<br>• Compacte, efficiënte indelingen<br><br><strong>🌿 Biophilic Design</strong><br>• Natuurlijke materialen & kleuren<br>• Planten & natuurlijk licht<br>• Kalmerend, niet-klinisch gevoel<br><br><strong>💰 Kosten inschatten:</strong> Gebruik onze <a href='//calculator.dentalspace.pro?ref=trends_2025&utm_source=dentalspace' onclick='trackCalculatorClick("trends_2025")' style='color: #f39c12; font-weight: bold;'>🧮 2025 Kostencalculator</a><br><br><strong>📧 Voor 2025 implementatie:</strong><br><a href='${createContextualMailtoLink('2025 Trends Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Trendy praktijk realiseren</a><div class='message-source'>🚀 Expert Trend Knowledge</div>`;
+                    return `🚀 <strong>2025 Tandartspraktijk Trends (Expert Knowledge):</strong><br><br><strong>🌱 Duurzaamheid</strong><br>• Gerecycled Solid Surface materialen<br>• LED+ verlichting & slimme thermostaten<br>• Waterbesparende systemen<br><br><strong>🤖 Smart Technology</strong><br>• IoT sensoren voor ruimtebeheer<br>• Contactloze kranen & deuren<br>• Digitale patient check-in systemen<br><br><strong>🏢 Ruimte Optimalisatie</strong><br>• Modulaire inrichting voor flexibiliteit<br>• Multi-functionele behandelruimtes<br>• Compacte, efficiënte indelingen<br><br><strong>🌿 Biophilic Design</strong><br>• Natuurlijke materialen & kleuren<br>• Planten & natuurlijk licht<br>• Kalmerend, niet-klinisch gevoel<br><br><strong>💰 Kosten inschatten:</strong> <a href='//calculator.dentalspace.pro?ref=trends_2025&utm_source=dentalspace' onclick='trackCalculatorClick("trends_2025")' style='color: #f39c12; font-weight: bold;' target='_blank'>🧮 2025 Kostencalculator</a><br><br><strong>📧 Voor 2025 implementatie:</strong> <a href='${createContextualMailtoLink('2025 Trends Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Trendy praktijk realiseren</a><div class='message-source'>🚀 Expert Trend Knowledge</div>`;
                 }
                 
                 if (message.includes('materialen') && message.includes('behandelkamers')) {
-                    return `💎 <strong>Behandelkamer Materialen Vergelijking (Expert Knowledge):</strong><br><br><strong>🥇 Solid Surface (€800-1200/m²)</strong><br>✅ 100% hygiënisch, naadloos<br>✅ 12-uur antibacteriële garantie<br>✅ Repareerbaar, duurzaam 20+ jaar<br>⚠️ Hogere investering<br><br><strong>🥈 Fenolhars (€400-600/m²)</strong><br>✅ Vochtbestendig, sterke basis<br>✅ Goede hygiene eigenschappen<br>⚠️ Zichtbare naden, minder premium<br><br><strong>🥉 Laminaat (€200-400/m²)</strong><br>✅ Budget-vriendelijk<br>✅ Snelle installatie<br>❌ Niet repareerbaar, kortere levensduur<br>❌ Vochtgevoelig bij naden<br><br><strong>🔬 Hygiëne ranking:</strong> Solid Surface > Fenolhars > Laminaat<br><strong>🌱 Duurzaamheid:</strong> Solid Surface > Fenolhars > Laminaat<br><br><strong>💰 Bereken jouw kosten:</strong> <a href='//calculator.dentalspace.pro?ref=materials&utm_source=dentalspace' onclick='trackCalculatorClick("materials")' style='color: #f39c12; font-weight: bold;'>🧮 Calculator met Materiaal Opties</a><br><br><strong>📧 Materiaal keuze hulp:</strong><br><a href='${createContextualMailtoLink('Materiaal Keuze Advies')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Persoonlijk materiaal advies</a><div class='message-source'>💎 Expert Material Knowledge</div>`;
+                    return `💎 <strong>Behandelkamer Materialen Vergelijking (Expert Knowledge):</strong><br><br><strong>🥇 Solid Surface (€800-1200/m²)</strong><br>✅ 100% hygiënisch, naadloos<br>✅ 12-uur antibacteriële garantie<br>✅ Repareerbaar, duurzaam 20+ jaar<br>⚠️ Hogere investering<br><br><strong>🥈 Fenolhars (€400-600/m²)</strong><br>✅ Vochtbestendig, sterke basis<br>✅ Goede hygiene eigenschappen<br>⚠️ Zichtbare naden, minder premium<br><br><strong>🥉 Laminaat (€200-400/m²)</strong><br>✅ Budget-vriendelijk<br>✅ Snelle installatie<br>❌ Niet repareerbaar, kortere levensduur<br>❌ Vochtgevoelig bij naden<br><br><strong>🔬 Hygiëne ranking:</strong> Solid Surface > Fenolhars > Laminaat<br><strong>🌱 Duurzaamheid:</strong> Solid Surface > Fenolhars > Laminaat<br><br><strong>💰 Bereken jouw kosten:</strong> <a href='//calculator.dentalspace.pro?ref=materials&utm_source=dentalspace' onclick='trackCalculatorClick("materials")' style='color: #f39c12; font-weight: bold;' target='_blank'>🧮 Calculator met Materiaal Opties</a><br><br><strong>📧 Materiaal keuze hulp:</strong> <a href='${createContextualMailtoLink('Materiaal Keuze Advies')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Persoonlijk materiaal advies</a><div class='message-source'>💎 Expert Material Knowledge</div>`;
                 }
                 
                 return null;
@@ -1564,54 +1533,6 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             // Save to profile
             userProfile[category] = value;
             console.log('Selected:', category, value);
-        }
-
-        function togglePriority(priority) {
-            const element = event.target;
-            
-            if (userProfile.priorities.includes(priority)) {
-                // Remove priority
-                userProfile.priorities = userProfile.priorities.filter(p => p !== priority);
-                element.classList.remove('selected');
-            } else {
-                // Add priority
-                userProfile.priorities.push(priority);
-                element.classList.add('selected');
-            }
-            
-            console.log('Priorities updated:', userProfile.priorities);
-        }
-
-        function toggleSpecialization(specialization) {
-            const element = event.target;
-            
-            if (userProfile.specializations.includes(specialization)) {
-                // Remove specialization
-                userProfile.specializations = userProfile.specializations.filter(s => s !== specialization);
-                element.classList.remove('selected');
-            } else {
-                // Add specialization
-                userProfile.specializations.push(specialization);
-                element.classList.add('selected');
-            }
-            
-            console.log('Specializations updated:', userProfile.specializations);
-        }
-
-        function toggleConcern(concern) {
-            const element = event.target;
-            
-            if (userProfile.concerns.includes(concern)) {
-                // Remove concern
-                userProfile.concerns = userProfile.concerns.filter(c => c !== concern);
-                element.classList.remove('selected');
-            } else {
-                // Add concern
-                userProfile.concerns.push(concern);
-                element.classList.add('selected');
-            }
-            
-            console.log('Concerns updated:', userProfile.concerns);
         }
 
         function completeIntake() {
@@ -1660,43 +1581,15 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             message += `<strong>👤 Jouw profiel:</strong><br>`;
             message += `• ${experienceText[userProfile.experience]} met ${situationText[userProfile.situation]}<br>`;
             message += `• ${userProfile.rooms} behandelkamers, budget: ${budgetText[userProfile.budget]}<br>`;
-            message += `• Timeline: ${userProfile.timeline}<br>`;
+            message += `• Timeline: ${userProfile.timeline}<br><br>`;
             
-            if (userProfile.location) {
-                const locationText = {
-                    'randstad': 'Randstad',
-                    'brabant': 'Noord-Brabant', 
-                    'gelderland': 'Gelderland',
-                    'noord': 'Noord-Nederland',
-                    'zeeland': 'Zeeland/Zuid-Holland',
-                    'overig': 'andere provincie'
-                };
-                message += `• Regio: ${locationText[userProfile.location]}<br>`;
-            }
-            
-            if (userProfile.specializations.length > 0) {
-                const specs = userProfile.specializations.join(', ');
-                message += `• Specialisaties: ${specs}<br>`;
-            }
-            
-            if (userProfile.concerns.length > 0) {
-                const concerns = userProfile.concerns.join(', ');
-                message += `• Zorgen: ${concerns}<br>`;
-            }
-            
-            if (userProfile.priorities.length > 0) {
-                const priorities = userProfile.priorities.join(', ');
-                message += `• Prioriteiten: ${priorities}<br>`;
-            }
-            
-            message += `<br><strong>🧠 AI Voordelen:</strong><br>`;
+            message += `<strong>🧠 AI Voordelen:</strong><br>`;
             message += `• Alle adviezen zijn afgestemd op jouw specifieke situatie<br>`;
             message += `• Tips voor ${experienceText[userProfile.experience]} niveau<br>`;
-            message += `• Budget-optimalisatie voor ${budgetText[userProfile.budget]}<br>`;
-            message += `• Speciaal focus op jouw zorgen en prioriteiten<br><br>`;
+            message += `• Budget-optimalisatie voor ${budgetText[userProfile.budget]}<br><br>`;
             
             message += `<strong>🧮 Kostencalculator:</strong><br>`;
-            message += `<a href="//calculator.dentalspace.pro?ref=profile_complete&utm_source=dentalspace" onclick="trackCalculatorClick('profile_complete')" style="color: #f39c12; font-weight: bold;">📊 Bereken jouw specifieke kosten</a><br><br>`;
+            message += `<a href="//calculator.dentalspace.pro?ref=profile_complete&utm_source=dentalspace" onclick="trackCalculatorClick('profile_complete')" style="color: #f39c12; font-weight: bold;" target="_blank">📊 Bereken jouw specifieke kosten</a><br><br>`;
             
             message += `<strong>📧 Expert Contact:</strong><br>`;
             message += `<a href="${createContextualMailtoLink('Gepersonaliseerd Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Mijn Context naar Expert</a><br><br>`;
@@ -1777,69 +1670,12 @@ GEBRUIKER PROFIEL (gebruik dit voor gepersonaliseerde adviezen):
 - Situatie: ${situationText[userProfile.situation]}
 - Aantal behandelkamers: ${userProfile.rooms}
 - Budget: ${budgetText[userProfile.budget]}  
-- Timeline: ${userProfile.timeline}`;
-
-            if (userProfile.location) {
-                const locationText = {
-                    'randstad': 'Randstad (hoge concurrentie, dure grond)',
-                    'brabant': 'Noord-Brabant (gezonde markt)',
-                    'gelderland': 'Gelderland (stabiele markt)',
-                    'noord': 'Noord-Nederland (minder concurrentie)',
-                    'zeeland': 'Zeeland/Zuid-Holland (toeristische invloed)',
-                    'overig': 'andere provincie'
-                };
-                context += `\n- Regio: ${locationText[userProfile.location]}`;
-            }
-
-            if (userProfile.specializations.length > 0) {
-                const specializationText = {
-                    'algemeen': 'algemene tandheelkunde',
-                    'kinderen': 'kindertandheelkunde (speelhoek, kindvriendelijk)',
-                    'orthodontie': 'orthodontie (meer ruimte, digitale scan)',
-                    'implantaten': 'implantologie (steriele omgeving, chirurgie)',
-                    'cosmetisch': 'cosmetische tandheelkunde (luxe uitstraling)',
-                    'kaakchirurgie': 'kaakchirurgie (operatiekamer-achtig)'
-                };
-                const specs = userProfile.specializations.map(s => specializationText[s]).join(', ');
-                context += `\n- Specialisaties: ${specs}`;
-            }
-
-            if (userProfile.concerns.length > 0) {
-                const concernText = {
-                    'financiering': 'financiering (geef budgetvriendelijke opties)',
-                    'locatie': 'locatie kiezen (geef locatie tips)',
-                    'concurrentie': 'concurrentie (focus differentiatie)',
-                    'patienten': 'patiënten aantrekken (marketing aspecten)',
-                    'technologie': 'technologie keuzes (praktische info)',
-                    'personeel': 'personeel vinden (werkplek attractiviteit)',
-                    'administratie': 'administratie (focus eenvoud)',
-                    'werk_prive': 'werk-privé balans (efficiency focus)'
-                };
-                const concerns = userProfile.concerns.map(c => concernText[c]).join(', ');
-                context += `\n- Zorgen/overwegingen: ${concerns}`;
-            }
-
-            if (userProfile.priorities.length > 0) {
-                const priorityText = {
-                    'kosten': 'kostenbeheersing (budget oplossingen)',
-                    'kwaliteit': 'hoge kwaliteit (premium materialen)', 
-                    'snelheid': 'snelle realisatie (kortere timeline)',
-                    'duurzaam': 'duurzaamheid (eco-friendly opties)',
-                    'modern': 'modern design (contemporary uitstraling)',
-                    'efficiency': 'workflow efficiency (optimale indeling)'
-                };
-                const priorities = userProfile.priorities.map(p => priorityText[p]).join(', ');
-                context += `\n- Prioriteiten: ${priorities}`;
-            }
-
-            context += `
+- Timeline: ${userProfile.timeline}
 
 BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel. 
 - Voor beginners: meer uitleg en basis tips
 - Voor senioren: focus op upgrade/modernisering
 - Budget-gerelateerde tips op basis van hun budget
-- Specialisatie-specifieke inrichtingsadviezen
-- Rekening houden met hun zorgen en prioriteiten
 
 KOSTENCALCULATOR VERWIJZING:
 - Voor kosten vragen: verwijs naar calculator.dentalspace.pro
@@ -1850,96 +1686,32 @@ KOSTENCALCULATOR VERWIJZING:
             return context;
         }
 
-        function generateContextualEmailBody(subject = 'Praktijk Advies') {
+        function createContextualMailtoLink(subject) {
+            const situationLabels = {
+                'nieuw': 'Nieuwe praktijk starten',
+                'verbouw': 'Bestaande praktijk verbouwen',
+                'uitbreiding': 'Praktijk uitbreiden',
+                'overgang': 'Praktijkovergang'
+            };
+            
+            const experienceLabels = {
+                'student': 'Nog student tandheelkunde',
+                'beginnend': 'Beginnend tandarts (0-2 jaar)',
+                'ervaren': 'Ervaren tandarts (2-10 jaar)',
+                'senior': 'Senior tandarts (10+ jaar)'
+            };
+
             let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie website bezocht en wil graag advies over praktijkinrichting.%0D%0A%0D%0A`;
             
             if (userProfile.setup_completed) {
                 emailBody += `=== MIJN SITUATIE ===%0D%0A`;
-                
-                // Basic info
-                const situationLabels = {
-                    'nieuw': 'Nieuwe praktijk starten',
-                    'verbouw': 'Bestaande praktijk verbouwen',
-                    'uitbreiding': 'Praktijk uitbreiden',
-                    'overgang': 'Praktijkovergang'
-                };
-                
-                const experienceLabels = {
-                    'student': 'Nog student tandheelkunde',
-                    'beginnend': 'Beginnend tandarts (0-2 jaar)',
-                    'ervaren': 'Ervaren tandarts (2-10 jaar)',
-                    'senior': 'Senior tandarts (10+ jaar)'
-                };
-                
                 emailBody += `Situatie: ${situationLabels[userProfile.situation] || 'Onbekend'}%0D%0A`;
                 emailBody += `Ervaring: ${experienceLabels[userProfile.experience] || 'Niet opgegeven'}%0D%0A`;
                 emailBody += `Aantal behandelkamers: ${userProfile.rooms || 'Nog te bepalen'}%0D%0A`;
                 emailBody += `Budget indicatie: ${userProfile.budget || 'Nog te bepalen'}%0D%0A`;
-                emailBody += `Timeline: ${userProfile.timeline || 'Nog te bepalen'}%0D%0A`;
-                
-                if (userProfile.location) {
-                    const locationLabels = {
-                        'randstad': 'Randstad',
-                        'brabant': 'Noord-Brabant',
-                        'gelderland': 'Gelderland',
-                        'noord': 'Noord-Nederland',
-                        'zeeland': 'Zeeland/Zuid-Holland',
-                        'overig': 'Andere provincie'
-                    };
-                    emailBody += `Regio: ${locationLabels[userProfile.location]}%0D%0A`;
-                }
-                
-                // Specializations
-                if (userProfile.specializations.length > 0) {
-                    const specializationLabels = {
-                        'algemeen': 'Algemene tandheelkunde',
-                        'kinderen': 'Kindertandheelkunde',
-                        'orthodontie': 'Orthodontie',
-                        'implantaten': 'Implantologie',
-                        'cosmetisch': 'Cosmetische tandheelkunde',
-                        'kaakchirurgie': 'Kaakchirurgie'
-                    };
-                    
-                    const specs = userProfile.specializations.map(s => specializationLabels[s]).join(', ');
-                    emailBody += `Specialisaties: ${specs}%0D%0A`;
-                }
-                
-                // Concerns
-                if (userProfile.concerns.length > 0) {
-                    const concernLabels = {
-                        'financiering': 'Financiering regelen',
-                        'locatie': 'Juiste locatie vinden',
-                        'concurrentie': 'Concurrentie in de buurt',
-                        'patienten': 'Patiënten aantrekken',
-                        'technologie': 'Juiste technologie kiezen',
-                        'personeel': 'Personeel vinden',
-                        'administratie': 'Administratie & regelgeving',
-                        'werk_prive': 'Werk-privé balans'
-                    };
-                    
-                    const concerns = userProfile.concerns.map(c => concernLabels[c]).join(', ');
-                    emailBody += `Zorgen/overwegingen: ${concerns}%0D%0A`;
-                }
-                
-                // Priorities
-                if (userProfile.priorities.length > 0) {
-                    const priorityLabels = {
-                        'kosten': 'Kostenbeheersing',
-                        'kwaliteit': 'Hoge kwaliteit',
-                        'snelheid': 'Snelle realisatie',
-                        'duurzaam': 'Duurzaamheid',
-                        'modern': 'Modern design',
-                        'efficiency': 'Workflow efficiency'
-                    };
-                    
-                    const priorities = userProfile.priorities.map(p => priorityLabels[p]).join(', ');
-                    emailBody += `Prioriteiten: ${priorities}%0D%0A`;
-                }
-                
-                emailBody += `%0D%0A`;
+                emailBody += `Timeline: ${userProfile.timeline || 'Nog te bepalen'}%0D%0A%0D%0A`;
             }
             
-            // Add recent questions if any
             if (recentQuestions.length > 0) {
                 emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
                 recentQuestions.slice(-3).forEach((q, index) => {
@@ -1950,19 +1722,7 @@ KOSTENCALCULATOR VERWIJZING:
             
             emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
             
-            return emailBody;
-        }
-
-        function createContextualMailtoLink(subject) {
-            const emailBody = generateContextualEmailBody(subject);
             return `mailto:expert@dentalspace.pro?subject=${encodeURIComponent(subject)}&body=${emailBody}`;
-        }
-
-        function showProfileButton() {
-            const profileButton = document.getElementById('profileButton');
-            if (profileButton) {
-                profileButton.style.display = 'block';
-            }
         }
 
         function showProfileSetup() {
@@ -1982,27 +1742,8 @@ KOSTENCALCULATOR VERWIJZING:
                 window.location.href = mailtoLink;
             } else {
                 // Fallback for users without profile
-                const basicEmailBody = generateBasicEmailBody();
-                const mailtoLink = `mailto:expert@dentalspace.pro?subject=${encodeURIComponent('Praktijk Advies - Chat Conversation')}&body=${basicEmailBody}`;
-                window.location.href = mailtoLink;
+                window.location.href = 'mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20AI%20chatbot%20gebruikt%20en%20wil%20graag%20persoonlijk%20contact.%0D%0A%0D%0AGroeten,';
             }
-        }
-
-        function generateBasicEmailBody() {
-            let emailBody = `Hallo,%0D%0A%0D%0AIk heb jullie AI chatbot gebruikt en wil graag persoonlijk contact voor praktijkinrichting advies.%0D%0A%0D%0A`;
-            
-            // Add recent questions if any
-            if (recentQuestions.length > 0) {
-                emailBody += `=== MIJN RECENTE VRAGEN ===%0D%0A`;
-                recentQuestions.slice(-3).forEach((q, index) => {
-                    emailBody += `${index + 1}. ${encodeURIComponent(q)}%0D%0A`;
-                });
-                emailBody += `%0D%0A`;
-            }
-            
-            emailBody += `Ik zou graag een afspraak inplannen om mijn specifieke situatie te bespreken.%0D%0A%0D%0AGroeten,`;
-            
-            return emailBody;
         }
 
         function sendSuggestion(suggestion) {
@@ -2147,7 +1888,7 @@ KOSTENCALCULATOR VERWIJZING:
             } catch (error) {
                 hideTypingIndicator();
                 console.error('Error:', error);
-                addMessage(`🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='${createContextualMailtoLink('Chatbot Technische Vraag')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=chatbot_error&utm_source=dentalspace' onclick='trackCalculatorClick("chatbot_error")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe kostenschattingen!`, false, 'bot');
+                addMessage(`🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='${createContextualMailtoLink('Chatbot Technische Vraag')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=chatbot_error&utm_source=dentalspace' onclick='trackCalculatorClick("chatbot_error")' style='color: #f39c12; font-weight: bold;' target='_blank'>🧮 Kostencalculator</a> voor directe kostenschattingen!`, false, 'bot');
             }
             
             // Re-enable input
@@ -2171,175 +1912,34 @@ KOSTENCALCULATOR VERWIJZING:
             }, 1000);
         }
 
-        // Debug function - can be called from browser console
-        window.debugAI = function() {
-            console.log('🔍 AI Debug Info (Netlify Functions):');
-            console.log('AI Enabled:', aiEnabled);
-            console.log('AI Initialized:', aiInitialized);
-            console.log('Backend endpoint: /.netlify/functions/chat');
-            
-            // Test a simple AI call via Netlify Functions
-            console.log('Testing Netlify Functions AI call...');
-            fetch('/.netlify/functions/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: 'Say hello',
-                    context: '',
-                    conversationHistory: []
-                })
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error(`Backend error: ${response.status}`);
-                }
-            }).then(data => {
-                console.log('✅ Netlify Functions Test Response:', data);
-            }).catch(error => {
-                console.error('❌ Netlify Functions Test Error:', error);
-            });
-        };
-
-        // Manual AI test function 
-        window.testAI = function() {
-            testAIConnection();
-        };
-
-        // Cross-link analytics function
-        window.getCrossLinkStats = function() {
-            const calcClicks = JSON.parse(localStorage.getItem('calculator_clicks') || '[]');
-            
-            console.log('📊 Cross-Link Statistics:');
-            console.log('Calculator clicks from main site:', calcClicks.length);
-            console.log('Top calculator sources:', 
-                calcClicks.reduce((acc, click) => {
-                    acc[click.source] = (acc[click.source] || 0) + 1;
-                    return acc;
-                }, {})
-            );
-            
-            return { calculatorClicks: calcClicks };
-        };
-
-        // Test AI connection immediately 
+        // Test AI connection with YOUR existing backend
         async function testAIConnection() {
-            console.log('🧪 Testing Netlify Functions connection...');
-            updateAIStatus('🧪 Testing Functions...', '#17a2b8');
+            console.log('🧪 Testing your existing /api/chat endpoint...');
+            updateAIStatus('🧪 Testing AI...', '#17a2b8');
             
             try {
-                const testResponse = await fetch('/.netlify/functions/chat', {
+                const testResponse = await fetch('/api/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: "Test connection - respond with just 'OK'",
+                        message: "Test connection - respond with just 'AI working'",
                         context: "",
                         conversationHistory: []
                     })
                 });
 
                 if (testResponse.ok) {
-                    console.log('✅ Netlify Functions connection successful!');
+                    const data = await testResponse.json();
+                    console.log('✅ AI connection successful!', data);
                     updateAIStatus('🟢 AI Actief', '#28a745');
                     aiEnabled = true;
                     aiInitialized = true;
                 } else {
                     const errorText = await testResponse.text();
-                    console.error('❌ Netlify Functions test failed:', testResponse.status, errorText);
+                    console.error('❌ AI test failed:', testResponse.status, errorText);
                     
                     if (testResponse.status === 404) {
                         updateAIStatus('❌ Function Not Found', '#dc3545');
-                        console.error('Netlify Function /.netlify/functions/chat not found - check deployment');
-                    } else if (testResponse.status === 500) {
-                        updateAIStatus('❌ Function Error', '#dc3545');
-                    } else {
-                        updateAIStatus('❌ Function Issue', '#dc3545');
-                    }
-                    aiEnabled = false;
-                }
-            } catch (error) {
-                console.error('❌ Netlify Functions connection test failed:', error);
-                updateAIStatus('❌ Functions Offline', '#dc3545');
-                console.error('Need to check Netlify Functions deployment');
-                aiEnabled = false;
-            }
-        }
-
-        // Cookie Management
-        function acceptCookies() {
-            if (typeof(Storage) !== "undefined") {
-                localStorage.setItem('cookiesAccepted', 'true');
-            }
-            const notice = document.getElementById('cookieNotice');
-            if (notice) {
-                notice.classList.remove('show');
-                notice.style.display = 'none';
-            }
-        }
-
-        function checkCookies() {
-            // Only show cookie notice if localStorage is available and cookies not yet accepted
-            if (typeof(Storage) !== "undefined" && !localStorage.getItem('cookiesAccepted')) {
-                setTimeout(() => {
-                    const notice = document.getElementById('cookieNotice');
-                    if (notice) {
-                        notice.classList.add('show');
-                        notice.style.display = 'block';
-                    }
-                }, 2000);
-            }
-        }
-
-        // Initialize and run tests
-        document.addEventListener('DOMContentLoaded', () => {
-            // Test AI immediately on load
-            testAIConnection();
-            
-            // Check for calculator referrals
-            checkCalculatorReferral();
-            
-            // Focus input
-            const chatInput = document.getElementById('chatInput');
-            if (chatInput) {
-                chatInput.focus();
-            }
-            
-            // Show profile button for users to optionally create profile
-            setTimeout(() => {
-                const profileButton = document.getElementById('profileButton');
-                if (profileButton) {
-                    profileButton.style.display = 'block';
-                }
-            }, 1000);
-            
-            // Load existing profile if available
-            loadUserProfile();
-            
-            // Check cookies
-            checkCookies();
-            
-            // Console startup info
-            console.log('🚀 DentalSpace Pro Website geladen!');
-            console.log('🌐 Domain: https://dentalspace.pro');
-            console.log('🔗 Cross-linking: calculator.dentalspace.pro');
-            console.log('🔑 API Key test wordt uitgevoerd...');
-            
-            // Test that all key elements exist
-            try {
-                if (!document.getElementById('chatInput')) console.error('❌ chatInput element missing');
-                if (!document.getElementById('chatMessages')) console.error('❌ chatMessages element missing');
-                if (!document.getElementById('sendButton')) console.error('❌ sendButton element missing');
-                
-                console.log('✅ All essential elements found');
-                console.log('🧮 Calculator cross-link buttons added');
-                console.log('📊 Cross-link tracking active');
-                
-            } catch (error) {
-                console.error('❌ Initialization error:', error);
-            }
-        });
-    </script>
-</body>
-</html>
+                        console.error('API endpoint /api/chat not found');
