@@ -122,6 +122,16 @@
             box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
         }
 
+        /* Calculator Button Styling */
+        .btn-calculator {
+            background: linear-gradient(45deg, #f39c12, #e67e22) !important;
+        }
+
+        .btn-calculator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(243, 156, 18, 0.3) !important;
+        }
+
         .btn-secondary {
             background: transparent;
             color: white;
@@ -851,6 +861,13 @@
                 <div class="cta-buttons">
                     <a href="#chat" class="btn-primary" onclick="scrollToChat(); return false;">🧠 Probeer AI Chat</a>
                     <a href="mailto:expert@dentalspace.pro?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
+                    <!-- 🆕 CALCULATOR BUTTON -->
+                    <a href="//calculator.dentalspace.pro?ref=hero&utm_source=dentalspace&utm_medium=button&utm_campaign=cross_link" 
+                       class="btn-primary btn-calculator" 
+                       onclick="trackCalculatorClick('hero')"
+                       target="_blank">
+                       🧮 Bereken Uw Investering
+                    </a>
                 </div>
 
                 <div class="hero-stats">
@@ -1018,6 +1035,8 @@
                         <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Wat zijn de nieuwste trends in tandartspraktijk inrichting voor 2025? Denk aan duurzaamheid, technologie en patiëntcomfort')">🚀 AI Trends</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('Hoe plan ik mijn praktijkinrichting?')">📋 Planning Advies</div>
                         <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Welke materialen zijn het beste voor behandelkamers? Vergelijk Solid Surface, laminaat en andere opties qua hygiëne en duurzaamheid')">💎 Materiaal Advies</div>
+                        <!-- 🆕 CALCULATOR SUGGESTION -->
+                        <div class="suggestion-btn" onclick="openCalculator()" style="background: linear-gradient(45deg, #f39c12, #e67e22); color: white; border: none;">🧮 Open Kostencalculator</div>
                         <div class="suggestion-btn" id="profileButton" onclick="showProfileSetup()" style="background: linear-gradient(45deg, #6f42c1, #5a369d); color: white; border: none; display: none;">👤 Maak Profiel</div>
                         <div class="suggestion-btn" id="expertButton" onclick="sendToExpert()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; display: none;">📧 Send All to Expert</div>
                     </div>
@@ -1046,6 +1065,20 @@
                     <span class="service-icon">🧠</span>
                     <h3>AI-Powered Advies</h3>
                     <p>Slimme chatbot met expertise in praktijkinrichting. Krijg instant adviezen, trends en tips op maat voor jouw situatie.</p>
+                </div>
+
+                <!-- 🆕 CALCULATOR SERVICE CARD -->
+                <div class="service-card">
+                    <span class="service-icon">🧮</span>
+                    <h3>Interactieve Kostencalculator</h3>
+                    <p>Bereken direct de kosten van jouw praktijkinrichting. Slimme templates, realtime berekeningen en directe offerte generatie.</p>
+                    <a href="//calculator.dentalspace.pro?ref=services&utm_source=dentalspace&utm_medium=service_card&utm_campaign=cross_link" 
+                       class="btn-primary" 
+                       onclick="trackCalculatorClick('services')"
+                       target="_blank"
+                       style="width: 100%; text-align: center; margin-top: 20px; background: linear-gradient(45deg, #f39c12, #e67e22);">
+                       🚀 Probeer Calculator
+                    </a>
                 </div>
 
                 <div class="service-card">
@@ -1137,6 +1170,12 @@
                 <p>Start vandaag nog met onze slimme AI-chatbot en krijg direct expert advies over praktijkinrichting.</p>
                 <div class="cta-buttons">
                     <a href="#chat" class="btn-primary" onclick="scrollToChat(); return false;">🧠 Start AI Chat</a>
+                    <a href="//calculator.dentalspace.pro?ref=cta&utm_source=dentalspace&utm_medium=cta_button&utm_campaign=cross_link" 
+                       class="btn-primary btn-calculator" 
+                       onclick="trackCalculatorClick('cta')"
+                       target="_blank">
+                       🧮 Bereken Kosten
+                    </a>
                     <a href="mailto:expert@dentalspace.pro?subject=Website%20Contact&body=Hallo,%0D%0A%0D%0AIk%20heb%20jullie%20website%20bezocht%20en%20ben%20geïnteresseerd%20in%20praktijkinrichting%20advies.%0D%0A%0D%0AGroeten," class="btn-secondary">📧 Direct Contact</a>
                 </div>
             </div>
@@ -1149,7 +1188,11 @@
             <p>&copy; 2025 DentalSpace Pro. Alle rechten voorbehouden.</p>
             <p>
                 <a href="mailto:expert@dentalspace.pro">expert@dentalspace.pro</a> | 
-                <a href="tel:+31201234567">+31 (0)20 123 4567</a>
+                <a href="tel:+31201234567">+31 (0)20 123 4567</a> |
+                <!-- 🆕 CALCULATOR FOOTER LINK -->
+                <a href="//calculator.dentalspace.pro?ref=footer&utm_source=dentalspace&utm_medium=footer&utm_campaign=cross_link" 
+                   onclick="trackCalculatorClick('footer')"
+                   target="_blank">🧮 Kostencalculator</a>
             </p>
             <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">
                 AI-Enhanced Tandartspraktijk Inrichting Specialist | 
@@ -1184,10 +1227,63 @@
         };
         let recentQuestions = [];
 
+        // 🆕 CROSS-LINKING TRACKING FUNCTIONS
+        function trackCalculatorClick(source) {
+            console.log('Calculator link clicked from:', source);
+            
+            // Google Analytics (als je het hebt)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'calculator_click', {
+                    'source': source,
+                    'page': window.location.pathname
+                });
+            }
+            
+            // Simple local tracking
+            try {
+                const clicks = JSON.parse(localStorage.getItem('calculator_clicks') || '[]');
+                clicks.push({
+                    source: source,
+                    timestamp: new Date().toISOString(),
+                    page: window.location.pathname
+                });
+                localStorage.setItem('calculator_clicks', JSON.stringify(clicks.slice(-50))); // Keep last 50
+            } catch (e) {
+                console.log('Tracking storage not available');
+            }
+        }
+
+        function openCalculator() {
+            trackCalculatorClick('ai_suggestion');
+            window.open('//calculator.dentalspace.pro?ref=ai_suggestion&utm_source=dentalspace&utm_medium=ai_chat&utm_campaign=cross_link', '_blank');
+        }
+
+        // Check for calculator referrals
+        function checkCalculatorReferral() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            
+            if (ref === 'calculator' || ref === 'calculator_quote') {
+                // User came back from calculator
+                setTimeout(() => {
+                    addMessage("🎉 <strong>Welkom terug van de calculator!</strong><br><br>Ik zie dat je onze kostencalculator hebt gebruikt. Heb je vragen over de berekening of wil je meer persoonlijk advies?<br><br><strong>💡 Ik kan helpen met:</strong><br>• Uitleg van de kosten breakdown<br>• Alternatieven voor budget optimalisatie<br>• Specifieke materiaal keuzes<br>• Planning en timeline advies<div class='message-source'>🔗 Cross-Link Welkom</div>", false, 'ai');
+                    
+                    // Show calculator-specific suggestions
+                    setTimeout(() => {
+                        document.getElementById('suggestions').innerHTML += `
+                            <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Leg de kosten breakdown uit van mijn calculatie')">💰 Kosten Uitleg</div>
+                            <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Hoe kan ik binnen mijn budget blijven?')">📊 Budget Tips</div>
+                            <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Wanneer is het beste moment om te starten?')">⏰ Planning Advies</div>
+                        `;
+                    }, 1000);
+                }, 2000);
+            }
+        }
+
         // Expert Knowledge Base
         const expertResponses = {
             kosten: [
-                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br>Voor de beste kostenbegroting en persoonlijk advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><div class='message-source'>💼 DentalSpace Pro Expert</div>",
+                "Praktijkinrichting kan behoorlijk in de papieren lopen! 💰<br><br>Voor de beste kostenbegroting en persoonlijk advies, neem contact op met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='{{EXPERT_LINK}}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Tip:</strong> Probeer eerst onze <a href='//calculator.dentalspace.pro?ref=ai_advice&utm_source=dentalspace' onclick='trackCalculatorClick(\"ai_advice\")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe inschattingen!<div class='message-source'>💼 DentalSpace Pro Expert</div>",
             ],
             
             contact: [
@@ -1203,6 +1299,7 @@
 BELANGRIJKE CONTEXT:
 - DentalSpace Pro is een adviesbureau dat tandartsen helpt bij praktijkinrichting
 - Wij hebben partnerships met DentalMa (complete praktijkrealisatie) en IsSolid (Solid Surface meubilair)
+- Wij hebben ook een kostencalculator op calculator.dentalspace.pro
 - ALLE CONTACT LOOPT VIA: expert@dentalspace.pro
 
 EXPERTISE GEBIEDEN:
@@ -1213,6 +1310,11 @@ EXPERTISE GEBIEDEN:
 - Compliance en vergunningen (WTZi, ARBO, brandveiligheid)
 - Nieuwste trends: duurzaamheid, digitalisering, patiëntcomfort
 - Hygiene protocollen en materiaalspecificaties
+
+KOSTENCALCULATOR INTEGRATIE:
+- Voor kosten vragen, verwijs ook naar calculator.dentalspace.pro
+- Leg uit dat de calculator directe kostenschattingen geeft
+- Benadruk dat calculator + AI expert chat = complete oplossing
 
 ANTWOORD STRATEGIE VOOR AI SUGGESTIONS:
 Geef ALTIJD uitgebreide, gedetailleerde antwoorden met:
@@ -1405,7 +1507,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                     : 'mailto:expert@dentalspace.pro?subject=Praktijk%20Advies&body=Hallo,%0D%0A%0D%0AIk%20wil%20graag%20advies%20over%20praktijkinrichting.%0D%0A%0D%0AMijn%20situatie:%0D%0A%0D%0AGroeten,';
                 
                 return { 
-                    response: `🔧 <strong>AI tijdelijk niet beschikbaar</strong><br><br>Geen zorgen! Voor direct advies kun je contact opnemen met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Tip:</strong> Probeer het later opnieuw - AI komt meestal snel weer online!<div class='message-source'>🔧 Tijdelijke Fallback</div>`, 
+                    response: `🔧 <strong>AI tijdelijk niet beschikbaar</strong><br><br>Geen zorgen! Voor direct advies kun je contact opnemen met onze expert:<br><br><strong>📞 Direct contact:</strong><br>📧 <a href='${fallbackLink}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=ai_fallback&utm_source=dentalspace' onclick='trackCalculatorClick("ai_fallback")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe kostenschattingen!<div class='message-source'>🔧 Tijdelijke Fallback</div>`, 
                     source: 'fallback' 
                 };
             }
@@ -1415,15 +1517,15 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 
                 // Backup responses for AI suggestion buttons
                 if (message.includes('concrete tips') && message.includes('praktijkindeling')) {
-                    return `🏗️ <strong>5 Praktijkindeling Tips (Expert Knowledge):</strong><br><br><strong>1. One-way patient flow</strong><br>Plan routes zodat patiënten elkaar niet kruisen. Ingang → wachtruimte → behandelkamer → uitgang.<br><br><strong>2. Centrale sterilisatie</strong><br>Plaats sterilisatie centraal, toegankelijk vanuit alle behandelkamers. 12-15m² nodig.<br><br><strong>3. Optimale kamergrootte</strong><br>Behandelkamers: 12-14m² minimum. Wachtruimte: 1.5m² per stoel.<br><br><strong>4. Aparte leveranciersingang</strong><br>Voorkom dat leveranciers door patiëntgebied moeten. Apart entree planning.<br><br><strong>5. Flexibele kamers</strong><br>Ontwerp kamers die verschillende behandelingen aankunnen. Modulair meubilair.<br><br><strong>📧 Voor implementatie:</strong><br><a href='${createContextualMailtoLink('Praktijkindeling Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Expert implementatie advies</a><div class='message-source'>🏗️ Expert Backup Knowledge</div>`;
+                    return `🏗️ <strong>5 Praktijkindeling Tips (Expert Knowledge):</strong><br><br><strong>1. One-way patient flow</strong><br>Plan routes zodat patiënten elkaar niet kruisen. Ingang → wachtruimte → behandelkamer → uitgang.<br><br><strong>2. Centrale sterilisatie</strong><br>Plaats sterilisatie centraal, toegankelijk vanuit alle behandelkamers. 12-15m² nodig.<br><br><strong>3. Optimale kamergrootte</strong><br>Behandelkamers: 12-14m² minimum. Wachtruimte: 1.5m² per stoel.<br><br><strong>4. Aparte leveranciersingang</strong><br>Voorkom dat leveranciers door patiëntgebied moeten. Apart entree planning.<br><br><strong>5. Flexibele kamers</strong><br>Ontwerp kamers die verschillende behandelingen aankunnen. Modulair meubilair.<br><br><strong>💡 Bereken de kosten:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=ai_tips&utm_source=dentalspace' onclick='trackCalculatorClick("ai_tips")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a><br><br><strong>📧 Voor implementatie:</strong><br><a href='${createContextualMailtoLink('Praktijkindeling Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Expert implementatie advies</a><div class='message-source'>🏗️ Expert Backup Knowledge</div>`;
                 }
                 
                 if (message.includes('trends') && message.includes('2025')) {
-                    return `🚀 <strong>2025 Tandartspraktijk Trends (Expert Knowledge):</strong><br><br><strong>🌱 Duurzaamheid</strong><br>• Gerecycled Solid Surface materialen<br>• LED+ verlichting & slimme thermostaten<br>• Waterbesparende systemen<br><br><strong>🤖 Smart Technology</strong><br>• IoT sensoren voor ruimtebeheer<br>• Contactloze kranen & deuren<br>• Digitale patient check-in systemen<br><br><strong>🏢 Ruimte Optimalisatie</strong><br>• Modulaire inrichting voor flexibiliteit<br>• Multi-functionele behandelruimtes<br>• Compacte, efficiënte indelingen<br><br><strong>🌿 Biophilic Design</strong><br>• Natuurlijke materialen & kleuren<br>• Planten & natuurlijk licht<br>• Kalmerend, niet-klinisch gevoel<br><br><strong>📧 Voor 2025 implementatie:</strong><br><a href='${createContextualMailtoLink('2025 Trends Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Trendy praktijk realiseren</a><div class='message-source'>🚀 Expert Trend Knowledge</div>`;
+                    return `🚀 <strong>2025 Tandartspraktijk Trends (Expert Knowledge):</strong><br><br><strong>🌱 Duurzaamheid</strong><br>• Gerecycled Solid Surface materialen<br>• LED+ verlichting & slimme thermostaten<br>• Waterbesparende systemen<br><br><strong>🤖 Smart Technology</strong><br>• IoT sensoren voor ruimtebeheer<br>• Contactloze kranen & deuren<br>• Digitale patient check-in systemen<br><br><strong>🏢 Ruimte Optimalisatie</strong><br>• Modulaire inrichting voor flexibiliteit<br>• Multi-functionele behandelruimtes<br>• Compacte, efficiënte indelingen<br><br><strong>🌿 Biophilic Design</strong><br>• Natuurlijke materialen & kleuren<br>• Planten & natuurlijk licht<br>• Kalmerend, niet-klinisch gevoel<br><br><strong>💰 Kosten inschatten:</strong> Gebruik onze <a href='//calculator.dentalspace.pro?ref=trends_2025&utm_source=dentalspace' onclick='trackCalculatorClick("trends_2025")' style='color: #f39c12; font-weight: bold;'>🧮 2025 Kostencalculator</a><br><br><strong>📧 Voor 2025 implementatie:</strong><br><a href='${createContextualMailtoLink('2025 Trends Implementatie')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Trendy praktijk realiseren</a><div class='message-source'>🚀 Expert Trend Knowledge</div>`;
                 }
                 
                 if (message.includes('materialen') && message.includes('behandelkamers')) {
-                    return `💎 <strong>Behandelkamer Materialen Vergelijking (Expert Knowledge):</strong><br><br><strong>🥇 Solid Surface (€800-1200/m²)</strong><br>✅ 100% hygiënisch, naadloos<br>✅ 12-uur antibacteriële garantie<br>✅ Repareerbaar, duurzaam 20+ jaar<br>⚠️ Hogere investering<br><br><strong>🥈 Fenolhars (€400-600/m²)</strong><br>✅ Vochtbestendig, sterke basis<br>✅ Goede hygiene eigenschappen<br>⚠️ Zichtbare naden, minder premium<br><br><strong>🥉 Laminaat (€200-400/m²)</strong><br>✅ Budget-vriendelijk<br>✅ Snelle installatie<br>❌ Niet repareerbaar, kortere levensduur<br>❌ Vochtgevoelig bij naden<br><br><strong>🔬 Hygiëne ranking:</strong> Solid Surface > Fenolhars > Laminaat<br><strong>🌱 Duurzaamheid:</strong> Solid Surface > Fenolhars > Laminaat<br><br><strong>📧 Materiaal keuze hulp:</strong><br><a href='${createContextualMailtoLink('Materiaal Keuze Advies')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Persoonlijk materiaal advies</a><div class='message-source'>💎 Expert Material Knowledge</div>`;
+                    return `💎 <strong>Behandelkamer Materialen Vergelijking (Expert Knowledge):</strong><br><br><strong>🥇 Solid Surface (€800-1200/m²)</strong><br>✅ 100% hygiënisch, naadloos<br>✅ 12-uur antibacteriële garantie<br>✅ Repareerbaar, duurzaam 20+ jaar<br>⚠️ Hogere investering<br><br><strong>🥈 Fenolhars (€400-600/m²)</strong><br>✅ Vochtbestendig, sterke basis<br>✅ Goede hygiene eigenschappen<br>⚠️ Zichtbare naden, minder premium<br><br><strong>🥉 Laminaat (€200-400/m²)</strong><br>✅ Budget-vriendelijk<br>✅ Snelle installatie<br>❌ Niet repareerbaar, kortere levensduur<br>❌ Vochtgevoelig bij naden<br><br><strong>🔬 Hygiëne ranking:</strong> Solid Surface > Fenolhars > Laminaat<br><strong>🌱 Duurzaamheid:</strong> Solid Surface > Fenolhars > Laminaat<br><br><strong>💰 Bereken jouw kosten:</strong> <a href='//calculator.dentalspace.pro?ref=materials&utm_source=dentalspace' onclick='trackCalculatorClick("materials")' style='color: #f39c12; font-weight: bold;'>🧮 Calculator met Materiaal Opties</a><br><br><strong>📧 Materiaal keuze hulp:</strong><br><a href='${createContextualMailtoLink('Materiaal Keuze Advies')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>📧 Persoonlijk materiaal advies</a><div class='message-source'>💎 Expert Material Knowledge</div>`;
                 }
                 
                 return null;
@@ -1593,6 +1695,9 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             message += `• Budget-optimalisatie voor ${budgetText[userProfile.budget]}<br>`;
             message += `• Speciaal focus op jouw zorgen en prioriteiten<br><br>`;
             
+            message += `<strong>🧮 Kostencalculator:</strong><br>`;
+            message += `<a href="//calculator.dentalspace.pro?ref=profile_complete&utm_source=dentalspace" onclick="trackCalculatorClick('profile_complete')" style="color: #f39c12; font-weight: bold;">📊 Bereken jouw specifieke kosten</a><br><br>`;
+            
             message += `<strong>📧 Expert Contact:</strong><br>`;
             message += `<a href="${createContextualMailtoLink('Gepersonaliseerd Praktijk Advies')}" style="color: #4a90e2; text-decoration: none; font-weight: bold;">📧 Stuur Mijn Context naar Expert</a><br><br>`;
             
@@ -1735,6 +1840,11 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
 - Budget-gerelateerde tips op basis van hun budget
 - Specialisatie-specifieke inrichtingsadviezen
 - Rekening houden met hun zorgen en prioriteiten
+
+KOSTENCALCULATOR VERWIJZING:
+- Voor kosten vragen: verwijs naar calculator.dentalspace.pro
+- Benadruk dat calculator directe kostenschattingen geeft
+- Leg uit dat calculator + expert = complete oplossing
 `;
             
             return context;
@@ -2037,7 +2147,7 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             } catch (error) {
                 hideTypingIndicator();
                 console.error('Error:', error);
-                addMessage(`🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='${createContextualMailtoLink('Chatbot Technische Vraag')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Voordeel:</strong> Persoonlijke begeleiding werkt altijd perfect!`, false, 'bot');
+                addMessage(`🔧 <strong>Even een technisch probleempje!</strong><br><br>Geen zorgen, neem direct contact op met onze expert:<br><br>📧 <a href='${createContextualMailtoLink('Chatbot Technische Vraag')}' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>expert@dentalspace.pro</a><br>☎️ <a href='tel:+31201234567' style='color: #4a90e2; text-decoration: none; font-weight: bold;'>+31 (0)20 123 4567</a><br><br><strong>💡 Alternatief:</strong> Probeer onze <a href='//calculator.dentalspace.pro?ref=chatbot_error&utm_source=dentalspace' onclick='trackCalculatorClick("chatbot_error")' style='color: #f39c12; font-weight: bold;'>🧮 Kostencalculator</a> voor directe kostenschattingen!`, false, 'bot');
             }
             
             // Re-enable input
@@ -2094,6 +2204,22 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
         // Manual AI test function 
         window.testAI = function() {
             testAIConnection();
+        };
+
+        // Cross-link analytics function
+        window.getCrossLinkStats = function() {
+            const calcClicks = JSON.parse(localStorage.getItem('calculator_clicks') || '[]');
+            
+            console.log('📊 Cross-Link Statistics:');
+            console.log('Calculator clicks from main site:', calcClicks.length);
+            console.log('Top calculator sources:', 
+                calcClicks.reduce((acc, click) => {
+                    acc[click.source] = (acc[click.source] || 0) + 1;
+                    return acc;
+                }, {})
+            );
+            
+            return { calculatorClicks: calcClicks };
         };
 
         // Test AI connection immediately 
@@ -2171,6 +2297,9 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             // Test AI immediately on load
             testAIConnection();
             
+            // Check for calculator referrals
+            checkCalculatorReferral();
+            
             // Focus input
             const chatInput = document.getElementById('chatInput');
             if (chatInput) {
@@ -2194,16 +2323,18 @@ BELANGRIJK: Pas je adviezen specifiek aan op basis van dit profiel.
             // Console startup info
             console.log('🚀 DentalSpace Pro Website geladen!');
             console.log('🌐 Domain: https://dentalspace.pro');
+            console.log('🔗 Cross-linking: calculator.dentalspace.pro');
             console.log('🔑 API Key test wordt uitgevoerd...');
             
-            // Test essential functions
+            // Test that all key elements exist
             try {
-                // Test that all key elements exist
                 if (!document.getElementById('chatInput')) console.error('❌ chatInput element missing');
                 if (!document.getElementById('chatMessages')) console.error('❌ chatMessages element missing');
                 if (!document.getElementById('sendButton')) console.error('❌ sendButton element missing');
                 
                 console.log('✅ All essential elements found');
+                console.log('🧮 Calculator cross-link buttons added');
+                console.log('📊 Cross-link tracking active');
                 
             } catch (error) {
                 console.error('❌ Initialization error:', error);
