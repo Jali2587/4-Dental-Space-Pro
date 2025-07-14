@@ -970,18 +970,20 @@
                                 • Nieuwste 2025 trends en innovaties<br>
                                 • Workflow optimalisatie tips
                                 <br><br>
-                                <strong>🚀 Kies je aanpak:</strong><br>
-                                <strong>📋 Optie 1:</strong> Maak een profiel voor gepersonaliseerde adviezen<br>
-                                <strong>⚡ Optie 2:</strong> Begin direct met vragen stellen<br>
-                                <strong>🧮 Nieuw:</strong> Probeer onze kostencalculator!
+                                <strong>🚀 Aanbevolen start:</strong><br>
+                                <strong>👤 Stap 1:</strong> Klik "Maak Profiel" voor gepersonaliseerde adviezen<br>
+                                <strong>🧮 Stap 2:</strong> Probeer de kostencalculator<br>
+                                <strong>🧠 Stap 3:</strong> Vraag AI om specifieke tips
                                 <br><br>
-                                <strong>💡 Start direct:</strong> Klik op de paarse AI-knoppen hieronder!
+                                <strong>💡 Of start direct:</strong> Klik op de gekleurde knoppen hieronder!
                                 <div class="message-source">🧠 AI Direct Beschikbaar</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="quick-suggestions" id="suggestions">
+                        <!-- 🆕 PROFIEL KNOP ALS EERSTE - ALTIJD ZICHTBAAR -->
+                        <div class="suggestion-btn" id="profileButton" onclick="showProfileSetup()" style="background: linear-gradient(45deg, #6f42c1, #5a369d); color: white; border: none;">👤 Maak Profiel (2 min)</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('Wat kost een moderne praktijk met 3 behandelkamers?')">💰 Kosten Informatie</div>
                         <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Geef me 5 concrete tips voor een efficiënte praktijkindeling met behandelkamers, wachtruimte en sterilisatie')">🧠 AI Tips</div>
                         <div class="suggestion-btn" onclick="sendSuggestion('persoonlijk contact')">🤝 Expert Contact</div>
@@ -990,7 +992,6 @@
                         <div class="suggestion-btn ai-suggestion" onclick="sendSuggestion('Welke materialen zijn het beste voor behandelkamers? Vergelijk Solid Surface, laminaat en andere opties qua hygiëne en duurzaamheid')">💎 Materiaal Advies</div>
                         <!-- 🆕 CALCULATOR SUGGESTION -->
                         <div class="suggestion-btn" onclick="openCalculator()" style="background: linear-gradient(45deg, #f39c12, #e67e22); color: white; border: none;">🧮 Open Kostencalculator</div>
-                        <div class="suggestion-btn" id="profileButton" onclick="showProfileSetup()" style="background: linear-gradient(45deg, #6f42c1, #5a369d); color: white; border: none; display: none;">👤 Maak Profiel</div>
                         <div class="suggestion-btn" id="expertButton" onclick="sendToExpert()" style="background: linear-gradient(45deg, #28a745, #20c997); color: white; border: none; display: none;">📧 Send All to Expert</div>
                     </div>
 
@@ -1599,7 +1600,7 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
             
             addMessage(message, false, 'ai');
             
-            // Show expert button and hide profile button
+            // Hide profile button and show expert button
             const expertButton = document.getElementById('expertButton');
             const profileButton = document.getElementById('profileButton');
             
@@ -1607,7 +1608,12 @@ Antwoord in HTML format met <br>, <strong> en duidelijke structuur.`;
                 expertButton.style.display = 'block';
             }
             if (profileButton) {
-                profileButton.style.display = 'none';
+                // Change profile button to "profiel compleet" instead of hiding
+                profileButton.innerHTML = '✅ Profiel Compleet';
+                profileButton.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                profileButton.onclick = function() { 
+                    alert('✅ Je profiel is al compleet! Alle AI adviezen zijn nu gepersonaliseerd.'); 
+                };
             }
         }
 
@@ -2035,16 +2041,27 @@ KOSTENCALCULATOR VERWIJZING:
                 chatInput.focus();
             }
             
-            // Show profile button for users to optionally create profile
-            setTimeout(() => {
-                const profileButton = document.getElementById('profileButton');
-                if (profileButton) {
-                    profileButton.style.display = 'block';
-                }
-            }, 1000);
-            
-            // Load existing profile if available
-            loadUserProfile();
+            // Load existing profile if available and adjust UI accordingly
+            const existingProfile = loadUserProfile();
+            if (existingProfile && existingProfile.setup_completed) {
+                // User already has a profile - update button to show completion
+                setTimeout(() => {
+                    const profileButton = document.getElementById('profileButton');
+                    if (profileButton) {
+                        profileButton.innerHTML = '✅ Profiel Compleet';
+                        profileButton.style.background = 'linear-gradient(45deg, #28a745, #20c997)';
+                        profileButton.onclick = function() { 
+                            alert('✅ Je profiel is al compleet! Alle AI adviezen zijn nu gepersonaliseerd.'); 
+                        };
+                    }
+                    
+                    // Show expert button too
+                    const expertButton = document.getElementById('expertButton');
+                    if (expertButton) {
+                        expertButton.style.display = 'block';
+                    }
+                }, 500);
+            }
             
             // Check cookies
             checkCookies();
